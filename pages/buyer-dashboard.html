@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buyer Dashboard | CampusMart</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    <link rel="stylesheet" href="../css/animations.css">
+</head>
+<body>
+
+    <!-- Header / Navbar -->
+    <header class="header">
+        <div class="container navbar">
+            <a href="../index.html" class="logo">
+                CAMPUS<span>MART</span>
+            </a>
+
+            <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <nav class="nav-menu" id="nav-menu">
+                <a href="../index.html" class="nav-link">Home</a>
+                
+                <div class="dropdown">
+                    <a href="marketplace.html" class="nav-link">Marketplace ▼</a>
+                    <div class="dropdown-menu">
+                        <a href="marketplace.html?cat=Academic" class="dropdown-item">📚 Academic & Books</a>
+                        <a href="marketplace.html?cat=Electronics" class="dropdown-item">💻 Electronics & Tech</a>
+                        <a href="marketplace.html?cat=Fashion" class="dropdown-item">👕 Clothing & Fashion</a>
+                        <a href="marketplace.html?cat=Food" class="dropdown-item">🍔 Food & Snacks</a>
+                        <a href="marketplace.html?cat=Birthday%20%26%20Events" class="dropdown-item">🎂 Birthday & Celebrations</a>
+                        <a href="marketplace.html?cat=Lifestyle" class="dropdown-item">🏠 Lifestyle & Hostel</a>
+                        <a href="marketplace.html?cat=Gaming" class="dropdown-item">🎮 Gaming & Sports</a>
+                        <a href="marketplace.html?cat=Design%20%26%20Creative" class="dropdown-item">🎨 Design & Creative</a>
+                        <a href="marketplace.html?cat=Hardware%20%2F%20Technical%20Help" class="dropdown-item">🔧 Hardware / Tech Support</a>
+                    </div>
+                </div>
+
+                <a href="tuck-shop.html" class="nav-link">Tuck Shop</a>
+                <a href="assignments.html" class="nav-link">Academic Help</a>
+                <a href="orders.html" class="nav-link">Orders</a>
+                <a href="create-listing.html" class="nav-link">Sell</a>
+
+                <div class="nav-actions">
+                    <a href="wishlist.html" class="nav-icon-btn" title="Wishlist">
+                        ❤️ <span class="badge-count" id="nav-wishlist-badge" style="display:none;">0</span>
+                    </a>
+                    <a href="cart.html" class="nav-icon-btn" title="Cart">
+                        🛒 <span class="badge-count" id="nav-cart-badge" style="display:none;">0</span>
+                    </a>
+                    <div id="nav-user-btn"></div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div style="background-color: var(--secondary-blue); color: var(--neutral-white); padding: 2.5rem 0;">
+        <div class="container" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+            <div>
+                <h1 style="font-size: 2.2rem; color: var(--neutral-white); margin-bottom: 0.35rem;" id="buyer-welcome-title">
+                    Welcome to Buyer Dashboard 👋
+                </h1>
+                <p style="color: #EBF2FF;" id="buyer-college-desc">Manage your campus orders, saved wishlist items, active cart, and project help requests</p>
+            </div>
+            <a href="marketplace.html" class="btn btn-accent btn-lg">
+                🛍️ Browse Marketplace
+            </a>
+        </div>
+    </div>
+
+    <main class="section">
+        <div class="container">
+            
+            <!-- Dashboard Stats Summary Cards -->
+            <div class="grid grid-cols-4" style="margin-bottom: 2.5rem;">
+                <div class="card" style="padding: 1.5rem; border-left: 4px solid var(--secondary-blue);">
+                    <div style="font-size: 0.85rem; color: var(--neutral-text-muted);">Total Orders</div>
+                    <div style="font-size: 2rem; font-weight: 800; color: var(--primary-charcoal); margin-top: 0.25rem;" id="buyer-stat-orders">0</div>
+                </div>
+
+                <div class="card" style="padding: 1.5rem; border-left: 4px solid var(--danger-red);">
+                    <div style="font-size: 0.85rem; color: var(--neutral-text-muted);">Saved Wishlist</div>
+                    <div style="font-size: 2rem; font-weight: 800; color: var(--primary-charcoal); margin-top: 0.25rem;" id="buyer-stat-wishlist">0</div>
+                </div>
+
+                <div class="card" style="padding: 1.5rem; border-left: 4px solid var(--accent-orange);">
+                    <div style="font-size: 0.85rem; color: var(--neutral-text-muted);">Cart Items</div>
+                    <div style="font-size: 2rem; font-weight: 800; color: var(--primary-charcoal); margin-top: 0.25rem;" id="buyer-stat-cart">0</div>
+                </div>
+
+                <div class="card" style="padding: 1.5rem; border-left: 4px solid var(--success-green);">
+                    <div style="font-size: 0.85rem; color: var(--neutral-text-muted);">Trust Score</div>
+                    <div style="font-size: 2rem; font-weight: 800; color: var(--primary-charcoal); margin-top: 0.25rem;" id="buyer-stat-trust">95/100</div>
+                </div>
+            </div>
+
+            <!-- Quick Action Links -->
+            <div style="margin-bottom: 3rem;">
+                <h3 style="margin-bottom: 1.25rem;">Quick Buyer Actions</h3>
+                <div class="grid grid-cols-4">
+                    <a href="marketplace.html" class="card" style="padding: 1.5rem; text-align: center;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🛍️</div>
+                        <h4>Marketplace</h4>
+                    </a>
+                    <a href="wishlist.html" class="card" style="padding: 1.5rem; text-align: center;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">❤️</div>
+                        <h4>My Wishlist</h4>
+                    </a>
+                    <a href="cart.html" class="card" style="padding: 1.5rem; text-align: center;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🛒</div>
+                        <h4>Shopping Cart</h4>
+                    </a>
+                    <a href="orders.html" class="card" style="padding: 1.5rem; text-align: center;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📦</div>
+                        <h4>My Orders</h4>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Recent Orders Preview -->
+            <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+                    <h3>Recent Campus Orders</h3>
+                    <a href="orders.html" class="btn btn-outline btn-sm">View All Orders →</a>
+                </div>
+                <div id="buyer-recent-orders-list">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>© 2026 CampusMart. Built for students.</p>
+                <p>Designed with Vanilla JS & CSS3</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/data.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/app.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = getCurrentUser();
+            if (user) {
+                document.getElementById('buyer-welcome-title').textContent = `Welcome back, ${user.name.split(' ')[0]}! 👋`;
+                document.getElementById('buyer-college-desc').textContent = `${user.college || 'Campus Institute of Tech'}`;
+            }
+
+            const orders = dbGet('orders');
+            const wishlist = dbGet('wishlist');
+            const cart = dbGet('cart');
+
+            document.getElementById('buyer-stat-orders').textContent = orders.length;
+            document.getElementById('buyer-stat-wishlist').textContent = wishlist.length;
+            document.getElementById('buyer-stat-cart').textContent = cart.reduce((sum, i) => sum + i.quantity, 0);
+
+            // Render Recent Orders
+            const container = document.getElementById('buyer-recent-orders-list');
+            if (orders.length === 0) {
+                container.innerHTML = `
+                    <div style="padding: 2rem; text-align: center;" class="card">
+                        <p style="color: var(--neutral-text-muted);">No recent orders yet. Explore marketplace to place an order!</p>
+                    </div>
+                `;
+            } else {
+                let html = '';
+                orders.slice(0, 3).forEach(o => {
+                    html += `
+                        <div class="card" style="padding: 1.25rem; margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between;">
+                            <div>
+                                <h4 style="font-size: 1.05rem;">${o.productName}</h4>
+                                <span style="font-size: 0.85rem; color: var(--neutral-text-muted);">Order #${o.id} • Seller: <strong>${o.sellerName}</strong></span>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-weight: 800; font-size: 1.15rem;">${formatCurrency(o.price * o.quantity)}</div>
+                                <span class="badge-tag" style="position: static; background: var(--secondary-blue);">${o.status}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
+            }
+        });
+    </script>
+</body>
+</html>
