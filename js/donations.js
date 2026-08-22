@@ -9,12 +9,16 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function renderDonations() {
-    const donations = dbGet('donations') || [];
+    let donations = dbGet('donations') || [];
+    
+    // Only show available items
+    donations = donations.filter(d => d.status === 'Available');
+
     const container = document.getElementById('donations-grid');
     if (!container) return;
 
     if (donations.length === 0) {
-        container.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 2rem; color: var(--neutral-text-muted);">No donations available at the moment. Be the first to donate!</div>';
+        container.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 2rem; color: var(--neutral-text-muted);">No available donations at the moment. Be the first to donate!</div>';
         return;
     }
 
@@ -64,7 +68,7 @@ function renderDonations() {
     container.innerHTML = html;
 }
 
-function handleDonationSubmit(e) {
+async function handleDonationSubmit(e) {
     e.preventDefault();
     
     const itemName = document.getElementById('don-itemName').value;
@@ -75,6 +79,23 @@ function handleDonationSubmit(e) {
 
     const donations = dbGet('donations') || [];
     
+    const imageInput = document.getElementById('don-image');
+    let image = 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=600&auto=format&fit=crop&q=80';
+    
+    if (imageInput && imageInput.files && imageInput.files[0]) {
+        try {
+            image = await new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (event) => resolve(event.target.result);
+                reader.onerror = (error) => reject(error);
+                reader.readAsDataURL(imageInput.files[0]);
+            });
+        } catch (error) {
+            console.error("Error reading file:", error);
+            showToast("Failed to process image. Using default.", "warning");
+        }
+    }
+
     const newDonation = {
         id: 'don_' + Date.now(),
         itemName,
@@ -86,7 +107,7 @@ function handleDonationSubmit(e) {
         receiverPhone: null,
         status: 'Available',
         datePosted: new Date().toISOString().split('T')[0],
-        image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=600&auto=format&fit=crop&q=80' // default fallback
+        image: image
     };
 
     donations.unshift(newDonation);
@@ -112,9 +133,22 @@ function claimDonation(donationId) {
         donations[index].status = 'Claimed';
         donations[index].receiverName = receiverName;
         donations[index].receiverPhone = receiverPhone;
+        const claimedItem = donations[index];
         dbSet('donations', donations);
         
-        showToast('Item successfully claimed! Coordinate with the donor.', 'success');
+        showToast('Item successfully claimed! Redirecting to WhatsApp...', 'success');
         renderDonations();
+
+        // Redirect to WhatsApp
+        const message = `Hi ${claimedItem.donorName}, I am ${receiverName}. I would like to collect your donated item: "${claimedItem.itemName}". Please let me know when and where we can meet!`;
+        // Remove spaces or non-digit chars from phone just in case, though keeping it simple is fine
+        const phoneStr = claimedItem.donorPhone.replace(/\D/g, '');
+        // Prefix with 91 if it's a 10 digit Indian number and doesn't have it
+        const finalPhone = phoneStr.length === 10 ? '91' + phoneStr : phoneStr;
+        const waUrl = `https://wa.me/${finalPhone}?text=${encodeURIComponent(message)}`;
+        
+        setTimeout(() => {
+            window.open(waUrl, '_blank');
+        }, 1000);
     }
 }
