@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Auctions & Bids | CampusKart</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    <link rel="stylesheet" href="../css/animations.css">
+</head>
+<body>
+
+    <!-- Header / Navbar -->
+    <header class="header">
+        <div class="container navbar">
+            <a href="../index.html" class="logo">
+                CAMPUS<span>KART</span>
+            </a>
+
+            <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <nav class="nav-menu" id="nav-menu">
+                <a href="../index.html" class="nav-link">Home</a>
+                
+                <div class="dropdown">
+                    <a href="marketplace.html" class="nav-link">Marketplace ▼</a>
+                    <div class="dropdown-menu">
+                        <a href="marketplace.html?cat=Academic" class="dropdown-item">📚 Academic & Books</a>
+                        <a href="marketplace.html?cat=Electronics" class="dropdown-item">💻 Electronics & Tech</a>
+                        <a href="marketplace.html?cat=Fashion" class="dropdown-item">👕 Clothing & Fashion</a>
+                        <a href="marketplace.html?cat=Food" class="dropdown-item">🍔 Food & Snacks</a>
+                        <a href="marketplace.html?cat=Birthday%20%26%20Events" class="dropdown-item">🎂 Birthday & Celebrations</a>
+                        <a href="marketplace.html?cat=Lifestyle" class="dropdown-item">🏠 Lifestyle & Hostel</a>
+                        <a href="marketplace.html?cat=Gaming" class="dropdown-item">🎮 Gaming & Sports</a>
+                        <a href="marketplace.html?cat=Design%20%26%20Creative" class="dropdown-item">🎨 Design & Creative</a>
+                        <a href="marketplace.html?cat=Hardware%20%2F%20Technical%20Help" class="dropdown-item">🔧 Hardware / Tech Support</a>
+                    </div>
+                </div>
+
+                <a href="tuck-shop.html" class="nav-link">Tuck Shop</a>
+                <a href="assignments.html" class="nav-link">Academic Help</a>
+                <a href="orders.html" class="nav-link">Orders</a>
+                <a href="create-listing.html" class="nav-link active">Sell</a>
+
+                <div class="nav-actions">
+                    <a href="wishlist.html" class="nav-icon-btn" title="Wishlist">
+                        ❤️ <span class="badge-count" id="nav-wishlist-badge" style="display:none;">0</span>
+                    </a>
+                    <a href="cart.html" class="nav-icon-btn" title="Cart">
+                        🛒 <span class="badge-count" id="nav-cart-badge" style="display:none;">0</span>
+                    </a>
+                    <div id="nav-user-btn"></div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div style="background-color: var(--accent-orange); color: var(--neutral-white); padding: 2rem 0; text-align: center;">
+        <div class="container">
+            <h1 style="font-size: 2rem; color: var(--neutral-white);">🔨 Auction Bid Management</h1>
+            <p style="color: #FFF4EC;">Review real-time student bids and select winning buyers</p>
+        </div>
+    </div>
+
+    <main class="section">
+        <div class="container" style="max-width: 850px;">
+            <div id="auctions-list-container">
+                <!-- Populated by seller.js -->
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer" style="background-color: var(--primary-charcoal); color: var(--neutral-white); padding-top: 4rem;">
+        <div class="container">
+            <div class="footer-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-bottom: 3rem;">
+                <div class="footer-brand">
+                    <h4 class="footer-title" style="margin-bottom: 1rem; color: #fff; font-size: 1.25rem;">CampusKart</h4>
+                    <p class="footer-desc" style="font-size: 0.9rem; line-height: 1.6; color: #94A3B8;">
+                        Your ultimate student-to-student marketplace. Buy, sell, and connect with your campus community instantly.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="footer-title" style="margin-bottom: 1rem; color: #fff; font-size: 1.15rem;">Quick Links</h4>
+                    <ul class="footer-links" style="list-style: none; padding: 0;">
+                        <li style="margin-bottom: 0.5rem;"><a href="../index.html" style="color: #94A3B8; text-decoration: none;">Home</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="../pages/marketplace.html" style="color: #94A3B8; text-decoration: none;">Marketplace</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="../pages/services.html" style="color: #94A3B8; text-decoration: none;">Services</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="../pages/offers.html" style="color: #94A3B8; text-decoration: none;">Offers</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #94A3B8; text-decoration: none;">Contact</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #94A3B8; text-decoration: none;">Design</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #94A3B8; text-decoration: none;">CLIENT SHOW CASE</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #94A3B8; text-decoration: none;">REVIEWS</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="footer-title" style="margin-bottom: 1rem; color: #fff; font-size: 1.15rem;">Contact Us</h4>
+                    <ul class="footer-links footer-contact" style="list-style: none; padding: 0;">
+                        <li style="display: flex; align-items: flex-start; gap: 0.5rem; color: #94A3B8; margin-bottom: 0.75rem;"><span style="margin-top:2px;">📍</span> CampusKart, Sec-82, SAS Nagar, Punjab</li>
+                        <li style="display: flex; align-items: center; gap: 0.5rem; color: #94A3B8; margin-bottom: 0.75rem;"><span>📞</span> (+91) 98765*</li>
+                        <li style="display: flex; align-items: center; gap: 0.5rem; color: #94A3B8; margin-bottom: 0.75rem;"><span>✉️</span> contact@campuskart.com</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="footer-title" style="margin-bottom: 1rem; color: #fff; font-size: 1.15rem;">Follow Us</h4>
+                    <div class="social-icons" style="display: flex; gap: 0.75rem;">
+                        <a href="#" style="width: 35px; height: 35px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: #fff; text-decoration: none; font-weight: bold;">f</a>
+                        <a href="#" style="width: 35px; height: 35px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: #fff; text-decoration: none; font-weight: bold;">ig</a>
+                        <a href="#" style="width: 35px; height: 35px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: #fff; text-decoration: none; font-weight: bold;">p</a>
+                        <a href="#" style="width: 35px; height: 35px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: #fff; text-decoration: none; font-weight: bold;">h</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom" style="padding: 1.5rem 0; border-top: 1px solid rgba(255,255,255,0.1); text-align: center; color: #94A3B8; font-size: 0.9rem;">
+                <p>© 2025 CampusKart. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/data.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/app.js"></script>
+    <script src="../js/seller.js"></script>
+</body>
+</html>

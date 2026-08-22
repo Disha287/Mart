@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | CampusKart</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    <link rel="stylesheet" href="../css/animations.css">
+</head>
+<body style="background-color: var(--neutral-bg); min-height: 100vh; display: flex; flex-direction: column;">
+
+    <!-- Navbar -->
+    <header class="header">
+        <div class="container navbar">
+            <a href="../index.html" class="logo">
+                CAMPUS<span>KART</span>
+            </a>
+            <a href="../index.html" class="btn btn-outline btn-sm">← Back to Home</a>
+        </div>
+    </header>
+
+    <!-- Main Login Area -->
+    <main style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 3rem 1rem;">
+        <div class="card" style="width: 100%; max-width: 440px; padding: 2.5rem; border-top: 5px solid var(--secondary-blue);">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem;">Welcome Back 👋</h2>
+                <p style="font-size: 0.95rem; color: var(--neutral-text-muted);">Sign in to access your student marketplace dashboard</p>
+            </div>
+
+            <form id="login-form">
+                <div class="form-group">
+                    <label class="form-label" for="login-role">Select Role</label>
+                    <select class="form-select" id="login-role">
+                        <option value="buyer">Buyer (Browse, Wishlist, Order)</option>
+                        <option value="seller">Seller (List products, Manage Bids/Offers)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="login-email">Campus Email</label>
+                    <input type="email" class="form-control" id="login-email" placeholder="student@college.edu" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="login-password">Password</label>
+                    <input type="password" class="form-control" id="login-password" placeholder="••••••••" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top: 1rem;">
+                    Sign In to Account
+                </button>
+            </form>
+
+            <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--neutral-border); text-align: center; font-size: 0.9rem; color: var(--neutral-text-muted);">
+                Don't have a CampusKart account? <br>
+                <a href="signup.html" style="font-weight: 700; color: var(--accent-orange); display: inline-block; margin-top: 0.5rem;">Create an Account Now →</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer" style="background-color: var(--primary-charcoal); color: var(--neutral-white); padding-top: 4rem;">
+        <div class="container">
+            <div class="footer-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-bottom: 3rem;">
+                <div class="footer-brand">
+                    <h4 class="footer-title" style="margin-bottom: 1rem; color: #fff; font-size: 1.25rem;">CampusKart</h4>
+                    <p class="footer-desc" style="font-size: 0.9rem; line-height: 1.6; color: #94A3B8;">
+                        Your ultimate student-to-student marketplace. Buy, sell, and connect with your campus community instantly.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="footer-title" style="margin-bottom: 1rem; color: #fff; font-size: 1.15rem;">Quick Links</h4>
+                    <ul class="footer-links" style="list-style: none; padding: 0;">
+                        <li style="margin-bottom: 0.5rem;"><a href="../index.html" style="color: #94A3B8; text-decoration: none;">Home</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="../pages/marketplace.html" style="color: #94A3B8; text-decoration: none;">Marketplace</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="../pages/services.html" style="color: #94A3B8; text-decoration: none;">Services</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="../pages/offers.html" style="color: #94A3B8; text-decoration: none;">Offers</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #94A3B8; text-decoration: none;">Contact</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #94A3B8; text-decoration: none;">Design</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #94A3B8; text-decoration: none;">CLIENT SHOW CASE</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #94A3B8; text-decoration: none;">REVIEWS</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="footer-title" style="margin-bottom: 1rem; color: #fff; font-size: 1.15rem;">Contact Us</h4>
+                    <ul class="footer-links footer-contact" style="list-style: none; padding: 0;">
+                        <li style="display: flex; align-items: flex-start; gap: 0.5rem; color: #94A3B8; margin-bottom: 0.75rem;"><span style="margin-top:2px;">📍</span> CampusKart, Sec-82, SAS Nagar, Punjab</li>
+                        <li style="display: flex; align-items: center; gap: 0.5rem; color: #94A3B8; margin-bottom: 0.75rem;"><span>📞</span> (+91) 98765*</li>
+                        <li style="display: flex; align-items: center; gap: 0.5rem; color: #94A3B8; margin-bottom: 0.75rem;"><span>✉️</span> contact@campuskart.com</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="footer-title" style="margin-bottom: 1rem; color: #fff; font-size: 1.15rem;">Follow Us</h4>
+                    <div class="social-icons" style="display: flex; gap: 0.75rem;">
+                        <a href="#" style="width: 35px; height: 35px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: #fff; text-decoration: none; font-weight: bold;">f</a>
+                        <a href="#" style="width: 35px; height: 35px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: #fff; text-decoration: none; font-weight: bold;">ig</a>
+                        <a href="#" style="width: 35px; height: 35px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: #fff; text-decoration: none; font-weight: bold;">p</a>
+                        <a href="#" style="width: 35px; height: 35px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: #fff; text-decoration: none; font-weight: bold;">h</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom" style="padding: 1.5rem 0; border-top: 1px solid rgba(255,255,255,0.1); text-align: center; color: #94A3B8; font-size: 0.9rem;">
+                <p>© 2025 CampusKart. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/data.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/app.js"></script>
+</body>
+</html>
