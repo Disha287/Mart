@@ -1,4 +1,4 @@
-/* CAMPUSKART - Core Helper Utilities & UI Engine */
+/* CAMPUSMART - Core Helper Utilities & UI Engine */
 
 // LocalStorage Engine Wrappers
 function dbGet(key) {

@@ -1,4 +1,4 @@
-/* CAMPUSKART - Initial Data Store & LocalStorage Data Engine */
+/* CAMPUSMART - Initial Data Store & LocalStorage Data Engine */
 
 const SEED_DATA = {
     users: [

@@ -1,4 +1,4 @@
-/* CAMPUSKART - Wishlist Management Engine */
+/* CAMPUSMART - Wishlist Management Engine */
 
 document.addEventListener('DOMContentLoaded', function() {
     renderWishlist();
@@ -45,11 +45,11 @@ function renderWishlist() {
                         <span style="font-size: 0.8rem; color: var(--neutral-text-muted)">By ${p.sellerName}</span>
                     </div>
                     <div class="product-actions" style="margin-top: 1rem;">
-                        <button onclick="moveWishlistToCart('${p.id}')" class="btn btn-accent btn-sm btn-block">
-                            🛒 Move to Cart
+                        <button onclick="moveWishlistToCart('${p.id}')" class="btn btn-accent btn-sm btn-block" style="font-weight: 600;">
+                            + Move to Cart
                         </button>
-                        <button onclick="removeFromWishlistPage('${p.id}')" class="btn btn-outline btn-sm">
-                            🗑️
+                        <button onclick="removeFromWishlistPage('${p.id}')" class="btn btn-outline btn-sm" style="color: var(--danger-red); border-color: var(--danger-red); font-weight: 600;">
+                            Remove
                         </button>
                     </div>
                 </div>

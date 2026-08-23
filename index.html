@@ -8,6 +8,40 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/responsive.css">
     <link rel="stylesheet" href="css/animations.css">
+    <style>
+        @keyframes activeFloat {
+            0% {
+                transform: translateY(0px);
+                box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+            }
+            50% {
+                transform: translateY(-12px);
+                box-shadow: 0 20px 32px rgba(15, 23, 42, 0.13);
+            }
+            100% {
+                transform: translateY(0px);
+                box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+            }
+        }
+        .floating-card-item {
+            background: #FFFFFF !important;
+            border: 1.5px solid #E2E8F0 !important;
+            border-radius: 16px !important;
+            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06) !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            text-align: center !important;
+            text-decoration: none !important;
+            padding: 1.85rem 1.4rem !important;
+            will-change: transform, box-shadow;
+            transition: border-color 0.3s ease !important;
+        }
+        .floating-card-item:hover {
+            border-color: #3B5CCC !important;
+        }
+    </style>
 </head>
 <body>
 
@@ -129,10 +163,11 @@
                     <p style="font-size: 0.9rem; color: var(--neutral-text-muted);">Buy & sell verified student products, gadgets, books, and gear.</p>
                 </a>
 
-                <a href="pages/tuck-shop.html" class="card" style="padding: 2rem 1.5rem; text-align: center; border-left: 4px solid var(--accent-orange);">
+                <a href="pages/tuck-shop.html" class="card" style="padding: 2rem 1.5rem; text-align: center; border-left: 4px solid var(--accent-orange); position: relative;">
+                    <span style="position: absolute; top: 12px; right: 12px; background: #DCFCE7; color: #166534; font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 999px;">💬 WhatsApp Direct</span>
                     <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">✏️</div>
                     <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">Tuck Shop</h3>
-                    <p style="font-size: 0.9rem; color: var(--neutral-text-muted);">Stationery, practical sheets, notebooks & exam essentials.</p>
+                    <p style="font-size: 0.9rem; color: var(--neutral-text-muted);">Stationery, practical sheets, notebooks & direct WhatsApp ordering.</p>
                 </a>
 
                 <a href="pages/services.html" class="card" style="padding: 2rem 1.5rem; text-align: center; border-left: 4px solid var(--success-green);">
@@ -227,17 +262,17 @@
         </div>
     </section>
 
-    <!-- SERVICES PREVIEW SECTION (7 EXACT CATEGORIES) -->
+    <!-- SERVICES PREVIEW SECTION (9 ALIGNED CATEGORIES) -->
     <section class="section">
         <div class="container">
             <div class="section-title-wrap">
                 <span class="section-subtitle">Student Services</span>
                 <h2 class="section-title">Explore Student Skill Marketplace</h2>
-                <p class="section-desc">Connect directly with skilled students across these seven dedicated campus categories.</p>
+                <p class="section-desc">Connect directly with skilled students across campus categories.</p>
             </div>
 
-            <div class="grid grid-cols-4" id="home-services-grid">
-                <!-- Populated dynamically or by template -->
+            <div class="grid grid-cols-3" id="home-services-grid">
+                <!-- Populated dynamically with floating cards -->
             </div>
         </div>
     </section>
@@ -388,13 +423,17 @@
             const container = document.getElementById('home-services-grid');
             if (!container) return;
 
+            // Undulating staggered delay pattern for 3x3 layout
+            const delays = [0, 0.5, 1.0, 0.7, 0.2, 0.9, 0.4, 1.1, 0.6];
+
             let html = '';
-            categories.forEach(c => {
+            categories.forEach((c, index) => {
+                const delay = delays[index % delays.length];
                 html += `
-                    <a href="pages/services.html?cat=${encodeURIComponent(c.title)}" class="card" style="padding: 1.25rem; text-align: center;">
-                        <div style="font-size: 2.2rem; margin-bottom: 0.5rem;">${c.icon}</div>
-                        <h4 style="font-size: 1rem; margin-bottom: 0.35rem;">${c.title}</h4>
-                        <p style="font-size: 0.8rem; color: var(--neutral-text-muted); font-weight: normal;">${c.desc}</p>
+                    <a href="pages/services.html?cat=${encodeURIComponent(c.title)}" class="floating-card-item" style="animation: activeFloat 3.2s ease-in-out infinite ${delay}s !important;">
+                        <div style="font-size: 2.6rem; margin-bottom: 0.75rem; display: inline-block;">${c.icon}</div>
+                        <h4 style="font-size: 1.1rem; margin-bottom: 0.4rem; font-weight: 700; color: var(--text);">${c.title}</h4>
+                        <p style="font-size: 0.85rem; color: var(--neutral-text-muted); font-weight: normal; line-height: 1.5; margin: 0;">${c.desc}</p>
                     </a>
                 `;
             });

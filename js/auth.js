@@ -1,4 +1,4 @@
-/* CAMPUSKART - Authentication & Session Controller */
+/* CAMPUSMART - Authentication & Session Controller */
 
 document.addEventListener('DOMContentLoaded', function() {
     initAuthForms();
@@ -61,7 +61,7 @@ function initAuthForms() {
             dbSet('users', users);
             setCurrentUser(newUser);
 
-            showToast('Account created successfully! Welcome to CampusKart.', 'success');
+            showToast('Account created successfully! Welcome to CampusMart.', 'success');
             
             setTimeout(() => {
                 const redirectPath = role === 'seller' ? 'seller-dashboard.html' : 'buyer-dashboard.html';

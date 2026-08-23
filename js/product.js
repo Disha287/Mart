@@ -1,4 +1,4 @@
-/* CAMPUSKART - Product Details & Action Engine */
+/* CAMPUSMART - Product Details & Action Engine */
 
 let currentProduct = null;
 
@@ -7,24 +7,49 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initProductDetails() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const prodId = urlParams.get('id');
+    let prodId = null;
+    if (window.location.search) {
+        const urlParams = new URLSearchParams(window.location.search);
+        prodId = urlParams.get('id');
+    }
+    
+    // Fallback for file:// protocol where search might be empty
+    if (!prodId && window.location.href.includes('?id=')) {
+        prodId = window.location.href.split('?id=')[1].split('&')[0];
+    }
+
+    // Handle cases where 'undefined' or 'null' is passed as string
+    if (prodId === 'undefined' || prodId === 'null') {
+        prodId = null;
+    }
 
     if (!prodId) {
-        showToast('Product ID missing', 'error');
-        setTimeout(() => window.location.href = 'marketplace.html', 1500);
+        document.getElementById('product-detail-container').innerHTML = `
+            <div style="text-align: center; padding: 4rem 1.5rem;" class="card">
+                <div style="font-size: 3.5rem; margin-bottom: 1rem;">⚠️</div>
+                <h2>Product Link Broken</h2>
+                <p style="color: var(--neutral-text-muted); margin: 1rem 0;">The link you clicked is missing a valid product ID. Your browser's local product cache may be corrupted or outdated.</p>
+                <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem;">
+                    <button onclick="localStorage.removeItem('cm_initialized'); window.location.href = 'marketplace.html';" class="btn btn-accent">Fix Database (Reset)</button>
+                    <a href="marketplace.html" class="btn btn-primary">Back to Marketplace</a>
+                </div>
+            </div>
+        `;
         return;
     }
 
     const products = dbGet('products');
-    currentProduct = products.find(p => p.id === prodId);
+    currentProduct = products.find(p => String(p.id) === String(prodId));
 
     if (!currentProduct) {
         document.getElementById('product-detail-container').innerHTML = `
             <div style="text-align: center; padding: 4rem 1.5rem;" class="card">
                 <h2>Product Not Found</h2>
-                <p style="color: var(--neutral-text-muted); margin: 1rem 0;">The requested product listing may have been removed.</p>
-                <a href="marketplace.html" class="btn btn-primary">Back to Marketplace</a>
+                <p style="color: var(--neutral-text-muted); margin: 1rem 0;">The requested product (ID: <strong>${prodId}</strong>) could not be found. If you recently created this product, your local cache might be corrupted.</p>
+                <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem;">
+                    <button onclick="localStorage.removeItem('cm_initialized'); window.location.reload();" class="btn btn-accent">Fix Database (Reset)</button>
+                    <a href="marketplace.html" class="btn btn-primary">Back to Marketplace</a>
+                </div>
             </div>
         `;
         return;
@@ -42,7 +67,7 @@ function renderProductUI() {
     const user = getCurrentUser();
 
     // Prepare WhatsApp Message
-    const defaultMsg = `Hi, I found your listing "${currentProduct.name}" on CampusKart and I'm interested in buying it for ${formatCurrency(currentProduct.price)}. Is it still available?`;
+    const defaultMsg = `Hi, I found your listing "${currentProduct.name}" on CampusMart and I'm interested in buying it for ${formatCurrency(currentProduct.price)}. Is it still available?`;
     const whatsappUrl = buildWhatsAppLink(currentProduct.sellerPhone || '9123456789', defaultMsg);
 
     const trustScore = currentProduct.trustScore || calculateTrustScore(currentProduct.sellerRating || 4.8, 10);
@@ -138,8 +163,8 @@ function renderProductUI() {
                         <button onclick="handleBuyNow()" class="btn btn-accent btn-lg" style="flex: 2;">
                             ⚡ Buy Now
                         </button>
-                        <button onclick="addToCartDetail('${currentProduct.id}')" class="btn btn-primary btn-lg" style="flex: 2;">
-                            🛒 Add to Cart
+                        <button onclick="addToCartDetail('${currentProduct.id}')" class="btn btn-primary btn-lg" style="flex: 2; font-weight: 600;">
+                            + Add to Cart
                         </button>
                     </div>
 
@@ -215,7 +240,7 @@ function handleBuyNow() {
     orders.push(order);
     dbSet('orders', orders);
 
-    const waMsg = `Hi ${currentProduct.sellerName}, I placed an order for "${currentProduct.name}" on CampusKart (Order ID: #${order.id}, Price: ${formatCurrency(currentProduct.price)}). I'd like to coordinate payment and pickup!`;
+    const waMsg = `Hi ${currentProduct.sellerName}, I placed an order for "${currentProduct.name}" on CampusMart (Order ID: #${order.id}, Price: ${formatCurrency(currentProduct.price)}). I'd like to coordinate payment and pickup!`;
     const waUrl = buildWhatsAppLink(currentProduct.sellerPhone || '9123456789', waMsg);
 
     showToast('Order placed successfully! Opening WhatsApp chat...', 'success');

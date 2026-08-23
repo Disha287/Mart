@@ -1,4 +1,4 @@
-/* CAMPUSKART - Shopping Cart Engine */
+/* CAMPUSMART - Shopping Cart Engine */
 
 document.addEventListener('DOMContentLoaded', function() {
     renderCart();
@@ -102,7 +102,7 @@ function renderCart() {
 
                 <div style="text-align: right; min-width: 110px;">
                     <div style="font-weight: 800; font-size: 1.1rem; color: var(--primary-charcoal);">${formatCurrency(itemSubtotal)}</div>
-                    <button onclick="removeFromCart('${item.id}')" style="background: none; border: none; color: var(--danger-red); font-size: 0.8rem; cursor: pointer; margin-top: 4px;">Remove 🗑️</button>
+                    <button onclick="removeFromCart('${item.id}')" style="background: none; border: none; color: var(--danger-red); font-size: 0.8rem; font-weight: 600; text-decoration: underline; cursor: pointer; margin-top: 4px;">Remove</button>
                 </div>
             </div>
         `;

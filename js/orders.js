@@ -1,4 +1,4 @@
-/* CAMPUSKART - Orders & Rating Engine */
+/* CAMPUSMART - Orders & Rating Engine */
 
 let currentOrderTab = 'active';
 
@@ -49,7 +49,7 @@ function renderOrders() {
     let html = '';
     orders.forEach(o => {
         const itemTotal = o.price * o.quantity;
-        const waMsg = `Hi, I placed an order for "${o.productName}" on CampusKart. Order ID: ${o.id}. Total: ${formatCurrency(itemTotal)}. I'd like to coordinate purchase.`;
+        const waMsg = `Hi, I placed an order for "${o.productName}" on CampusMart. Order ID: ${o.id}. Total: ${formatCurrency(itemTotal)}. I'd like to coordinate purchase.`;
         const waUrl = buildWhatsAppLink(o.sellerPhone || '9123456789', waMsg);
 
         let statusBadgeClass = 'badge-fixed';
