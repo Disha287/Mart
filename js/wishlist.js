@@ -1,4 +1,4 @@
-/* CAMPUSMART - Wishlist Management Engine */
+/* CAMPUSKART - Wishlist Management Engine */
 
 document.addEventListener('DOMContentLoaded', function() {
     renderWishlist();

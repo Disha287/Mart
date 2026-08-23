@@ -1,4 +1,4 @@
-/* CAMPUSMART - Master Application Controller */
+/* CAMPUSKART - Master Application Controller */
 
 document.addEventListener('DOMContentLoaded', function() {
     initHeaderScroll();

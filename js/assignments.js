@@ -1,4 +1,4 @@
-/* CAMPUSMART - Academic Assistance & Mentor Rating Engine */
+/* CAMPUSKART - Academic Assistance & Mentor Rating Engine */
 
 document.addEventListener('DOMContentLoaded', function() {
     initAcademicPage();
@@ -32,7 +32,7 @@ function renderAcademicRequests() {
     requests.forEach(r => {
         const skillsHtml = (r.skills || []).map(s => `<span style="background: #EEF2FF; color: #4F46E5; font-size: 0.75rem; font-weight: 600; padding: 2px 8px; border-radius: var(--radius-sm);">${s}</span>`).join(' ');
         
-        const waMsg = `Hi ${r.studentName}, I saw your Academic Help post "${r.title}" on CampusMart. I'd like to offer project guidance for your budget of ${formatCurrency(r.budget)}.`;
+        const waMsg = `Hi ${r.studentName}, I saw your Academic Help post "${r.title}" on CampusKart. I'd like to offer project guidance for your budget of ${formatCurrency(r.budget)}.`;
         const waUrl = buildWhatsAppLink(r.studentPhone || '9876543210', waMsg);
 
         html += `
@@ -87,7 +87,7 @@ function renderAcademicHelpers() {
     academicProviders.forEach(p => {
         const skillsHtml = (p.skills || []).map(s => `<span style="background: var(--secondary-blue-light); color: var(--secondary-blue); font-size: 0.75rem; font-weight: 600; padding: 2px 8px; border-radius: var(--radius-sm);">${s}</span>`).join(' ');
         
-        const waMsg = `Hi ${p.name}, I found your mentor profile on CampusMart under Academic Assistance. I need project guidance. Are you available for a session?`;
+        const waMsg = `Hi ${p.name}, I found your mentor profile on CampusKart under Academic Assistance. I need project guidance. Are you available for a session?`;
         const waUrl = buildWhatsAppLink(p.phone || '9876543210', waMsg);
         const ratingCount = p.completedCount || 12;
 

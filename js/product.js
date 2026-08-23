@@ -1,4 +1,4 @@
-/* CAMPUSMART - Product Details & Action Engine */
+/* CAMPUSKART - Product Details & Action Engine */
 
 let currentProduct = null;
 
@@ -42,7 +42,7 @@ function renderProductUI() {
     const user = getCurrentUser();
 
     // Prepare WhatsApp Message
-    const defaultMsg = `Hi, I found your listing "${currentProduct.name}" on CampusMart and I'm interested in buying it for ${formatCurrency(currentProduct.price)}. Is it still available?`;
+    const defaultMsg = `Hi, I found your listing "${currentProduct.name}" on CampusKart and I'm interested in buying it for ${formatCurrency(currentProduct.price)}. Is it still available?`;
     const whatsappUrl = buildWhatsAppLink(currentProduct.sellerPhone || '9123456789', defaultMsg);
 
     const trustScore = currentProduct.trustScore || calculateTrustScore(currentProduct.sellerRating || 4.8, 10);
@@ -215,7 +215,7 @@ function handleBuyNow() {
     orders.push(order);
     dbSet('orders', orders);
 
-    const waMsg = `Hi ${currentProduct.sellerName}, I placed an order for "${currentProduct.name}" on CampusMart (Order ID: #${order.id}, Price: ${formatCurrency(currentProduct.price)}). I'd like to coordinate payment and pickup!`;
+    const waMsg = `Hi ${currentProduct.sellerName}, I placed an order for "${currentProduct.name}" on CampusKart (Order ID: #${order.id}, Price: ${formatCurrency(currentProduct.price)}). I'd like to coordinate payment and pickup!`;
     const waUrl = buildWhatsAppLink(currentProduct.sellerPhone || '9123456789', waMsg);
 
     showToast('Order placed successfully! Opening WhatsApp chat...', 'success');

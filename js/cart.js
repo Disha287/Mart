@@ -1,4 +1,4 @@
-/* CAMPUSMART - Shopping Cart Engine */
+/* CAMPUSKART - Shopping Cart Engine */
 
 document.addEventListener('DOMContentLoaded', function() {
     renderCart();

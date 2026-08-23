@@ -1,4 +1,4 @@
-/* CAMPUSMART - Initial Data Store & LocalStorage Data Engine */
+/* CAMPUSKART - Initial Data Store & LocalStorage Data Engine */
 
 const SEED_DATA = {
     users: [
@@ -488,6 +488,35 @@ const SEED_DATA = {
         }
     ],
 
+    donations: [
+        {
+            id: 'don_101',
+            itemName: 'Old Engineering Drawing Board',
+            category: 'Academic',
+            description: 'A wooden drawing board used for ED class. In decent condition, totally free to anyone who needs it.',
+            donorName: 'Rahul Sharma',
+            donorPhone: '9876543210',
+            receiverName: null,
+            receiverPhone: null,
+            status: 'Available',
+            datePosted: '2026-08-20',
+            image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=600&auto=format&fit=crop&q=80'
+        },
+        {
+            id: 'don_102',
+            itemName: 'Set of 1st Year Textbooks',
+            category: 'Academic',
+            description: 'Includes Physics, Maths, and Basic Electrical Engineering books. Some pages are highlighted.',
+            donorName: 'Aman Verma',
+            donorPhone: '9123456789',
+            receiverName: 'Priya Patel',
+            receiverPhone: '9898989898',
+            status: 'Claimed',
+            datePosted: '2026-08-21',
+            image: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?w=600&auto=format&fit=crop&q=80'
+        }
+    ],
+
     wishlist: ['prod_104'],
     cart: [
         { productId: 'prod_102', quantity: 1 }
@@ -503,6 +532,7 @@ function initDatabase(forceReset = false) {
         localStorage.setItem('cm_service_providers', JSON.stringify(SEED_DATA.serviceProviders));
         localStorage.setItem('cm_academic_requests', JSON.stringify(SEED_DATA.academicRequests));
         localStorage.setItem('cm_orders', JSON.stringify(SEED_DATA.orders));
+        localStorage.setItem('cm_donations', JSON.stringify(SEED_DATA.donations));
         localStorage.setItem('cm_wishlist', JSON.stringify(SEED_DATA.wishlist));
         localStorage.setItem('cm_cart', JSON.stringify(SEED_DATA.cart));
         localStorage.setItem('cm_initialized', 'true');

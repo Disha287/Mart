@@ -1,4 +1,4 @@
-/* CAMPUSMART - Seller Management & Dashboard Controller */
+/* CAMPUSKART - Seller Management & Dashboard Controller */
 
 document.addEventListener('DOMContentLoaded', function() {
     initSellerDashboard();

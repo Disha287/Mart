@@ -1,4 +1,4 @@
-/* CAMPUSMART - Master Stylesheet (Midnight Blue + Peach Theme) */
+/* CAMPUSKART - Master Stylesheet (Midnight Blue + Peach Theme) */
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
@@ -192,6 +192,7 @@ p {
     font-weight: 800;
     color: var(--primary);
     letter-spacing: -0.5px;
+    margin-right: 2rem;
 }
 
 .logo span {
@@ -223,6 +224,7 @@ p {
     padding: 0.5rem 0.75rem;
     border-radius: var(--radius-sm);
     position: relative;
+    white-space: nowrap;
 }
 
 .nav-link:hover, .nav-link.active {

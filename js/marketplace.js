@@ -1,4 +1,4 @@
-/* CAMPUSMART - Marketplace Search, Filter & Sort Engine */
+/* CAMPUSKART - Marketplace Search, Filter & Sort Engine */
 
 let currentFilters = {
     search: '',

@@ -1,4 +1,4 @@
-/* CAMPUSMART - Authentication & Session Controller */
+/* CAMPUSKART - Authentication & Session Controller */
 
 document.addEventListener('DOMContentLoaded', function() {
     initAuthForms();
@@ -61,7 +61,7 @@ function initAuthForms() {
             dbSet('users', users);
             setCurrentUser(newUser);
 
-            showToast('Account created successfully! Welcome to CampusMart.', 'success');
+            showToast('Account created successfully! Welcome to CampusKart.', 'success');
             
             setTimeout(() => {
                 const redirectPath = role === 'seller' ? 'seller-dashboard.html' : 'buyer-dashboard.html';
@@ -119,12 +119,15 @@ function updateUserNavUI() {
         const prefix = isSubPage ? '' : 'pages/';
 
         userNavBtn.innerHTML = `
-            <a href="${prefix}${dashboardUrl}" class="btn btn-outline btn-sm">
-                <span>👤 ${user.name.split(' ')[0]}</span>
-            </a>
-            <button onclick="logoutUser()" class="btn btn-dark btn-sm" title="Logout">
-                🚪
-            </button>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <a href="${prefix}${dashboardUrl}" class="btn btn-outline btn-sm" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.35rem 0.75rem;">
+                    <img src="https://api.dicebear.com/7.x/notionists/svg?seed=${user.name.replace(/\s+/g, '')}" alt="Avatar" style="width: 24px; height: 24px; border-radius: 50%; background: #f0f0f0;">
+                    <span style="font-weight: 600;">${user.name.split(' ')[0]}</span>
+                </a>
+                <button onclick="logoutUser()" class="btn btn-dark btn-sm" title="Logout" style="font-weight: 600; padding: 0.35rem 0.75rem;">
+                    Logout
+                </button>
+            </div>
         `;
     } else {
         const isSubPage = window.location.pathname.includes('/pages/');

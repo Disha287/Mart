@@ -1,4 +1,4 @@
-/* CAMPUSMART - Services Marketplace & Provider Engine */
+/* CAMPUSKART - Services Marketplace & Provider Engine */
 
 let activeServiceCategory = 'all';
 
@@ -67,7 +67,7 @@ function renderServiceProviders() {
     providers.forEach(p => {
         const skillsHtml = (p.skills || []).map(s => `<span style="background: var(--secondary-blue-light); color: var(--secondary-blue); font-size: 0.75rem; font-weight: 600; padding: 2px 8px; border-radius: var(--radius-sm);">${s}</span>`).join(' ');
         
-        const waMsg = `Hi ${p.name}, I found your service listing for "${p.category}" on CampusMart. I'd like to hire/inquire about your starting price of ${formatCurrency(p.startingPrice)}.`;
+        const waMsg = `Hi ${p.name}, I found your service listing for "${p.category}" on CampusKart. I'd like to hire/inquire about your starting price of ${formatCurrency(p.startingPrice)}.`;
         const waUrl = buildWhatsAppLink(p.phone || '9876543210', waMsg);
 
         html += `
