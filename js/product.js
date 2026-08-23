@@ -1,4 +1,4 @@
-/* CAMPUSMART - Product Details & Action Engine */
+/* CAMPUSKART - Product Details & Action Engine */
 
 let currentProduct = null;
 
@@ -17,13 +17,13 @@ function initProductDetails() {
     if (!prodId && window.location.href.includes('?id=')) {
         prodId = window.location.href.split('?id=')[1].split('&')[0];
     }
-
-    // Handle cases where 'undefined' or 'null' is passed as string
-    if (prodId === 'undefined' || prodId === 'null') {
-        prodId = null;
+    
+    // Fallback for localStorage if redirect dropped the query param
+    if (!prodId) {
+        prodId = localStorage.getItem('current_product_id');
     }
 
-    if (!prodId) {
+    if (!prodId || prodId === 'undefined' || prodId === 'null') {
         document.getElementById('product-detail-container').innerHTML = `
             <div style="text-align: center; padding: 4rem 1.5rem;" class="card">
                 <div style="font-size: 3.5rem; margin-bottom: 1rem;">⚠️</div>
@@ -45,15 +45,18 @@ function initProductDetails() {
         document.getElementById('product-detail-container').innerHTML = `
             <div style="text-align: center; padding: 4rem 1.5rem;" class="card">
                 <h2>Product Not Found</h2>
-                <p style="color: var(--neutral-text-muted); margin: 1rem 0;">The requested product (ID: <strong>${prodId}</strong>) could not be found. If you recently created this product, your local cache might be corrupted.</p>
+                <p style="color: var(--neutral-text-muted); margin: 1rem 0;">The requested product (ID: <strong>${prodId}</strong>) could not be found.</p>
                 <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem;">
-                    <button onclick="localStorage.removeItem('cm_initialized'); window.location.reload();" class="btn btn-accent">Fix Database (Reset)</button>
+                    <button onclick="localStorage.removeItem('cm_initialized'); window.location.href = 'marketplace.html';" class="btn btn-accent">Fix Database (Reset)</button>
                     <a href="marketplace.html" class="btn btn-primary">Back to Marketplace</a>
                 </div>
             </div>
         `;
         return;
     }
+
+    // Save it for future reloads on this page if it came from URL
+    localStorage.setItem('current_product_id', currentProduct.id);
 
     renderProductUI();
 }
@@ -67,7 +70,7 @@ function renderProductUI() {
     const user = getCurrentUser();
 
     // Prepare WhatsApp Message
-    const defaultMsg = `Hi, I found your listing "${currentProduct.name}" on CampusMart and I'm interested in buying it for ${formatCurrency(currentProduct.price)}. Is it still available?`;
+    const defaultMsg = `Hi, I found your listing "${currentProduct.name}" on CampusKart and I'm interested in buying it for ${formatCurrency(currentProduct.price)}. Is it still available?`;
     const whatsappUrl = buildWhatsAppLink(currentProduct.sellerPhone || '9123456789', defaultMsg);
 
     const trustScore = currentProduct.trustScore || calculateTrustScore(currentProduct.sellerRating || 4.8, 10);
@@ -163,8 +166,8 @@ function renderProductUI() {
                         <button onclick="handleBuyNow()" class="btn btn-accent btn-lg" style="flex: 2;">
                             ⚡ Buy Now
                         </button>
-                        <button onclick="addToCartDetail('${currentProduct.id}')" class="btn btn-primary btn-lg" style="flex: 2; font-weight: 600;">
-                            + Add to Cart
+                        <button onclick="addToCartDetail('${currentProduct.id}')" class="btn btn-primary btn-lg" style="flex: 2;">
+                            🛒 Add to Cart
                         </button>
                     </div>
 
@@ -183,6 +186,8 @@ function renderProductUI() {
             </div>
         </div>
     `;
+
+    renderRecommendedProducts();
 }
 
 function addToCartDetail(prodId) {
@@ -240,7 +245,7 @@ function handleBuyNow() {
     orders.push(order);
     dbSet('orders', orders);
 
-    const waMsg = `Hi ${currentProduct.sellerName}, I placed an order for "${currentProduct.name}" on CampusMart (Order ID: #${order.id}, Price: ${formatCurrency(currentProduct.price)}). I'd like to coordinate payment and pickup!`;
+    const waMsg = `Hi ${currentProduct.sellerName}, I placed an order for "${currentProduct.name}" on CampusKart (Order ID: #${order.id}, Price: ${formatCurrency(currentProduct.price)}). I'd like to coordinate payment and pickup!`;
     const waUrl = buildWhatsAppLink(currentProduct.sellerPhone || '9123456789', waMsg);
 
     showToast('Order placed successfully! Opening WhatsApp chat...', 'success');
@@ -347,4 +352,92 @@ function submitOffer() {
 
     closeModal('offer-modal');
     showToast(`Offer of ${formatCurrency(amount)} submitted to seller!`, 'success');
+}
+
+function renderRecommendedProducts() {
+    const container = document.getElementById('recommended-products-grid');
+    if (!container) return;
+
+    const allProducts = dbGet('products');
+    const wishlist = dbGet('wishlist') || [];
+    const cart = dbGet('cart') || [];
+    const orders = dbGet('orders') || [];
+    
+    // 1. Analyze Personal Choices (Favorite Categories)
+    const favoriteCategories = {};
+    
+    // Give immediate weight to the category they are currently looking at
+    if (currentProduct) {
+        favoriteCategories[currentProduct.category] = 3;
+    }
+
+    // Give heavy weight to items in their wishlist and cart
+    const activeItemIds = [...wishlist, ...cart.map(c => c.productId)];
+    allProducts.forEach(p => {
+        if (activeItemIds.includes(p.id)) {
+            favoriteCategories[p.category] = (favoriteCategories[p.category] || 0) + 2;
+        }
+    });
+
+    // Give weight to items from their past orders
+    orders.forEach(o => {
+        const product = allProducts.find(p => p.id === o.productId);
+        if (product) {
+            favoriteCategories[product.category] = (favoriteCategories[product.category] || 0) + 1;
+        }
+    });
+
+    // 2. Score all available products
+    let scoredProducts = allProducts
+        .filter(p => !currentProduct || String(p.id) !== String(currentProduct.id)) // Exclude current product
+        .map(p => {
+            let score = 0;
+            // Base score from personalization
+            if (favoriteCategories[p.category]) {
+                score += favoriteCategories[p.category] * 10; 
+            }
+            // Add points for seller rating quality
+            score += (p.sellerRating || 4.0) * 2;
+            
+            return { product: p, score: score };
+        });
+
+    // 3. Sort by highest personal relevance score
+    scoredProducts.sort((a, b) => b.score - a.score);
+
+    // 4. Take top 4 recommendations
+    let recommendations = scoredProducts.slice(0, 4).map(sp => sp.product);
+
+    let html = '';
+    if (recommendations.length === 0) {
+        html = '<p style="grid-column: 1 / -1; text-align: center; color: var(--neutral-text-muted);">No recommendations available right now.</p>';
+    } else {
+        recommendations.forEach(p => {
+            const isWish = wishlist.includes(p.id);
+            html += `
+                <div class="card product-card" style="box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+                    <div class="product-img-wrap" style="height: 180px;">
+                        <span class="badge-tag ${p.listingType === 'bidding' ? 'badge-bidding' : 'badge-fixed'}">
+                            ${p.listingType === 'bidding' ? '🔨 Auction' : '🏷️ Fixed'}
+                        </span>
+                        <button class="wishlist-btn-toggle ${isWish ? 'active' : ''}" onclick="event.stopPropagation(); toggleWishlistDetail('${p.id}', this)">
+                            ${isWish ? '❤️' : '🤍'}
+                        </button>
+                        <img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.src='../assets/images/campus-fallback.jpg'" style="object-fit: cover; width: 100%; height: 100%;">
+                    </div>
+                    <div class="product-content" style="padding: 1rem;">
+                        <h3 class="product-title" style="font-size: 1.05rem; margin-bottom: 0.5rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; height: 2.8em;">${p.name}</h3>
+                        <div class="product-price-wrap" style="margin-top: 0.5rem; margin-bottom: 1rem;">
+                            <div class="product-price" style="font-size: 1.15rem;">${formatCurrency(p.price)}</div>
+                        </div>
+                        <div class="product-actions" style="margin-top: auto;">
+                            <a href="product.html?id=${p.id}" onclick="localStorage.setItem('current_product_id', '${p.id}')" class="btn btn-primary btn-sm btn-block">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    container.innerHTML = html;
 }
