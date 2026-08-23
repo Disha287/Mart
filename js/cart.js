@@ -41,7 +41,8 @@ function renderCart() {
                 quantity: item.quantity,
                 sellerName: 'Campus Tuck Shop',
                 sellerPhone: '9123456789',
-                isTuck: true
+                isTuck: true,
+                checked: item.checked !== false
             });
         } else {
             const p = products.find(prod => prod.id === item.productId);
@@ -54,18 +55,37 @@ function renderCart() {
                     quantity: item.quantity,
                     sellerName: p.sellerName,
                     sellerPhone: p.sellerPhone || '9123456789',
-                    isTuck: false
+                    isTuck: false,
+                    checked: item.checked !== false
                 });
             }
         }
     });
 
-    let itemsHtml = '';
+    const allChecked = cartDetailedItems.every(item => item.checked);
+    let itemsHtml = `
+        <div class="card" style="padding: 1rem 1.25rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem;">
+            <input type="checkbox" 
+                   id="select-all-checkbox"
+                   ${allChecked ? 'checked' : ''} 
+                   onchange="toggleSelectAllCart(this.checked)" 
+                   style="width: 18px; height: 18px; cursor: pointer; accent-color: var(--secondary-blue);">
+            <label for="select-all-checkbox" style="font-weight: 600; font-size: 0.9rem; cursor: pointer; color: var(--neutral-text-muted);">
+                Select All (${cartDetailedItems.length} items)
+            </label>
+        </div>
+    `;
+
     cartDetailedItems.forEach(item => {
         const itemSubtotal = item.price * item.quantity;
         itemsHtml += `
             <div class="card" style="padding: 1.25rem; margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
-                <div style="display: flex; align-items: center; gap: 1rem; flex: 2;">
+                <div style="display: flex; align-items: center; gap: 1.25rem; flex: 2;">
+                    <input type="checkbox" 
+                           id="checkbox-${item.id}"
+                           ${item.checked ? 'checked' : ''} 
+                           onchange="toggleCartItemSelection('${item.id}')" 
+                           style="width: 20px; height: 20px; cursor: pointer; accent-color: var(--secondary-blue); min-width: 20px;">
                     <img src="${item.image}" alt="${item.name}" style="width: 70px; height: 70px; object-fit: cover; border-radius: var(--radius-md);" onerror="this.src='../assets/images/campus-fallback.jpg'">
                     <div>
                         <h4 style="font-size: 1rem; margin-bottom: 0.25rem;">${item.name}</h4>
@@ -90,10 +110,31 @@ function renderCart() {
     container.innerHTML = itemsHtml;
 
     // Use reduce() for array calculation requirement
-    const grandTotal = cartDetailedItems.reduce((acc, curr) => acc + (curr.price * curr.quantity), 0);
+    const grandTotal = cartDetailedItems.reduce((acc, curr) => {
+        return acc + (curr.checked ? (curr.price * curr.quantity) : 0);
+    }, 0);
 
     const grandTotalEl = document.getElementById('cart-grand-total');
     if (grandTotalEl) grandTotalEl.textContent = formatCurrency(grandTotal);
+}
+
+function toggleCartItemSelection(prodId) {
+    let cart = dbGet('cart');
+    const target = cart.find(item => item.productId === prodId);
+    if (target) {
+        target.checked = target.checked !== false ? false : true;
+        dbSet('cart', cart);
+        renderCart();
+    }
+}
+
+function toggleSelectAllCart(checked) {
+    let cart = dbGet('cart');
+    cart.forEach(item => {
+        item.checked = checked;
+    });
+    dbSet('cart', cart);
+    renderCart();
 }
 
 function updateCartQuantity(prodId, delta) {
@@ -132,10 +173,18 @@ function checkoutCart() {
     const cart = dbGet('cart');
     if (cart.length === 0) return;
 
+    const checkedItems = cart.filter(item => item.checked !== false);
+    const uncheckedItems = cart.filter(item => item.checked === false);
+
+    if (checkedItems.length === 0) {
+        showToast('Please select at least one item to place order', 'warning');
+        return;
+    }
+
     const products = dbGet('products');
     let orders = dbGet('orders');
 
-    cart.forEach(item => {
+    checkedItems.forEach(item => {
         let name = 'Campus Item';
         let price = 0;
         let sellerName = 'Student Seller';
@@ -174,7 +223,7 @@ function checkoutCart() {
     });
 
     dbSet('orders', orders);
-    dbSet('cart', []); // Clear Cart
+    dbSet('cart', uncheckedItems); // Retain unchecked items in the cart
     updateNavBadges();
 
     showToast('Order placed successfully! Contact sellers on WhatsApp.', 'success');

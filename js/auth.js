@@ -99,6 +99,11 @@ function initAuthForms() {
 
             showToast(`Welcome back, ${user.name}!`, 'success');
 
+            const transitionOverlay = document.getElementById('page-transition');
+            if (transitionOverlay) {
+                transitionOverlay.style.transform = 'translateY(0)';
+            }
+
             setTimeout(() => {
                 const redirectPath = role === 'seller' ? 'seller-dashboard.html' : 'buyer-dashboard.html';
                 window.location.href = redirectPath;
