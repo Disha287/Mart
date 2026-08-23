@@ -492,6 +492,35 @@ p {
     border-color: rgba(59, 92, 204, 0.25);
 }
 
+/* Continuous Ambient Float Animation */
+@keyframes floatAnim {
+    0% {
+        transform: translateY(0px);
+        box-shadow: 0 4px 14px rgba(23, 37, 84, 0.06);
+    }
+    50% {
+        transform: translateY(-10px);
+        box-shadow: 0 16px 30px rgba(23, 37, 84, 0.13);
+    }
+    100% {
+        transform: translateY(0px);
+        box-shadow: 0 4px 14px rgba(23, 37, 84, 0.06);
+    }
+}
+
+.service-float-card {
+    background-color: var(--surface) !important;
+    border-radius: var(--radius-lg) !important;
+    border: 1px solid var(--border) !important;
+    box-shadow: 0 4px 14px rgba(23, 37, 84, 0.06);
+    animation: floatAnim 3.4s ease-in-out infinite;
+    will-change: transform, box-shadow;
+}
+
+.service-float-card:hover {
+    border-color: rgba(59, 92, 204, 0.45) !important;
+}
+
 /* Product Card */
 .product-card {
     display: flex;
