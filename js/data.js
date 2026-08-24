@@ -485,7 +485,12 @@ const SEED_DATA = {
             trustScore: 96,
             completedCount: 34,
             phone: '9811223344',
-            image: 'assets/images/products/unsplash_28402b60caf87ffae15b4cabdbb68f14.jpg'
+            image: 'assets/images/products/unsplash_28402b60caf87ffae15b4cabdbb68f14.jpg',
+            reviews: [
+                { reviewerName: 'Rahul Sharma', rating: 5, comment: 'Karan helped me install Ubuntu and dual-boot my laptop. Very professional and fast!', date: '2026-08-18' },
+                { reviewerName: 'Aman Verma', rating: 4, comment: 'Great help with Python project. Understood the requirements clearly.', date: '2026-08-20' },
+                { reviewerName: 'Priya Patel', rating: 5, comment: 'Saved me right before my lab exam! Excellent debugging skills.', date: '2026-08-22' }
+            ]
         },
         {
             id: 'srv_prov_2',
@@ -608,6 +613,18 @@ function initDatabase(forceReset = false) {
             });
             if (updated) {
                 localStorage.setItem('cm_products', JSON.stringify(currentProducts));
+            }
+            
+            // Migration: Append reviews to srv_prov_1 (Karan) if not present
+            let currentProviders = JSON.parse(localStorage.getItem('cm_service_providers')) || [];
+            const karan = currentProviders.find(p => p.id === 'srv_prov_1');
+            if (karan && !karan.reviews) {
+                karan.reviews = [
+                    { reviewerName: 'Rahul Sharma', rating: 5, comment: 'Karan helped me install Ubuntu and dual-boot my laptop. Very professional and fast!', date: '2026-08-18' },
+                    { reviewerName: 'Aman Verma', rating: 4, comment: 'Great help with Python project. Understood the requirements clearly.', date: '2026-08-20' },
+                    { reviewerName: 'Priya Patel', rating: 5, comment: 'Saved me right before my lab exam! Excellent debugging skills.', date: '2026-08-22' }
+                ];
+                localStorage.setItem('cm_service_providers', JSON.stringify(currentProviders));
             }
         } catch (e) {
             console.error('Database migration failed:', e);

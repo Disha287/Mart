@@ -89,11 +89,11 @@ function renderAcademicHelpers() {
         
         const waMsg = `Hi ${p.name}, I found your mentor profile on CampusMart under Academic Assistance. I need project guidance. Are you available for a session?`;
         const waUrl = buildWhatsAppLink(p.phone || '9876543210', waMsg);
-        const ratingCount = p.completedCount || 12;
+        const ratingCount = (p.reviews || []).length || p.completedCount || 12;
 
         html += `
             <div class="card" style="padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between;">
-                <div>
+                <div onclick="openMentorDetailsModal('${p.id}')" style="cursor: pointer;" title="Click to view full profile & reviews">
                     <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
                         <img src="${resolveImagePath(p.image || 'assets/images/products/unsplash_bc7fd7de1a6a5302ac248f841c01a3d4.jpg')}" alt="${p.name}" style="width: 54px; height: 54px; border-radius: var(--radius-full); object-fit: cover;" onerror="this.src='../assets/images/campus-fallback.jpg'">
                         <div>
@@ -246,12 +246,13 @@ function setupRateMentorForm() {
 
         const mentorId = document.getElementById('rate-mentor-id').value;
         const givenStars = Number(document.getElementById('rate-mentor-stars').value);
+        const feedback = document.getElementById('rate-mentor-feedback').value.trim() || 'No comment left.';
 
         let providers = dbGet('service_providers');
         const mentor = providers.find(p => p.id === mentorId);
 
         if (mentor) {
-            const currentCount = mentor.completedCount || 1;
+            const currentCount = mentor.completedCount || 0;
             const currentRating = mentor.rating || 5.0;
 
             // Recalculate Average Rating
@@ -259,11 +260,122 @@ function setupRateMentorForm() {
             mentor.rating = updatedRating;
             mentor.completedCount = currentCount + 1;
 
+            // Initialize reviews if not present
+            if (!mentor.reviews) {
+                mentor.reviews = [];
+            }
+
+            // Get logged in student name or default
+            const currentUser = getCurrentUser();
+            const reviewerName = currentUser ? (currentUser.name || currentUser.username) : 'Anonymous Student';
+
+            // Add new review
+            mentor.reviews.unshift({
+                reviewerName: reviewerName,
+                rating: givenStars,
+                comment: feedback,
+                date: new Date().toISOString().split('T')[0]
+            });
+
             dbSet('service_providers', providers);
 
             closeModal('rate-mentor-modal');
-            showToast(`⭐ Submitted ${givenStars}-star rating for ${mentor.name}! Updated score: ${updatedRating}★`, 'success');
+            showToast(`⭐ Review submitted successfully for ${mentor.name}!`, 'success');
             renderAcademicHelpers();
+            
+            // Clear feedback textarea
+            document.getElementById('rate-mentor-feedback').value = '';
         }
     });
+}
+
+function openMentorDetailsModal(mentorId) {
+    const providers = dbGet('service_providers');
+    const mentor = providers.find(p => p.id === mentorId);
+    if (!mentor) return;
+
+    const contentDiv = document.getElementById('mentor-details-content');
+    if (!contentDiv) return;
+
+    const skillsHtml = (mentor.skills || []).map(s => `
+        <span style="background: var(--secondary-blue-light); color: var(--secondary-blue); font-size: 0.78rem; font-weight: 600; padding: 4px 10px; border-radius: var(--radius-sm);">${s}</span>
+    `).join(' ');
+
+    const waMsg = `Hi ${mentor.name}, I found your mentor profile on CampusMart. I would like to book an academic assistance session with you.`;
+    const waUrl = buildWhatsAppLink(mentor.phone || '9876543210', waMsg);
+
+    // Reviews list
+    let reviewsHtml = '';
+    const reviews = mentor.reviews || [];
+    if (reviews.length === 0) {
+        reviewsHtml = `
+            <div style="text-align: center; padding: 1.5rem; background: var(--neutral-bg); border-radius: var(--radius-md); color: var(--neutral-text-muted); font-size: 0.88rem;">
+                💬 No reviews written yet. Be the first to rate this mentor!
+            </div>
+        `;
+    } else {
+        reviews.forEach(rev => {
+            reviewsHtml += `
+                <div style="padding: 1rem; border: 1px solid var(--neutral-border); border-radius: var(--radius-md); margin-bottom: 0.75rem; background: var(--neutral-white); text-align: left;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.4rem; flex-wrap: wrap; gap: 0.5rem;">
+                        <strong style="font-size: 0.92rem; color: var(--primary-charcoal);">👤 ${rev.reviewerName}</strong>
+                        <span style="font-size: 0.8rem; color: var(--neutral-text-muted);">${rev.date}</span>
+                    </div>
+                    <div style="margin-bottom: 0.4rem;">${renderStars(rev.rating)}</div>
+                    <p style="font-size: 0.88rem; color: var(--text); line-height: 1.45; margin: 0;">${rev.comment}</p>
+                </div>
+            `;
+        });
+    }
+
+    contentDiv.innerHTML = `
+        <div style="display: flex; gap: 1.25rem; align-items: flex-start; margin-bottom: 1.5rem; flex-wrap: wrap; text-align: left;">
+            <img src="${resolveImagePath(mentor.image || 'assets/images/products/unsplash_bc7fd7de1a6a5302ac248f841c01a3d4.jpg')}" alt="${mentor.name}" style="width: 80px; height: 80px; border-radius: var(--radius-full); object-fit: cover; border: 2px solid var(--secondary-blue-light);" onerror="this.src='../assets/images/campus-fallback.jpg'">
+            <div style="flex: 1; min-width: 250px;">
+                <h3 style="font-size: 1.4rem; margin-bottom: 4px; color: var(--primary-charcoal);">${mentor.name}</h3>
+                <div style="font-size: 0.88rem; color: var(--secondary-blue); font-weight: 600; margin-bottom: 6px;">🎓 ${mentor.experience || 'Campus Academic Mentor'}</div>
+                <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                    <span>${renderStars(mentor.rating || 4.9)}</span>
+                    <span style="font-size: 0.82rem; color: var(--neutral-text-muted);">(${reviews.length} reviews)</span>
+                    <span class="trust-badge" style="background: #ECFDF5; color: #047857; font-size: 0.75rem; padding: 2px 6px; border-radius: 4px;">🛡️ Trust Score: ${mentor.trustScore || 95}%</span>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 1.5rem; text-align: left;">
+            <h4 style="font-size: 1rem; margin-bottom: 0.5rem; border-bottom: 2px solid var(--secondary-blue-light); padding-bottom: 4px; display: inline-block;">About Mentor</h4>
+            <p style="font-size: 0.92rem; color: var(--text); line-height: 1.5; margin: 0;">${mentor.description}</p>
+        </div>
+
+        <div style="margin-bottom: 1.5rem; text-align: left;">
+            <h4 style="font-size: 1rem; margin-bottom: 0.5rem; border-bottom: 2px solid var(--secondary-blue-light); padding-bottom: 4px; display: inline-block;">Skills & Specializations</h4>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px;">
+                ${skillsHtml}
+            </div>
+        </div>
+
+        <div class="card" style="background: var(--neutral-bg); padding: 1rem; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; border-left: 4px solid var(--secondary-blue); text-align: left;">
+            <div>
+                <span style="font-size: 0.82rem; color: var(--neutral-text-muted); display: block;">Session / Guidance Fee</span>
+                <strong style="font-size: 1.3rem; color: var(--primary-charcoal);">${formatCurrency(mentor.startingPrice)}</strong>
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+                <a href="${waUrl}" target="_blank" class="btn btn-outline" style="color: #25D366; border-color: #25D366; background: #fff; padding: 0.5rem 1rem; font-size: 0.9rem;">
+                    💬 WhatsApp Mentor
+                </a>
+                <button onclick="closeModal('mentor-details-modal'); openMentorRatingModal('${mentor.id}', '${mentor.name.replace(/'/g, "\\'")}')" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.9rem;">
+                    ⭐ Rate Mentor
+                </button>
+            </div>
+        </div>
+
+        <div style="text-align: left;">
+            <h4 style="font-size: 1rem; margin-bottom: 0.75rem; border-bottom: 2px solid var(--secondary-blue-light); padding-bottom: 4px; display: inline-block;">Student Reviews & Feedback</h4>
+            <div style="margin-top: 0.5rem;">
+                ${reviewsHtml}
+            </div>
+        </div>
+    `;
+
+    openModal('mentor-details-modal');
 }
