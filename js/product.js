@@ -113,7 +113,7 @@ function renderProductUI() {
             <!-- Product Image Showcase -->
             <div>
                 <div class="card" style="overflow: hidden; margin-bottom: 1rem;">
-                    <img src="${currentProduct.image}" alt="${currentProduct.name}" style="width: 100%; height: 420px; object-fit: cover;" onerror="this.src='../assets/images/campus-fallback.jpg'">
+                    <img src="${resolveImagePath(currentProduct.image)}" alt="${currentProduct.name}" style="width: 100%; height: 420px; object-fit: cover;" onerror="this.src='../assets/images/campus-fallback.jpg'">
                 </div>
             </div>
 

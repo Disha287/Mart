@@ -73,7 +73,7 @@ function renderServiceProviders() {
         html += `
             <div class="card product-card">
                 <div style="position: relative; padding-top: 60%; background: var(--primary-charcoal); overflow: hidden;">
-                    <img src="${p.image}" alt="${p.name}" style="position: absolute; top:0; left:0; width:100%; height:100%; object-fit: cover;" onerror="this.src='../assets/images/campus-fallback.jpg'">
+                    <img src="${resolveImagePath(p.image)}" alt="${p.name}" style="position: absolute; top:0; left:0; width:100%; height:100%; object-fit: cover;" onerror="this.src='../assets/images/campus-fallback.jpg'">
                     <span class="badge-tag badge-fixed" style="top: 10px; left: 10px;">${p.category}</span>
                 </div>
 
@@ -151,7 +151,7 @@ function setupProviderForm() {
             trustScore: 92,
             completedCount: 1,
             phone: phone,
-            image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80'
+            image: 'assets/images/products/unsplash_36fca5472f42c50ec043af433c5fea1b.jpg'
         };
 
         providers.unshift(newProvider);

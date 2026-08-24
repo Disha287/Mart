@@ -35,7 +35,7 @@ function renderWishlist() {
                     <button class="wishlist-btn-toggle active" onclick="removeFromWishlistPage('${p.id}')">
                         ❤️
                     </button>
-                    <img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.src='../assets/images/campus-fallback.jpg'">
+                    <img src="${resolveImagePath(p.image)}" alt="${p.name}" loading="lazy" onerror="this.src='../assets/images/campus-fallback.jpg'">
                 </div>
                 <div class="product-content">
                     <span class="product-category">${p.category}</span>

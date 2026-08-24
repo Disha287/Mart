@@ -66,7 +66,7 @@ function renderCart() {
         itemsHtml += `
             <div class="card" style="padding: 1.25rem; margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
                 <div style="display: flex; align-items: center; gap: 1rem; flex: 2;">
-                    <img src="${item.image}" alt="${item.name}" style="width: 70px; height: 70px; object-fit: cover; border-radius: var(--radius-md);" onerror="this.src='../assets/images/campus-fallback.jpg'">
+                    <img src="${resolveImagePath(item.image)}" alt="${item.name}" style="width: 70px; height: 70px; object-fit: cover; border-radius: var(--radius-md);" onerror="this.src='../assets/images/campus-fallback.jpg'">
                     <div>
                         <h4 style="font-size: 1rem; margin-bottom: 0.25rem;">${item.name}</h4>
                         <span style="font-size: 0.8rem; color: var(--neutral-text-muted);">Seller: <strong>${item.sellerName}</strong></span>

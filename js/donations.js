@@ -41,7 +41,7 @@ function renderDonations() {
                     <span class="badge-tag ${badgeClass}" style="position: absolute; top: 10px; left: 10px;">
                         ${isAvailable ? '🎁 Available' : '✅ Claimed'}
                     </span>
-                    <img src="${d.image}" alt="${d.itemName}" loading="lazy" onerror="this.src='../assets/images/campus-fallback.jpg'" style="width: 100%; height: 100%; object-fit: cover;">
+                    <img src="${resolveImagePath(d.image)}" alt="${d.itemName}" loading="lazy" onerror="this.src='../assets/images/campus-fallback.jpg'" style="width: 100%; height: 100%; object-fit: cover;">
                 </div>
                 <div class="product-content" style="padding: 1.25rem;">
                     <span class="product-category">${d.category}</span>
@@ -80,7 +80,7 @@ async function handleDonationSubmit(e) {
     const donations = dbGet('donations') || [];
     
     const imageInput = document.getElementById('don-image');
-    let image = 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=600&auto=format&fit=crop&q=80';
+    let image = 'assets/images/products/unsplash_a6e5d026a93c70c3bf32136153bb64fa.jpg';
     
     if (imageInput && imageInput.files && imageInput.files[0]) {
         try {

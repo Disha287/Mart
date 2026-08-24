@@ -95,7 +95,7 @@ function renderAcademicHelpers() {
             <div class="card" style="padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between;">
                 <div>
                     <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
-                        <img src="${p.image || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&auto=format&fit=crop&q=80'}" alt="${p.name}" style="width: 54px; height: 54px; border-radius: var(--radius-full); object-fit: cover;" onerror="this.src='../assets/images/campus-fallback.jpg'">
+                        <img src="${resolveImagePath(p.image || 'assets/images/products/unsplash_bc7fd7de1a6a5302ac248f841c01a3d4.jpg')}" alt="${p.name}" style="width: 54px; height: 54px; border-radius: var(--radius-full); object-fit: cover;" onerror="this.src='../assets/images/campus-fallback.jpg'">
                         <div>
                             <h4 style="font-size: 1.05rem; margin-bottom: 2px;">${p.name}</h4>
                             <span style="font-size: 0.8rem; color: var(--secondary-blue); font-weight: 600;">🎓 ${p.experience || 'Campus Academic Mentor'}</span>
@@ -214,7 +214,7 @@ function setupAddMentorForm() {
             trustScore: 98,
             completedCount: 1,
             phone: phone,
-            image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&auto=format&fit=crop&q=80'
+            image: 'assets/images/products/unsplash_bc7fd7de1a6a5302ac248f841c01a3d4.jpg'
         };
 
         providers.unshift(newMentor);

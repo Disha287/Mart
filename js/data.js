@@ -59,7 +59,7 @@ const SEED_DATA = {
             trustScore: 92,
             location: 'Hostel Block B, Room 204',
             description: 'Original Casio ClassWiz scientific calculator in mint condition with dual power solar battery. Essential for Engineering Mathematics, Circuit Theory, and Physics.',
-            image: 'https://images.unsplash.com/photo-1611125832047-1d7ad1e8e488?w=600&auto=format&fit=crop&q=80',
+            image: 'assets/images/campus-fallback.jpg',
             rating: 4.8,
             bids: [],
             offers: [],
@@ -81,7 +81,7 @@ const SEED_DATA = {
             trustScore: 98,
             location: 'Girls Hostel 1, Room 108',
             description: 'Complete Engineering Drawing kit containing mini-drafter, set squares, precision compass, roller scale, and protective sheet holder container.',
-            image: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=600&auto=format&fit=crop&q=80',
+            image: 'assets/images/products/unsplash_1e0102cf079e37ca2e76ba09b47428d6.jpg',
             rating: 4.9,
             bids: [],
             offers: [],
@@ -104,7 +104,7 @@ const SEED_DATA = {
             trustScore: 92,
             location: 'Hostel Block B, Room 204',
             description: 'Powerful business laptop ideal for programming, VS Code, Python, and AutoCAD. 3+ hours battery life. Includes original charger.',
-            image: 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=600&auto=format&fit=crop&q=80',
+            image: 'assets/images/products/unsplash_a26afdbeb7d3d73a8bd6d237b34ae67f.jpg',
             rating: 4.7,
             bids: [
                 { bidderId: 'usr_buyer_1', bidderName: 'Rahul Sharma', amount: 14500, date: '2026-08-14' }
@@ -128,7 +128,7 @@ const SEED_DATA = {
             trustScore: 98,
             location: 'Girls Hostel 1, Room 108',
             description: 'Matte black bluetooth headphones with HD sound and 15-hour battery life. Used for 2 months only. Comes with charging cable.',
-            image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&auto=format&fit=crop&q=80',
+            image: 'assets/images/products/unsplash_2149c8d4f35a9b1eda9cc4dd288ffac9.jpg',
             rating: 4.85,
             bids: [],
             offers: [],
@@ -150,7 +150,7 @@ const SEED_DATA = {
             trustScore: 92,
             location: 'Hostel Block B, Room 204',
             description: 'Brand new premium heavyweight fleece hoodie. Super cozy for college library sessions during winter.',
-            image: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=600&auto=format&fit=crop&q=80',
+            image: 'assets/images/products/unsplash_d4be6a5d4fb91c2253b74298ab0e99aa.jpg',
             rating: 4.6,
             bids: [],
             offers: [],
@@ -172,7 +172,7 @@ const SEED_DATA = {
             trustScore: 98,
             location: 'Girls Hostel 1, Room 108',
             description: 'Standard textbook for Data Structures & Algorithms, GATE preparation, and coding interviews. Clean pages.',
-            image: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?w=600&auto=format&fit=crop&q=80',
+            image: 'assets/images/products/unsplash_99314150f350391035b8f0eb96fc95e3.jpg',
             rating: 5.0,
             bids: [],
             offers: [],
@@ -195,7 +195,7 @@ const SEED_DATA = {
             trustScore: 92,
             location: 'Hostel Block B, Room 204',
             description: 'Connects with laptop, iPad, and smartphone via Bluetooth. Compact size fits easily into college backpacks.',
-            image: 'https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=600&auto=format&fit=crop&q=80',
+            image: 'assets/images/products/unsplash_ee3eada207cb02462d51f9b6943d37f9.jpg',
             rating: 4.9,
             bids: [],
             offers: [],
@@ -217,7 +217,7 @@ const SEED_DATA = {
             trustScore: 98,
             location: 'Girls Hostel 1, Room 108',
             description: 'Rechargeable LED desk lamp with 3 brightness modes and flexible neck. Essential for late-night hostel study.',
-            image: 'https://images.unsplash.com/photo-1534353473418-4cfa6c56fd38?w=600&auto=format&fit=crop&q=80',
+            image: 'assets/images/products/unsplash_a4a675ae6a506c093b7ef83a0c6b70a4.jpg',
             rating: 4.8,
             bids: [],
             offers: [],
@@ -239,7 +239,7 @@ const SEED_DATA = {
             trustScore: 92,
             location: 'Hostel Block B, Room 204',
             description: 'Compact single-door mini fridge. Chilling compartment works great for beverages, milk, and snacks.',
-            image: 'https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?w=600&auto=format&fit=crop&q=80',
+            image: 'assets/images/products/unsplash_d8bfbf45310efd46b7779c78df6fced7.jpg',
             rating: 4.9,
             bids: [],
             offers: [],
@@ -261,7 +261,7 @@ const SEED_DATA = {
             trustScore: 98,
             location: 'Girls Hostel 1, Room 108',
             description: 'Ergonomic 30L college bag with dedicated 15.6 inch padded laptop compartment and rain cover.',
-            image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600&auto=format&fit=crop&q=80',
+            image: 'assets/images/products/unsplash_f28c40be5298668788f7e7ce7a9379c3.jpg',
             rating: 4.8,
             bids: [],
             offers: [],
@@ -284,7 +284,7 @@ const SEED_DATA = {
             trustScore: 92,
             location: 'Hostel Cycle Parking Block C',
             description: 'Lightweight alloy frame cycle for commuting between campus departments and hostels. Smooth Shimano gears.',
-            image: 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=600&auto=format&fit=crop&q=80',
+            image: 'assets/images/products/unsplash_18488bc8fb9e5561368b8f9fd5a15518.jpg',
             rating: 4.75,
             bids: [],
             offers: [],
@@ -306,7 +306,7 @@ const SEED_DATA = {
             trustScore: 98,
             location: 'Girls Hostel 1, Room 108',
             description: '100% pure cotton white lab coat for Chemistry and Workshop labs. Includes anti-fog safety glasses.',
-            image: 'https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?w=600&auto=format&fit=crop&q=80',
+            image: 'assets/images/products/unsplash_70e252f67d1190dfdba35cb837c5e6ce.jpg',
             rating: 4.85,
             bids: [],
             offers: [],
@@ -322,7 +322,7 @@ const SEED_DATA = {
             category: 'Notebooks',
             price: 240,
             stock: 50,
-            image: 'https://images.unsplash.com/photo-1531346878377-a5be20888e57?w=600&auto=format&fit=crop&q=80',
+            image: 'assets/images/products/unsplash_c16251f158ed026245b071ebfcf1579a.jpg',
             description: 'High-grade 70GSM white paper with durable poly cover.'
         },
         {
@@ -331,7 +331,7 @@ const SEED_DATA = {
             category: 'Pens',
             price: 180,
             stock: 35,
-            image: 'https://images.unsplash.com/photo-1585336261026-875a60a1c96b?w=600&auto=format&fit=crop&q=80',
+            image: 'assets/images/campus-fallback.jpg',
             description: 'Smooth quick-dry gel ink ideal for fast exam writing.'
         },
         {
@@ -340,7 +340,7 @@ const SEED_DATA = {
             category: 'Practical Sheets',
             price: 120,
             stock: 100,
-            image: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=600&auto=format&fit=crop&q=80',
+            image: 'assets/images/products/unsplash_2a947a63bf0ac0f1a48d91a39816b8cf.jpg',
             description: 'Standard 80GSM ruled practical pages with margin.'
         },
         {
@@ -349,7 +349,7 @@ const SEED_DATA = {
             category: 'Highlighters',
             price: 110,
             stock: 40,
-            image: 'https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?w=600&auto=format&fit=crop&q=80',
+            image: 'assets/images/products/unsplash_6fd7a4deb47e33968620266961ba2d3e.jpg',
             description: 'Smudge-proof soft pastel highlighters for textbook marking.'
         },
         {
@@ -358,7 +358,7 @@ const SEED_DATA = {
             category: 'Sticky Notes',
             price: 85,
             stock: 60,
-            image: 'https://images.unsplash.com/photo-1582562124811-c09040d0a901?w=600&auto=format&fit=crop&q=80',
+            image: 'assets/images/products/unsplash_8cf847b446089f4cf3d871dfb832b97e.jpg',
             description: 'Self-adhesive note pads for campus project indexing.'
         },
         {
@@ -367,7 +367,7 @@ const SEED_DATA = {
             category: 'Files',
             price: 95,
             stock: 25,
-            image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=600&auto=format&fit=crop&q=80',
+            image: 'assets/images/products/unsplash_a6e5d026a93c70c3bf32136153bb64fa.jpg',
             description: 'Waterproof cobra file folder for keeping lab records safe.'
         }
     ],
@@ -397,7 +397,7 @@ const SEED_DATA = {
             trustScore: 96,
             completedCount: 34,
             phone: '9811223344',
-            image: 'https://images.unsplash.com/photo-1531403009284-440f080d1e12?w=600&auto=format&fit=crop&q=80'
+            image: 'assets/images/products/unsplash_28402b60caf87ffae15b4cabdbb68f14.jpg'
         },
         {
             id: 'srv_prov_2',
@@ -411,7 +411,7 @@ const SEED_DATA = {
             trustScore: 99,
             completedCount: 52,
             phone: '9877665544',
-            image: 'https://images.unsplash.com/photo-1542744094-3a312169528f?w=600&auto=format&fit=crop&q=80'
+            image: 'assets/images/campus-fallback.jpg'
         },
         {
             id: 'srv_prov_3',
@@ -425,7 +425,7 @@ const SEED_DATA = {
             trustScore: 94,
             completedCount: 21,
             phone: '9988776655',
-            image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&auto=format&fit=crop&q=80'
+            image: 'assets/images/products/unsplash_9be73f213120461a20ec9955fcb48621.jpg'
         },
         {
             id: 'srv_prov_4',
@@ -439,7 +439,7 @@ const SEED_DATA = {
             trustScore: 98,
             completedCount: 48,
             phone: '9822110099',
-            image: 'https://images.unsplash.com/photo-1535141192574-5d4897c13136?w=600&auto=format&fit=crop&q=80'
+            image: 'assets/images/campus-fallback.jpg'
         }
     ],
 

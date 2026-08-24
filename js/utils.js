@@ -158,3 +158,13 @@ document.addEventListener('keydown', function(e) {
         document.body.style.overflow = '';
     }
 });
+
+// Resolve relative image paths for nested subpages (for local/offline compatibility)
+function resolveImagePath(path) {
+    if (!path) return '';
+    if (path.startsWith('http://') || path.startsWith('https://') || path.startsWith('data:')) {
+        return path;
+    }
+    const isSubpage = window.location.pathname.includes('/pages/');
+    return isSubpage ? '../' + path : path;
+}

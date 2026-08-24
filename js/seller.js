@@ -79,7 +79,7 @@ function initCreateListingForm() {
 
         const user = getCurrentUser() || { id: 'usr_seller_1', name: 'Aman Verma', phone: '9123456789' };
 
-        let imageUrl = 'https://images.unsplash.com/photo-1594980596870-8aa52a78d8cd?w=600&auto=format&fit=crop&q=80';
+        let imageUrl = 'assets/images/products/unsplash_cae5bbb5554ed3a2e0e6e4de8f93a84c.jpg';
         if (imgPreview && imgPreview.src && imgPreview.style.display !== 'none') {
             imageUrl = imgPreview.src;
         }
@@ -150,7 +150,7 @@ function initMyListings() {
                     <span class="badge-tag ${p.listingType === 'bidding' ? 'badge-bidding' : 'badge-fixed'}">
                         ${p.listingType === 'bidding' ? '🔨 Auction' : '🏷️ Fixed'}
                     </span>
-                    <img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.src='../assets/images/campus-fallback.jpg'">
+                    <img src="${resolveImagePath(p.image)}" alt="${p.name}" loading="lazy" onerror="this.src='../assets/images/campus-fallback.jpg'">
                 </div>
                 <div class="product-content">
                     <span class="product-category">${p.category}</span>
