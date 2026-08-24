@@ -438,8 +438,10 @@
             const container = document.getElementById('home-trending-grid');
             if (!container) return;
 
+            // Double the products array to enable seamless visual looping
+            const carouselProducts = [...products, ...products];
             let html = '';
-            products.forEach(p => {
+            carouselProducts.forEach(p => {
                 const isWishlist = dbGet('wishlist').includes(p.id);
                 html += `
                     <div class="card product-card">
@@ -481,47 +483,66 @@
             const nextBtn = document.getElementById('trending-next');
             if (!container) return;
 
-            // Manual Navigation
+            let scrollSpeed = 0.8; // Pixels per frame
+            let isHovered = false;
+            let animationFrameId = null;
+
+            // Smooth continuous scroll animation loop
+            function scrollLoop() {
+                if (!isHovered) {
+                    container.scrollLeft += scrollSpeed;
+                    
+                    // Halfway mark represents the end of the original list of 12 items
+                    const midPoint = container.scrollWidth / 2;
+                    if (container.scrollLeft >= midPoint) {
+                        // Reset scroll position back to beginning seamlessly
+                        container.scrollLeft = 0;
+                    }
+                }
+                animationFrameId = requestAnimationFrame(scrollLoop);
+            }
+
+            // Start continuous scroll
+            animationFrameId = requestAnimationFrame(scrollLoop);
+
+            // Manual controls
             if (prevBtn) {
                 prevBtn.addEventListener('click', () => {
-                    stopAutoScroll();
                     container.scrollBy({ left: -320, behavior: 'smooth' });
-                    startAutoScroll();
+                    // Loop back safety bounds check
+                    setTimeout(() => {
+                        if (container.scrollLeft <= 2) {
+                            container.scrollLeft = container.scrollWidth / 2;
+                        }
+                    }, 400);
                 });
             }
             if (nextBtn) {
                 nextBtn.addEventListener('click', () => {
-                    stopAutoScroll();
                     container.scrollBy({ left: 320, behavior: 'smooth' });
-                    startAutoScroll();
+                    // Loop back safety bounds check
+                    setTimeout(() => {
+                        if (container.scrollLeft >= container.scrollWidth / 2 - 2) {
+                            container.scrollLeft = 0;
+                        }
+                    }, 400);
                 });
             }
 
-            // Auto Scroll Logic
-            let autoScrollInterval = null;
-            function startAutoScroll() {
-                autoScrollInterval = setInterval(() => {
-                    const maxScroll = container.scrollWidth - container.clientWidth;
-                    if (container.scrollLeft >= maxScroll - 10) {
-                        container.scrollTo({ left: 0, behavior: 'smooth' });
-                    } else {
-                        container.scrollBy({ left: 320, behavior: 'smooth' });
-                    }
-                }, 4000);
-            }
+            // Pause scrolling on mouse hover (so user can interact easily)
+            container.addEventListener('mouseenter', () => {
+                isHovered = true;
+            });
+            container.addEventListener('mouseleave', () => {
+                isHovered = false;
+            });
 
-            function stopAutoScroll() {
-                if (autoScrollInterval) {
-                    clearInterval(autoScrollInterval);
+            // Clean up animation frames
+            window.addEventListener('beforeunload', () => {
+                if (animationFrameId) {
+                    cancelAnimationFrame(animationFrameId);
                 }
-            }
-
-            // Pause on hover
-            container.addEventListener('mouseenter', stopAutoScroll);
-            container.addEventListener('mouseleave', startAutoScroll);
-
-            // Start on load
-            startAutoScroll();
+            });
         }
 
         function renderHomeServicesPreview() {
