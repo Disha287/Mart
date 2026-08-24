@@ -329,53 +329,69 @@ function openMentorDetailsModal(mentorId) {
     }
 
     contentDiv.innerHTML = `
-        <div style="display: flex; gap: 1.25rem; align-items: flex-start; margin-bottom: 1.5rem; flex-wrap: wrap; text-align: left;">
-            <img src="${resolveImagePath(mentor.image || 'assets/images/products/unsplash_bc7fd7de1a6a5302ac248f841c01a3d4.jpg')}" alt="${mentor.name}" style="width: 80px; height: 80px; border-radius: var(--radius-full); object-fit: cover; border: 2px solid var(--secondary-blue-light);" onerror="this.src='../assets/images/campus-fallback.jpg'">
-            <div style="flex: 1; min-width: 250px;">
-                <h3 style="font-size: 1.4rem; margin-bottom: 4px; color: var(--primary-charcoal);">${mentor.name}</h3>
-                <div style="font-size: 0.88rem; color: var(--secondary-blue); font-weight: 600; margin-bottom: 6px;">🎓 ${mentor.experience || 'Campus Academic Mentor'}</div>
-                <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-                    <span>${renderStars(mentor.rating || 4.9)}</span>
-                    <span style="font-size: 0.82rem; color: var(--neutral-text-muted);">(${reviews.length} reviews)</span>
-                    <span class="trust-badge" style="background: #ECFDF5; color: #047857; font-size: 0.75rem; padding: 2px 6px; border-radius: 4px;">🛡️ Trust Score: ${mentor.trustScore || 95}%</span>
+        <div class="mentor-details-grid">
+            
+            <!-- Left Column: Profile Card & Actions -->
+            <div class="mentor-details-col-left">
+                <div>
+                    <!-- Avatar & Header info -->
+                    <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1.25rem;">
+                        <img src="${resolveImagePath(mentor.image || 'assets/images/products/unsplash_bc7fd7de1a6a5302ac248f841c01a3d4.jpg')}" alt="${mentor.name}" style="width: 76px; height: 76px; border-radius: var(--radius-full); object-fit: cover; border: 2px solid var(--secondary-blue-light);" onerror="this.src='../assets/images/campus-fallback.jpg'">
+                        <div style="text-align: left;">
+                            <h3 style="font-size: 1.35rem; margin-bottom: 2px; color: var(--primary-charcoal); line-height: 1.2;">${mentor.name}</h3>
+                            <div style="font-size: 0.85rem; color: var(--secondary-blue); font-weight: 600; margin-top: 4px;">🎓 ${mentor.experience || 'Campus Academic Mentor'}</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Trust badges / Stars -->
+                    <div style="margin-bottom: 1.25rem; text-align: left;">
+                        <div style="margin-bottom: 0.25rem;">${renderStars(mentor.rating || 4.9)}</div>
+                        <div style="font-size: 0.82rem; color: var(--neutral-text-muted); margin-bottom: 0.5rem;">(${reviews.length} reviews)</div>
+                        <span class="trust-badge" style="background: #ECFDF5; color: #047857; font-size: 0.75rem; padding: 3px 8px; border-radius: 4px; display: inline-block;">🛡️ Trust Score: ${mentor.trustScore || 95}%</span>
+                    </div>
+
+                    <!-- Specializations -->
+                    <div style="margin-bottom: 1.5rem; text-align: left;">
+                        <h5 style="font-size: 0.9rem; margin-bottom: 0.5rem; color: var(--neutral-text-muted); font-weight: 600;">Specializations</h5>
+                        <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                            ${skillsHtml}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pricing Card inside Left Column -->
+                <div class="card" style="background: var(--neutral-bg); padding: 1rem; border-left: 4px solid var(--secondary-blue); display: flex; flex-direction: column; gap: 0.75rem; margin-top: auto; text-align: left;">
+                    <div>
+                        <span style="font-size: 0.8rem; color: var(--neutral-text-muted); display: block;">Session / Guidance Fee</span>
+                        <strong style="font-size: 1.35rem; color: var(--primary-charcoal);">${formatCurrency(mentor.startingPrice)}</strong>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem; width: 100%;">
+                        <a href="${waUrl}" target="_blank" class="btn btn-outline" style="color: #25D366; border-color: #25D366; background: #fff; padding: 0.5rem; font-size: 0.85rem; text-align: center; display: block; width: 100%;">
+                            💬 WhatsApp Mentor
+                        </a>
+                        <button onclick="closeModal('mentor-details-modal'); openMentorRatingModal('${mentor.id}', '${mentor.name.replace(/'/g, "\\'")}')" class="btn btn-primary btn-block" style="padding: 0.5rem; font-size: 0.85rem;">
+                            ⭐ Rate Mentor
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div style="margin-bottom: 1.5rem; text-align: left;">
-            <h4 style="font-size: 1rem; margin-bottom: 0.5rem; border-bottom: 2px solid var(--secondary-blue-light); padding-bottom: 4px; display: inline-block;">About Mentor</h4>
-            <p style="font-size: 0.92rem; color: var(--text); line-height: 1.5; margin: 0;">${mentor.description}</p>
-        </div>
+            <!-- Right Column: Description & Reviews Feed -->
+            <div class="mentor-details-col-right">
+                <div style="text-align: left;">
+                    <h4 style="font-size: 1.05rem; margin-bottom: 0.5rem; border-bottom: 2px solid var(--secondary-blue-light); padding-bottom: 4px; display: inline-block;">About Mentor</h4>
+                    <p style="font-size: 0.92rem; color: var(--text); line-height: 1.55; margin: 0;">${mentor.description}</p>
+                </div>
 
-        <div style="margin-bottom: 1.5rem; text-align: left;">
-            <h4 style="font-size: 1rem; margin-bottom: 0.5rem; border-bottom: 2px solid var(--secondary-blue-light); padding-bottom: 4px; display: inline-block;">Skills & Specializations</h4>
-            <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px;">
-                ${skillsHtml}
+                <div style="text-align: left;">
+                    <h4 style="font-size: 1.05rem; margin-bottom: 0.75rem; border-bottom: 2px solid var(--secondary-blue-light); padding-bottom: 4px; display: inline-block;">Student Reviews & Feedback</h4>
+                    <div style="margin-top: 0.5rem;">
+                        ${reviewsHtml}
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <div class="card" style="background: var(--neutral-bg); padding: 1rem; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; border-left: 4px solid var(--secondary-blue); text-align: left;">
-            <div>
-                <span style="font-size: 0.82rem; color: var(--neutral-text-muted); display: block;">Session / Guidance Fee</span>
-                <strong style="font-size: 1.3rem; color: var(--primary-charcoal);">${formatCurrency(mentor.startingPrice)}</strong>
-            </div>
-            <div style="display: flex; gap: 0.5rem;">
-                <a href="${waUrl}" target="_blank" class="btn btn-outline" style="color: #25D366; border-color: #25D366; background: #fff; padding: 0.5rem 1rem; font-size: 0.9rem;">
-                    💬 WhatsApp Mentor
-                </a>
-                <button onclick="closeModal('mentor-details-modal'); openMentorRatingModal('${mentor.id}', '${mentor.name.replace(/'/g, "\\'")}')" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.9rem;">
-                    ⭐ Rate Mentor
-                </button>
-            </div>
         </div>
-
-        <div style="text-align: left;">
-            <h4 style="font-size: 1rem; margin-bottom: 0.75rem; border-bottom: 2px solid var(--secondary-blue-light); padding-bottom: 4px; display: inline-block;">Student Reviews & Feedback</h4>
-            <div style="margin-top: 0.5rem;">
-                ${reviewsHtml}
-            </div>
-        </div>
-    `;
 
     openModal('mentor-details-modal');
 }

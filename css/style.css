@@ -1078,3 +1078,41 @@ p {
     }
 }
 
+/* Mentor Details Modal Layout */
+.mentor-details-grid {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 2rem;
+    align-items: stretch;
+}
+
+.mentor-details-col-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-right: 1px solid var(--border);
+    padding-right: 2rem;
+}
+
+.mentor-details-col-right {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-height: 60vh;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .mentor-details-grid {
+        grid-template-columns: 1fr;
+    }
+    .mentor-details-col-left {
+        border-right: none;
+        padding-right: 0;
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 1.5rem;
+        margin-bottom: 1rem;
+    }
+}
+
