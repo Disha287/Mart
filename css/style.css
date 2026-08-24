@@ -192,7 +192,6 @@ p {
     font-weight: 800;
     color: var(--primary);
     letter-spacing: -0.5px;
-    margin-right: 2rem;
 }
 
 .logo span {
@@ -224,7 +223,6 @@ p {
     padding: 0.5rem 0.75rem;
     border-radius: var(--radius-sm);
     position: relative;
-    white-space: nowrap;
 }
 
 .nav-link:hover, .nav-link.active {
@@ -490,35 +488,6 @@ p {
     transform: translateY(-5px);
     box-shadow: var(--shadow-lg);
     border-color: rgba(59, 92, 204, 0.25);
-}
-
-/* Continuous Ambient Float Animation */
-@keyframes floatAnim {
-    0% {
-        transform: translateY(0px);
-        box-shadow: 0 4px 14px rgba(23, 37, 84, 0.06);
-    }
-    50% {
-        transform: translateY(-10px);
-        box-shadow: 0 16px 30px rgba(23, 37, 84, 0.13);
-    }
-    100% {
-        transform: translateY(0px);
-        box-shadow: 0 4px 14px rgba(23, 37, 84, 0.06);
-    }
-}
-
-.service-float-card {
-    background-color: var(--surface) !important;
-    border-radius: var(--radius-lg) !important;
-    border: 1px solid var(--border) !important;
-    box-shadow: 0 4px 14px rgba(23, 37, 84, 0.06);
-    animation: floatAnim 3.4s ease-in-out infinite;
-    will-change: transform, box-shadow;
-}
-
-.service-float-card:hover {
-    border-color: rgba(59, 92, 204, 0.45) !important;
 }
 
 /* Product Card */
@@ -842,3 +811,159 @@ p {
     font-size: 0.75rem;
     font-weight: 600;
 }
+
+/* OTP Verification UI */
+.otp-inputs-grid {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 1.5rem 0;
+}
+
+.otp-digit {
+    width: 48px;
+    height: 56px;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    font-family: var(--font-heading);
+    border: 2px solid var(--border);
+    border-radius: var(--radius-md);
+    background-color: var(--surface);
+    color: var(--primary);
+    transition: var(--transition-fast);
+    outline: none;
+}
+
+.otp-digit:focus {
+    border-color: var(--secondary);
+    box-shadow: 0 0 0 4px rgba(59, 92, 204, 0.15);
+    transform: translateY(-2px);
+}
+
+.otp-digit.filled {
+    border-color: var(--secondary);
+    background-color: #F8FAFC;
+}
+
+.otp-digit.error {
+    border-color: var(--danger);
+    background-color: #FEF2F2;
+    animation: shake 0.4s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-6px); }
+    40%, 80% { transform: translateX(6px); }
+}
+
+.otp-banner {
+    background: linear-gradient(135deg, #172554 0%, #1E3A8A 100%);
+    color: #FFFFFF;
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius-md);
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 4px 12px rgba(23, 37, 84, 0.15);
+}
+
+.otp-banner-code {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(4px);
+    padding: 4px 10px;
+    border-radius: var(--radius-sm);
+    font-family: monospace;
+    font-size: 1.1rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: #FFD4C2;
+    border: 1px dashed rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.otp-banner-code:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.otp-timer-text {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.otp-resend-btn {
+    background: none;
+    border: none;
+    color: var(--secondary);
+    font-weight: 700;
+    font-size: 0.88rem;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 4px;
+    text-decoration: underline;
+    transition: var(--transition-fast);
+}
+
+.otp-resend-btn:disabled {
+    color: var(--text-muted);
+    cursor: not-allowed;
+    text-decoration: none;
+}
+
+.login-auth-switch {
+    display: flex;
+    background: var(--neutral-border);
+    border-radius: var(--radius-md);
+    padding: 4px;
+    margin-bottom: 1.5rem;
+    gap: 4px;
+}
+
+.login-auth-tab {
+    flex: 1;
+    text-align: center;
+    padding: 0.5rem;
+    font-size: 0.88rem;
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    transition: var(--transition-fast);
+}
+
+.login-auth-tab.active {
+    background: var(--surface);
+    color: var(--primary);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.demo-account-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 0.75rem;
+}
+
+.demo-pill {
+    font-size: 0.75rem;
+    padding: 3px 8px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    color: var(--text);
+    transition: var(--transition-fast);
+}
+
+.demo-pill:hover {
+    border-color: var(--secondary);
+    background: var(--accent-light);
+}
+

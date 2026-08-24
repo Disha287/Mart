@@ -7,124 +7,141 @@
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/responsive.css">
     <link rel="stylesheet" href="../css/animations.css">
+    <!-- EmailJS Browser SDK (Pure Client-Side Email Delivery) -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 </head>
-<body style="margin: 0; padding: 0; height: 100vh; overflow: hidden; display: flex; flex-direction: column; font-family: 'Inter', sans-serif; background-color: #ffffff;">
-    
-    <!-- Transition Overlay -->
-    <div id="page-transition" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, var(--primary-charcoal) 0%, var(--primary-blue) 100%); z-index: 9999; transform: translateY(100%); transition: transform 0.6s cubic-bezier(0.77, 0, 0.175, 1);">
-        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 2.5rem; font-weight: 800; display: flex; flex-direction: column; align-items: center; gap: 1rem;">
-            <div>CAMPUS<span style="color: var(--accent-orange);">KART</span></div>
-            <div style="width: 40px; height: 4px; background: var(--accent-orange); border-radius: 2px;"></div>
-        </div>
-    </div>
+<body style="background-color: var(--neutral-bg); min-height: 100vh; display: flex; flex-direction: column;">
 
-    <!-- Header -->
-    <header style="background-color: white; border-bottom: 1px solid #e2e8f0; position: relative; z-index: 10;">
-        <div style="max-width: 1400px; margin: 0 auto; padding: 0.75rem 2rem; display: flex; justify-content: space-between; align-items: center;">
-            <a href="../index.html" style="font-size: 1.5rem; font-weight: 800; color: #0f172a; text-decoration: none; display: flex; align-items: center; gap: 0.5rem;">
-                <span style="font-size: 1.5rem;">🎓</span> CAMPUS<span style="color: var(--accent-orange);">KART</span>
+    <!-- Navbar -->
+    <header class="header">
+        <div class="container navbar">
+            <a href="../index.html" class="logo">
+                CAMPUS<span>MART</span>
             </a>
-            <a href="../index.html" style="text-decoration: none; font-weight: 600; color: #64748b; font-size: 0.9rem; border: 1.5px solid #e2e8f0; padding: 0.4rem 1rem; border-radius: 8px; transition: all 0.2s;" onmouseover="this.style.borderColor='var(--accent-orange)'; this.style.color='var(--accent-orange)'" onmouseout="this.style.borderColor='#e2e8f0'; this.style.color='#64748b'">
-                ← Back to Home
-            </a>
+            <a href="../index.html" class="btn btn-outline btn-sm">← Back to Home</a>
         </div>
     </header>
 
-    <!-- Main Content (Grid) -->
-    <main style="flex: 1; display: grid; grid-template-columns: 1fr 1fr; background-image: url('../assets/images/chitkara-campus.png'); background-size: cover; background-position: center; position: relative; overflow: hidden;">
-        <!-- Dark gradient overlay for text readability on left side, fading out to right -->
-        <div style="position: absolute; inset: 0; background: linear-gradient(to right, rgba(15,23,42,0.95) 0%, rgba(15,23,42,0.7) 40%, rgba(15,23,42,0.2) 100%); z-index: 1;"></div>
-        
-        <!-- Left Side: Features & Text -->
-        <div style="position: relative; z-index: 2; padding: 2rem 4rem; display: flex; flex-direction: column; justify-content: center;">
-            <div style="max-width: 480px; margin-left: auto; margin-right: 2rem;">
-                <h1 style="font-size: 3.2rem; font-weight: 800; margin: 0 0 0.5rem 0; line-height: 1.1; color: #ffffff;">
-                    Join Campus<span style="color: var(--accent-orange);">Mart</span>
-                </h1>
-                <p style="font-size: 1.1rem; color: #e2e8f0; margin: 0 0 1.5rem 0; line-height: 1.5;">
-                    Create your account and become a part<br>of your campus marketplace.
-                </p>
-
-                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                    <div style="display: flex; align-items: center; gap: 1rem; background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 12px; backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.15);">
-                        <div style="width: 38px; height: 38px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0;">👥</div>
-                        <div>
-                            <h4 style="margin: 0 0 0.15rem 0; font-size: 1rem; font-weight: 700; color: #ffffff;">Trusted Campus Community</h4>
-                            <p style="margin: 0; font-size: 0.8rem; color: #cbd5e1;">Only students from your campus</p>
-                        </div>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 1rem; background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 12px; backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.15);">
-                        <div style="width: 38px; height: 38px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0;">🛍️</div>
-                        <div>
-                            <h4 style="margin: 0 0 0.15rem 0; font-size: 1rem; font-weight: 700; color: #ffffff;">Buy. Sell. Connect.</h4>
-                            <p style="margin: 0; font-size: 0.8rem; color: #cbd5e1;">Everything you need. All in one place</p>
-                        </div>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 1rem; background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 12px; backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.15);">
-                        <div style="width: 38px; height: 38px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0;">🛡️</div>
-                        <div>
-                            <h4 style="margin: 0 0 0.15rem 0; font-size: 1rem; font-weight: 700; color: #ffffff;">Secure & Verified</h4>
-                            <p style="margin: 0; font-size: 0.8rem; color: #cbd5e1;">Safe transactions with verified students</p>
-                        </div>
-                    </div>
-                </div>
+    <!-- Main Login Area -->
+    <main style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 3rem 1rem;">
+        <div class="card" style="width: 100%; max-width: 460px; padding: 2.5rem; border-top: 5px solid var(--secondary-blue);">
+            <div style="text-align: center; margin-bottom: 1.5rem;">
+                <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem;">Welcome Back 👋</h2>
+                <p style="font-size: 0.95rem; color: var(--neutral-text-muted);">Sign in with 2-Step OTP verification</p>
             </div>
-        </div>
 
-        <!-- Right Side: Floating Login Card -->
-        <div style="position: relative; z-index: 2; padding: 1rem 2.5rem; display: flex; align-items: center; justify-content: flex-start;">
-            
-            <div style="background-color: #ffffff; border-radius: 20px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.3); width: 100%; max-width: 440px; padding: 1.5rem 2rem;">
-                
-                <div style="text-align: center; margin-bottom: 1.5rem;">
-                    <h2 style="font-size: 1.8rem; font-weight: 800; color: #0f172a; margin: 0 0 0.25rem 0;">Sign in to CampusMart</h2>
-                    <p style="font-size: 0.95rem; color: #64748b; margin: 0;">Welcome back! Let's get you started.</p>
+            <!-- Login Method Switcher -->
+            <div class="login-auth-switch">
+                <button type="button" class="login-auth-tab active" id="tab-pwd-login" onclick="switchLoginMethod('pwd')">
+                    🔑 Password + OTP
+                </button>
+                <button type="button" class="login-auth-tab" id="tab-direct-otp" onclick="switchLoginMethod('otp')">
+                    ⚡ Quick OTP Login
+                </button>
+            </div>
+
+            <form id="login-form">
+                <div class="form-group">
+                    <label class="form-label" for="login-role">Select Role</label>
+                    <select class="form-select" id="login-role">
+                        <option value="buyer">Buyer (Browse, Wishlist, Order)</option>
+                        <option value="seller">Seller (List products, Manage Bids/Offers)</option>
+                    </select>
                 </div>
 
-                <form id="login-form">
-                    <div style="margin-bottom: 1rem;">
-                        <label for="login-role" style="display: block; font-weight: 600; color: #1e293b; margin-bottom: 0.35rem; font-size: 0.9rem;">Select Role</label>
-                        <select id="login-role" style="width: 100%; padding: 0.75rem 1rem; border-radius: 10px; border: 1.5px solid #e2e8f0; background-color: #ffffff; font-size: 0.95rem; color: #0f172a; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--accent-orange)'" onblur="this.style.borderColor='#e2e8f0'">
-                            <option value="buyer">Buyer (Browse, Wishlist, Order)</option>
-                            <option value="seller">Seller (List products, Manage Bids/Offers)</option>
-                        </select>
-                    </div>
-
-                    <div style="margin-bottom: 1rem;">
-                        <label for="login-email" style="display: block; font-weight: 600; color: #1e293b; margin-bottom: 0.35rem; font-size: 0.9rem;">Campus Email</label>
-                        <div style="position: relative;">
-                            <span style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 1.1rem;">✉️</span>
-                            <input type="email" id="login-email" placeholder="student@college.edu" required style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.5rem; border-radius: 10px; border: 1.5px solid #e2e8f0; background-color: #ffffff; font-size: 0.95rem; color: #0f172a; outline: none; transition: border-color 0.2s; box-sizing: border-box;" onfocus="this.style.borderColor='var(--accent-orange)'" onblur="this.style.borderColor='#e2e8f0'">
-                        </div>
-                    </div>
-
-                    <div style="margin-bottom: 1rem;">
-                        <label for="login-password" style="display: block; font-weight: 600; color: #1e293b; margin-bottom: 0.35rem; font-size: 0.9rem;">Password</label>
-                        <div style="position: relative;">
-                            <span style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 1.1rem;">🔒</span>
-                            <input type="password" id="login-password" placeholder="••••••••" required style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.5rem; border-radius: 10px; border: 1.5px solid #e2e8f0; background-color: #ffffff; font-size: 0.95rem; color: #0f172a; outline: none; transition: border-color 0.2s; box-sizing: border-box;" onfocus="this.style.borderColor='var(--accent-orange)'" onblur="this.style.borderColor='#e2e8f0'">
-                        </div>
-                    </div>
-
-                    <div style="background: rgba(37, 99, 235, 0.04); border: 1px solid rgba(37, 99, 235, 0.1); padding: 0.85rem; border-radius: 10px; display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem;">
-                        <div style="color: #2563eb; font-size: 1.25rem; flex-shrink: 0;">🛡️</div>
-                        <div>
-                            <h5 style="margin: 0 0 0.15rem 0; font-size: 0.85rem; font-weight: 700; color: #1e293b;">We value your privacy & security.</h5>
-                            <p style="margin: 0; font-size: 0.75rem; color: #64748b;">Your data is safe with us and will never be shared.</p>
-                        </div>
-                    </div>
-
-                    <button type="submit" style="width: 100%; background: linear-gradient(135deg, var(--accent-orange) 0%, #f97316 100%); color: white; border: none; padding: 0.9rem; border-radius: 10px; font-weight: 700; font-size: 1rem; cursor: pointer; box-shadow: 0 4px 15px rgba(249, 115, 22, 0.25); transition: transform 0.2s ease, box-shadow 0.2s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(249, 115, 22, 0.35)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(249, 115, 22, 0.25)'">
-                        Continue →
-                    </button>
-                </form>
-
-                <div style="margin-top: 1.25rem; text-align: center; font-size: 0.9rem; color: #64748b;">
-                    Don't have an account? <a href="signup.html" style="font-weight: 700; color: var(--accent-orange); text-decoration: none;">Register here</a>
+                <div class="form-group">
+                    <label class="form-label" for="login-email" id="label-login-identifier">Campus Email</label>
+                    <input type="email" class="form-control" id="login-email" placeholder="student@college.edu" required>
                 </div>
+
+                <div class="form-group" id="group-login-password">
+                    <label class="form-label" for="login-password">Password</label>
+                    <input type="password" class="form-control" id="login-password" placeholder="••••••••" required>
+                </div>
+
+                <!-- Demo Account Fillers -->
+                <div style="margin-bottom: 1.25rem;">
+                    <div style="font-size: 0.75rem; font-weight: 600; color: var(--text-muted); margin-bottom: 4px;">⚡ Demo Auto-Fill:</div>
+                    <div class="demo-account-pills">
+                        <button type="button" class="demo-pill" onclick="fillDemoCredentials('rahul.s@college.edu', 'password123', 'buyer')">👤 Rahul (Buyer)</button>
+                        <button type="button" class="demo-pill" onclick="fillDemoCredentials('aman.v@college.edu', 'password123', 'seller')">👤 Aman (Seller)</button>
+                        <button type="button" class="demo-pill" onclick="fillDemoCredentials('priya.p@college.edu', 'password123', 'seller')">👤 Priya (Seller)</button>
+                    </div>
+                </div>
+
+                <button type="submit" id="btn-login-submit" class="btn btn-primary btn-block btn-lg">
+                    <span>Continue to OTP Verification →</span>
+                </button>
+            </form>
+
+            <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--neutral-border); text-align: center; font-size: 0.9rem; color: var(--neutral-text-muted);">
+                Don't have a CampusMart account? <br>
+                <a href="signup.html" style="font-weight: 700; color: var(--accent-orange); display: inline-block; margin-top: 0.5rem;">Create an Account Now →</a>
             </div>
         </div>
     </main>
+
+    <!-- OTP Verification Modal -->
+    <div id="otp-modal" class="modal-overlay">
+        <div class="modal-container" style="max-width: 440px;">
+            <div class="modal-header">
+                <h3 class="modal-title">🔐 Enter OTP Code</h3>
+                <button type="button" class="modal-close" onclick="closeOtpModal()">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 1.5rem;">
+                <!-- Simulated Live OTP Delivery Banner -->
+                <div class="otp-banner">
+                    <div>
+                        <div style="font-size: 0.78rem; opacity: 0.9; text-transform: uppercase; letter-spacing: 0.5px;">CampusMart Security</div>
+                        <div style="font-size: 0.85rem; font-weight: 600;">Your Verification OTP is:</div>
+                    </div>
+                    <div class="otp-banner-code" id="modal-otp-display" title="Click to autofill" onclick="autoFillCurrentOTP()">
+                        ------
+                    </div>
+                </div>
+
+                <p style="font-size: 0.9rem; color: var(--text-muted); text-align: center;">
+                    We have sent a 6-digit security code to <br>
+                    <strong id="otp-target-email" style="color: var(--primary);">student@college.edu</strong>
+                </p>
+
+                <!-- 6 Segmented Digit Inputs -->
+                <div class="otp-inputs-grid" id="otp-inputs-wrapper">
+                    <input type="text" maxlength="1" class="otp-digit" data-index="0" autofocus inputmode="numeric" autocomplete="one-time-code">
+                    <input type="text" maxlength="1" class="otp-digit" data-index="1" inputmode="numeric">
+                    <input type="text" maxlength="1" class="otp-digit" data-index="2" inputmode="numeric">
+                    <input type="text" maxlength="1" class="otp-digit" data-index="3" inputmode="numeric">
+                    <input type="text" maxlength="1" class="otp-digit" data-index="4" inputmode="numeric">
+                    <input type="text" maxlength="1" class="otp-digit" data-index="5" inputmode="numeric">
+                </div>
+
+                <div style="display: flex; gap: 0.5rem; justify-content: center; margin-bottom: 1.25rem;">
+                    <button type="button" onclick="autoFillCurrentOTP()" class="btn btn-outline btn-sm" style="font-size: 0.8rem;">
+                        📋 Auto-paste Code
+                    </button>
+                </div>
+
+                <button type="button" id="btn-verify-otp" onclick="verifyLoginOTP()" class="btn btn-accent btn-block btn-lg">
+                    Verify & Login →
+                </button>
+
+                <div class="otp-timer-text">
+                    <span id="otp-timer-status">Code expires in <strong id="otp-timer-count">02:00</strong></span>
+                    <div>
+                        Didn't receive code? 
+                        <button type="button" id="btn-resend-otp" class="otp-resend-btn" onclick="resendLoginOTP()" disabled>Resend OTP</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer" style="padding-top: 2rem; padding-bottom: 1.5rem;">
+        <div class="container" style="text-align: center; font-size: 0.85rem; color: #94A3B8;">
+            © 2026 CampusMart. Browser-Based Educational Demonstration Engine.
+        </div>
+    </footer>
 
     <script src="../js/data.js"></script>
     <script src="../js/utils.js"></script>

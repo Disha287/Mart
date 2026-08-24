@@ -17,14 +17,8 @@ document.addEventListener('DOMContentLoaded', function() {
 function initMarketplace() {
     // Parse URL params for pre-selected category or search
     const urlParams = new URLSearchParams(window.location.search);
-    let catParam = urlParams.get('cat');
-    let searchParam = urlParams.get('search');
-
-    // Fallback if local server strips query string during redirect
-    if (!catParam) {
-        catParam = localStorage.getItem('cm_category_filter');
-        localStorage.removeItem('cm_category_filter'); // clear after use
-    }
+    const catParam = urlParams.get('cat');
+    const searchParam = urlParams.get('search');
 
     if (catParam) {
         currentFilters.category = catParam;
@@ -189,8 +183,8 @@ function renderMarketplaceProducts() {
                         <span style="font-size:0.8rem; color:var(--neutral-text-muted)">By ${p.sellerName}</span>
                     </div>
                     <div class="product-actions">
-                        <a href="product.html?id=${p.id}" onclick="localStorage.setItem('current_product_id', '${p.id}')" class="btn btn-outline btn-sm btn-block">View Details</a>
-                        <button onclick="quickAddToCart('${p.id}')" class="btn btn-accent btn-sm" style="font-weight: 600;">+ Add</button>
+                        <a href="product.html?id=${p.id}" class="btn btn-outline btn-sm btn-block">View Details</a>
+                        <button onclick="quickAddToCart('${p.id}')" class="btn btn-accent btn-sm">🛒 Add</button>
                     </div>
                 </div>
             </div>

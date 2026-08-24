@@ -7,15 +7,6 @@ document.addEventListener('DOMContentLoaded', function() {
     updateNavBadges();
 });
 
-// Intercept clicks on links with URL parameters that local servers might drop
-document.addEventListener('click', function(e) {
-    const link = e.target.closest('a');
-    if (link && link.href.includes('?cat=')) {
-        const cat = link.href.split('?cat=')[1].split('&')[0];
-        localStorage.setItem('cm_category_filter', decodeURIComponent(cat));
-    }
-});
-
 // Sticky Navbar Scroll Shadow Effect
 function initHeaderScroll() {
     const header = document.querySelector('.header');

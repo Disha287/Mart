@@ -161,7 +161,7 @@ function initMyListings() {
                     </div>
                     <div class="product-actions" style="margin-top: 1rem;">
                         <button onclick="editListing('${p.id}')" class="btn btn-outline btn-sm btn-block">✏️ Edit</button>
-                        <button onclick="deleteListing('${p.id}')" class="btn btn-outline btn-sm" style="color: var(--danger-red); border-color: var(--danger-red); font-weight: 600;">Remove</button>
+                        <button onclick="deleteListing('${p.id}')" class="btn btn-outline btn-sm" style="color: var(--danger-red); border-color: var(--danger-red);">🗑️</button>
                     </div>
                 </div>
             </div>
