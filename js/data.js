@@ -312,6 +312,94 @@ const SEED_DATA = {
             offers: [],
             dateAdded: '2026-08-17',
             views: 40
+        },
+        {
+            id: 'prod_113',
+            name: 'Apple iPad Air (5th Gen, 64GB WiFi - Blue)',
+            category: 'Electronics',
+            price: 32000,
+            originalPrice: 54900,
+            condition: 'Like New',
+            listingType: 'fixed',
+            sellerId: 'usr_seller_1',
+            sellerName: 'Rohan Mehra',
+            sellerPhone: '9811223344',
+            sellerRating: 4.8,
+            trustScore: 94,
+            location: 'Hostel Block A, Room 405',
+            description: 'Apple iPad Air 5 with M1 chip. Immaculate condition, no scratches. Comes with box, charger, and a free compatible magnetic stylus pen.',
+            image: 'assets/images/products/unsplash_ipad.jpg',
+            rating: 4.9,
+            bids: [],
+            offers: [],
+            dateAdded: '2026-08-18',
+            views: 85
+        },
+        {
+            id: 'prod_114',
+            name: 'Classic Wooden Guitar (Yamaha F310)',
+            category: 'Lifestyle',
+            price: 4800,
+            originalPrice: 9500,
+            condition: 'Good',
+            listingType: 'fixed',
+            sellerId: 'usr_seller_2',
+            sellerName: 'Simranpreet Singh',
+            sellerPhone: '9877665544',
+            sellerRating: 4.9,
+            trustScore: 95,
+            location: 'Hostel Block C, Room 12',
+            description: 'Yamaha acoustic guitar with rich tone. Slightly worn on the fretboard but plays beautifully. Includes guitar bag and 3 plectrums.',
+            image: 'assets/images/products/unsplash_guitar.jpg',
+            rating: 4.7,
+            bids: [],
+            offers: [],
+            dateAdded: '2026-08-19',
+            views: 62
+        },
+        {
+            id: 'prod_115',
+            name: 'Ergonomic Study Chair with Mesh Back',
+            category: 'Lifestyle',
+            price: 1500,
+            originalPrice: 3500,
+            condition: 'Fair',
+            listingType: 'fixed',
+            sellerId: 'usr_seller_1',
+            sellerName: 'Nikhil Gupta',
+            sellerPhone: '9811223344',
+            sellerRating: 4.75,
+            trustScore: 90,
+            location: 'Hostel Block B, Room 102',
+            description: 'Adjustable study chair with breathable mesh back support. Hydraulics and wheels work perfectly. Slight fabric wear.',
+            image: 'assets/images/products/unsplash_chair.jpg',
+            rating: 4.5,
+            bids: [],
+            offers: [],
+            dateAdded: '2026-08-20',
+            views: 48
+        },
+        {
+            id: 'prod_116',
+            name: 'Mechanics of Materials Textbook (Gere & Goodno)',
+            category: 'Academic',
+            price: 350,
+            originalPrice: 850,
+            condition: 'Good',
+            listingType: 'fixed',
+            sellerId: 'usr_seller_2',
+            sellerName: 'Divya Sharma',
+            sellerPhone: '9877665544',
+            sellerRating: 4.9,
+            trustScore: 97,
+            location: 'Girls Hostel 2, Room 302',
+            description: 'Standard textbook for Mechanical and Civil engineering. No pages torn, very few pencil marks. Ready for next semester.',
+            image: 'assets/images/products/unsplash_textbook.jpg',
+            rating: 4.6,
+            bids: [],
+            offers: [],
+            dateAdded: '2026-08-21',
+            views: 29
         }
     ],
 
@@ -506,6 +594,24 @@ function initDatabase(forceReset = false) {
         localStorage.setItem('cm_wishlist', JSON.stringify(SEED_DATA.wishlist));
         localStorage.setItem('cm_cart', JSON.stringify(SEED_DATA.cart));
         localStorage.setItem('cm_initialized', 'true');
+    } else {
+        // Migration: Append new seed products if not already in local storage database
+        try {
+            let currentProducts = JSON.parse(localStorage.getItem('cm_products')) || [];
+            const currentIds = currentProducts.map(p => p.id);
+            let updated = false;
+            SEED_DATA.products.forEach(p => {
+                if (!currentIds.includes(p.id)) {
+                    currentProducts.push(p);
+                    updated = true;
+                }
+            });
+            if (updated) {
+                localStorage.setItem('cm_products', JSON.stringify(currentProducts));
+            }
+        } catch (e) {
+            console.error('Database migration failed:', e);
+        }
     }
 }
 

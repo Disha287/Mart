@@ -223,8 +223,12 @@
                 <a href="pages/marketplace.html" class="btn btn-outline">View All Listings →</a>
             </div>
 
-            <div class="grid grid-cols-4" id="home-trending-grid">
-                <!-- Dynamically populated by JS -->
+            <div style="position: relative; width: 100%;">
+                <button class="carousel-control prev" id="trending-prev" aria-label="Previous Products">‹</button>
+                <div class="trending-carousel-wrapper" id="home-trending-grid">
+                    <!-- Dynamically populated by JS -->
+                </div>
+                <button class="carousel-control next" id="trending-next" aria-label="Next Products">›</button>
             </div>
         </div>
     </section>
@@ -426,10 +430,11 @@
         document.addEventListener('DOMContentLoaded', function () {
             renderHomeTrendingProducts();
             renderHomeServicesPreview();
+            initTrendingCarousel();
         });
 
         function renderHomeTrendingProducts() {
-            const products = dbGet('products').slice(0, 4);
+            const products = dbGet('products').slice(0, 12);
             const container = document.getElementById('home-trending-grid');
             if (!container) return;
 
@@ -467,6 +472,56 @@
                 `;
             });
             container.innerHTML = html;
+        }
+
+        // Initialize Carousel Navigation & Auto Scroll
+        function initTrendingCarousel() {
+            const container = document.getElementById('home-trending-grid');
+            const prevBtn = document.getElementById('trending-prev');
+            const nextBtn = document.getElementById('trending-next');
+            if (!container) return;
+
+            // Manual Navigation
+            if (prevBtn) {
+                prevBtn.addEventListener('click', () => {
+                    stopAutoScroll();
+                    container.scrollBy({ left: -320, behavior: 'smooth' });
+                    startAutoScroll();
+                });
+            }
+            if (nextBtn) {
+                nextBtn.addEventListener('click', () => {
+                    stopAutoScroll();
+                    container.scrollBy({ left: 320, behavior: 'smooth' });
+                    startAutoScroll();
+                });
+            }
+
+            // Auto Scroll Logic
+            let autoScrollInterval = null;
+            function startAutoScroll() {
+                autoScrollInterval = setInterval(() => {
+                    const maxScroll = container.scrollWidth - container.clientWidth;
+                    if (container.scrollLeft >= maxScroll - 10) {
+                        container.scrollTo({ left: 0, behavior: 'smooth' });
+                    } else {
+                        container.scrollBy({ left: 320, behavior: 'smooth' });
+                    }
+                }, 4000);
+            }
+
+            function stopAutoScroll() {
+                if (autoScrollInterval) {
+                    clearInterval(autoScrollInterval);
+                }
+            }
+
+            // Pause on hover
+            container.addEventListener('mouseenter', stopAutoScroll);
+            container.addEventListener('mouseleave', startAutoScroll);
+
+            // Start on load
+            startAutoScroll();
         }
 
         function renderHomeServicesPreview() {

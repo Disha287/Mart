@@ -987,3 +987,97 @@ p {
     background: var(--accent-light);
 }
 
+/* 🎠 Trending Carousel Styles */
+.trending-carousel-wrapper {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    padding: 1.25rem 0.25rem 2rem 0.25rem;
+    scrollbar-width: none; /* Firefox */
+}
+
+.trending-carousel-wrapper::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+.trending-carousel-wrapper .product-card {
+    flex: 0 0 calc(25% - 1.125rem); /* Default 4 per row */
+    min-width: 290px;
+    scroll-snap-align: start;
+    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s ease;
+}
+
+@media (max-width: 1100px) {
+    .trending-carousel-wrapper .product-card {
+        flex: 0 0 calc(33.333% - 1rem); /* 3 per row */
+    }
+}
+
+@media (max-width: 768px) {
+    .trending-carousel-wrapper .product-card {
+        flex: 0 0 calc(50% - 0.75rem); /* 2 per row */
+    }
+}
+
+@media (max-width: 480px) {
+    .trending-carousel-wrapper .product-card {
+        flex: 0 0 100%; /* 1 per row */
+    }
+}
+
+.trending-carousel-wrapper .product-card:hover {
+    transform: translateY(-8px) scale(1.01);
+}
+
+/* Glassmorphism Carousel Controls */
+.carousel-control {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    font-size: 1.8rem;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+    transition: background 0.3s, color 0.3s, transform 0.2s, box-shadow 0.3s;
+}
+
+.carousel-control:hover {
+    background: var(--primary);
+    color: #fff;
+    box-shadow: 0 8px 20px rgba(23, 37, 84, 0.2);
+}
+
+.carousel-control:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+.carousel-control.prev {
+    left: -23px;
+}
+
+.carousel-control.next {
+    right: -23px;
+}
+
+@media (max-width: 1200px) {
+    .carousel-control.prev {
+        left: 5px;
+    }
+    .carousel-control.next {
+        right: 5px;
+    }
+}
+
