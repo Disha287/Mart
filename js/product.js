@@ -7,11 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initProductDetails() {
-    let prodId = null;
-    if (window.location.search) {
-        const urlParams = new URLSearchParams(window.location.search);
-        prodId = urlParams.get('id');
-    }
+    const urlParams = new URLSearchParams(window.location.search);
+    let prodId = urlParams.get('id');
     
     // Fallback for file:// protocol where search might be empty
     if (!prodId && window.location.href.includes('?id=')) {
@@ -39,7 +36,7 @@ function initProductDetails() {
     }
 
     const products = dbGet('products');
-    currentProduct = products.find(p => String(p.id) === String(prodId));
+    currentProduct = products.find(p => p.id === prodId);
 
     if (!currentProduct) {
         document.getElementById('product-detail-container').innerHTML = `

@@ -87,7 +87,6 @@
 
                 <a href="pages/tuck-shop.html" class="nav-link">Tuck Shop</a>
                 <a href="pages/assignments.html" class="nav-link">Academic Help</a>
-                <a href="pages/donations.html" class="nav-link">Donations</a>
                 <a href="pages/orders.html" class="nav-link">Orders</a>
                 <a href="pages/create-listing.html" class="nav-link">Sell</a>
 
@@ -311,17 +310,17 @@
         </div>
     </section>
 
-    <!-- SERVICES PREVIEW SECTION (9 ALIGNED CATEGORIES) -->
+    <!-- SERVICES PREVIEW SECTION (7 EXACT CATEGORIES) -->
     <section class="section">
         <div class="container">
             <div class="section-title-wrap">
                 <span class="section-subtitle">Student Services</span>
                 <h2 class="section-title">Explore Student Skill Marketplace</h2>
-                <p class="section-desc">Connect directly with skilled students across campus categories.</p>
+                <p class="section-desc">Connect directly with skilled students across these seven dedicated campus categories.</p>
             </div>
 
-            <div class="grid grid-cols-3" id="home-services-grid">
-                <!-- Populated dynamically with floating cards -->
+            <div class="grid grid-cols-4" id="home-services-grid">
+                <!-- Populated dynamically or by template -->
             </div>
         </div>
     </section>
@@ -510,17 +509,13 @@
             const container = document.getElementById('home-services-grid');
             if (!container) return;
 
-            // Undulating staggered delay pattern for 3x3 layout
-            const delays = [0, 0.5, 1.0, 0.7, 0.2, 0.9, 0.4, 1.1, 0.6];
-
             let html = '';
-            categories.forEach((c, index) => {
-                const delay = delays[index % delays.length];
+            categories.forEach(c => {
                 html += `
-                    <a href="pages/services.html?cat=${encodeURIComponent(c.title)}" class="floating-card-item" style="animation: activeFloat 3.2s ease-in-out infinite ${delay}s !important;">
-                        <div style="font-size: 2.6rem; margin-bottom: 0.75rem; display: inline-block;">${c.icon}</div>
-                        <h4 style="font-size: 1.1rem; margin-bottom: 0.4rem; font-weight: 700; color: var(--text);">${c.title}</h4>
-                        <p style="font-size: 0.85rem; color: var(--neutral-text-muted); font-weight: normal; line-height: 1.5; margin: 0;">${c.desc}</p>
+                    <a href="pages/services.html?cat=${encodeURIComponent(c.title)}" class="card" style="padding: 1.25rem; text-align: center;">
+                        <div style="font-size: 2.2rem; margin-bottom: 0.5rem;">${c.icon}</div>
+                        <h4 style="font-size: 1rem; margin-bottom: 0.35rem;">${c.title}</h4>
+                        <p style="font-size: 0.8rem; color: var(--neutral-text-muted); font-weight: normal;">${c.desc}</p>
                     </a>
                 `;
             });
