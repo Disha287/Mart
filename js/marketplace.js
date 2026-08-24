@@ -128,6 +128,9 @@ function renderMarketplaceProducts() {
         // Price filter
         if (p.price > currentFilters.priceMax) return false;
 
+        // Stock filter
+        if (p.stock !== undefined && p.stock <= 0) return false;
+
         return true;
     });
 
@@ -180,7 +183,10 @@ function renderMarketplaceProducts() {
                     </div>
                     <div class="product-price-wrap">
                         <div class="product-price">${formatCurrency(p.price)}</div>
-                        <span style="font-size:0.8rem; color:var(--neutral-text-muted)">By ${p.sellerName}</span>
+                        <div style="text-align: right;">
+                            <span style="font-size:0.8rem; color:var(--neutral-text-muted); display:block;">By ${p.sellerName}</span>
+                            <span style="font-size:0.75rem; color:var(--accent-dark); font-weight:700;">${p.stock !== undefined ? p.stock : 1} Left in Stock</span>
+                        </div>
                     </div>
                     <div class="product-actions">
                         <a href="product.html?id=${p.id}" class="btn btn-outline btn-sm btn-block">View Details</a>

@@ -66,16 +66,16 @@ function renderOrders() {
                     <span class="badge-tag" style="position: static; background-color: var(--secondary-blue);">${o.status}</span>
                 </div>
 
-                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
-                    <div>
-                        <h4 style="font-size: 1.1rem; margin-bottom: 0.35rem;">${o.productName}</h4>
+                <div style="display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+                    <div style="flex: 1 1 300px;">
+                        <h4 style="font-size: 1.1rem; margin-bottom: 0.35rem; word-wrap: break-word;">${o.productName}</h4>
                         <div style="font-size: 0.9rem; color: var(--neutral-text-muted);">Seller: <strong>${o.sellerName}</strong></div>
                         <div style="font-size: 0.9rem; color: var(--neutral-text-muted);">Quantity: ${o.quantity} x ${formatCurrency(o.price)}</div>
                     </div>
 
-                    <div style="text-align: right;">
+                    <div style="text-align: right; flex: 0 0 auto; display: flex; flex-direction: column; align-items: flex-end;">
                         <div style="font-size: 1.4rem; font-weight: 800; color: var(--primary-charcoal);">${formatCurrency(itemTotal)}</div>
-                        <div style="margin-top: 0.75rem; display: flex; gap: 0.5rem;">
+                        <div style="margin-top: 0.75rem; display: flex; gap: 0.5rem; justify-content: flex-end;">
                             <a href="${waUrl}" target="_blank" class="btn btn-accent btn-sm" style="background-color: #25D366; color: white;">
                                 💬 WhatsApp Seller
                             </a>

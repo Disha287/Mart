@@ -172,6 +172,11 @@ function checkoutCart() {
                 price = p.price;
                 sellerName = p.sellerName;
                 sellerPhone = p.sellerPhone || '9123456789';
+                
+                // Decrement stock
+                if (p.stock !== undefined) {
+                    p.stock = Math.max(0, p.stock - item.quantity);
+                }
             }
         }
 
@@ -194,6 +199,7 @@ function checkoutCart() {
     });
 
     dbSet('orders', orders);
+    dbSet('products', products);
     
     // Keep only unselected items in the cart
     const remainingItems = cart.filter(item => item.selected === false);

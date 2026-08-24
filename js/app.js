@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initMobileMenu();
     highlightActiveNavLink();
     updateNavBadges();
+    initHeroVideo();
 });
 
 // Sticky Navbar Scroll Shadow Effect
@@ -53,6 +54,20 @@ function highlightActiveNavLink() {
 
         if (currentPath.endsWith(href) || (currentPath.endsWith('/') && href === 'index.html')) {
             link.classList.add('active');
+        }
+    });
+}
+
+// Hero Video Trimmer
+// Dynamically removes the last 5 seconds from the background video loop
+function initHeroVideo() {
+    const video = document.getElementById('hero-video');
+    if (!video) return;
+
+    video.addEventListener('timeupdate', function() {
+        if (this.duration && this.currentTime >= this.duration - 5) {
+            this.currentTime = 0;
+            this.play().catch(e => console.error("Video loop autoplay prevented:", e));
         }
     });
 }

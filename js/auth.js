@@ -107,49 +107,31 @@ function initAuthForms() {
             const users = dbGet('users');
             let matchedUser = null;
 
-            if (currentLoginMethod === 'pwd') {
-                if (!password) {
-                    showToast('Please enter your password', 'warning');
-                    return;
-                }
-
-                matchedUser = users.find(u => 
-                    (u.email.toLowerCase() === identifier.toLowerCase() || (u.phone && u.phone === identifier)) && 
-                    u.password === password
-                );
-
-                if (!matchedUser) {
-                    showToast('Invalid credentials! Check your email/password or use demo accounts.', 'error');
-                    return;
-                }
-            } else {
-                // Quick OTP Login mode
-                matchedUser = users.find(u => 
-                    u.email.toLowerCase() === identifier.toLowerCase() || (u.phone && u.phone === identifier)
-                );
-
-                // Auto-create guest user if new
-                if (!matchedUser) {
-                    matchedUser = {
-                        id: 'usr_' + Date.now(),
-                        name: identifier.split('@')[0] || 'Campus Student',
-                        email: identifier.includes('@') ? identifier : `${identifier}@college.edu`,
-                        password: 'password123',
-                        role: role,
-                        college: 'Campus Institute of Technology',
-                        phone: identifier.replace(/\D/g, '') || '9876543210',
-                        rating: 5.0,
-                        completedTx: 0,
-                        trustScore: 85,
-                        joined: new Date().toISOString().split('T')[0]
-                    };
-                    users.push(matchedUser);
-                    dbSet('users', users);
-                }
+            if (!password) {
+                showToast('Please enter your password', 'warning');
+                return;
             }
 
-            // Trigger Pure JS OTP flow
-            triggerClientOTP(matchedUser, role);
+            matchedUser = users.find(u => 
+                (u.email.toLowerCase() === identifier.toLowerCase() || (u.phone && u.phone === identifier)) && 
+                u.password === password
+            );
+
+            if (!matchedUser) {
+                showToast('Invalid credentials! Check your email/password.', 'error');
+                return;
+            }
+
+            // Login successful
+            matchedUser.role = role;
+            setCurrentUser(matchedUser);
+            
+            showToast('🎉 Login successful! Welcome back.', 'success');
+
+            setTimeout(() => {
+                const redirectPath = matchedUser.role === 'seller' ? 'seller-dashboard.html' : 'buyer-dashboard.html';
+                window.location.href = redirectPath;
+            }, 900);
         });
     }
 }

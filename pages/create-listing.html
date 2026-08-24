@@ -101,9 +101,7 @@
                                 <option value="Food">🍔 Food & Snacks</option>
                                 <option value="Birthday & Events">🎂 Birthday & Celebrations</option>
                                 <option value="Lifestyle">🏠 Lifestyle & Hostel</option>
-                                <option value="Gaming">🎮 Gaming & Sports</option>
                                 <option value="Design & Creative">🎨 Design & Creative</option>
-                                <option value="Hardware / Technical Help">🔧 Hardware / Tech Support</option>
                             </select>
                         </div>
 
@@ -118,9 +116,15 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label class="form-label">Pickup Location (Hostel Block / Department)</label>
-                        <input type="text" id="list-location" class="form-control" placeholder="e.g. Hostel Block B, Room 204" required>
+                    <div class="grid grid-cols-2" style="gap: 1rem;">
+                        <div class="form-group">
+                            <label class="form-label">Pickup Location</label>
+                            <input type="text" id="list-location" class="form-control" placeholder="e.g. Hostel B, Room 204" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Stock Quantity</label>
+                            <input type="number" id="list-quantity" class="form-control" placeholder="1" min="1" value="1" required>
+                        </div>
                     </div>
 
                     <div class="form-group">

@@ -7,227 +7,401 @@
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/responsive.css">
     <link rel="stylesheet" href="../css/animations.css">
-    <!-- EmailJS Browser SDK (Pure Client-Side Email Delivery) -->
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-</head>
-<body style="background-color: var(--neutral-bg); min-height: 100vh; display: flex; flex-direction: column;">
+    <style>
+        /* Specific Styles for Split Screen Login */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden; /* Prevent scrolling */
+            font-family: 'Inter', sans-serif;
+            background: #fff;
+        }
 
-    <!-- Navbar -->
-    <header class="header">
-        <div class="container navbar">
-            <a href="../index.html" class="logo">
-                CAMPUS<span>MART</span>
-            </a>
-            <a href="../index.html" class="btn btn-outline btn-sm">← Back to Home</a>
-        </div>
+        .login-navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: #fff;
+            position: relative;
+            z-index: 10;
+        }
+
+        .login-navbar .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            text-decoration: none;
+            color: #1a1a2e;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .login-navbar .logo span {
+            color: #ff6b6b;
+        }
+
+        .login-navbar .back-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            color: #475569;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .login-navbar .back-btn:hover {
+            background: #f8fafc;
+        }
+
+        .login-container {
+            display: flex;
+            height: calc(100vh - 70px);
+            background-image: linear-gradient(to right, rgba(15, 23, 42, 0.95) 0%, rgba(15, 23, 42, 0.4) 100%), url('../assets/images/chitkara-campus.png');
+            background-size: cover;
+            background-position: center;
+            align-items: center;
+            justify-content: center;
+            padding: 0 2rem;
+            box-sizing: border-box;
+        }
+
+        .login-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            max-width: 1100px;
+            width: 100%;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        /* Left Side */
+        .login-info h1 {
+            color: #fff;
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            line-height: 1.1;
+        }
+
+        .login-info h1 span {
+            color: #ff6b6b;
+        }
+
+        .login-info p.subtitle {
+            color: #cbd5e1;
+            font-size: 1.05rem;
+            margin-bottom: 2.5rem;
+            max-width: 400px;
+            line-height: 1.5;
+        }
+
+        .feature-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            padding: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            color: #fff;
+            max-width: 450px;
+        }
+
+        .feature-icon {
+            width: 40px;
+            height: 40px;
+            background: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+            color: #0f172a;
+        }
+
+        .feature-text h4 {
+            margin: 0 0 0.25rem 0;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .feature-text p {
+            margin: 0;
+            font-size: 0.85rem;
+            color: #cbd5e1;
+        }
+
+        /* Right Side - Form */
+        .login-form-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 420px;
+            justify-self: end;
+            margin: auto 0;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+
+        .login-form-card h2 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 0.25rem;
+            text-align: center;
+        }
+
+        .login-form-card .subtitle {
+            color: #64748b;
+            font-size: 0.9rem;
+            text-align: center;
+            margin-bottom: 1.25rem;
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #334155;
+            margin-bottom: 0.25rem;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+        
+        .input-wrapper input {
+            width: 100%;
+            padding: 0.6rem 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            color: #0f172a;
+            outline: none;
+            transition: all 0.2s;
+            box-sizing: border-box;
+        }
+        
+        .input-wrapper select {
+            width: 100%;
+            padding: 0.6rem 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            color: #0f172a;
+            outline: none;
+            transition: all 0.2s;
+            box-sizing: border-box;
+            appearance: auto;
+        }
+
+        .input-wrapper input:focus, .input-wrapper select:focus {
+            border-color: #ff6b6b;
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+        }
+
+        .privacy-box {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 0.75rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .privacy-box .icon {
+            font-size: 1.25rem;
+        }
+
+        .privacy-box .text h5 {
+            margin: 0 0 0.25rem 0;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .privacy-box .text p {
+            margin: 0;
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+
+        .btn-continue {
+            width: 100%;
+            background: #ff6b6b;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 0.875rem;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            box-sizing: border-box;
+        }
+
+        .btn-continue:hover {
+            background: #fc5c5c;
+            transform: translateY(-1px);
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+
+        .register-link a {
+            color: #ff6b6b;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .login-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                justify-items: center;
+            }
+            .login-info {
+                text-align: center;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            .login-container {
+                height: auto;
+                min-height: calc(100vh - 70px);
+                padding: 2rem;
+                overflow-y: auto;
+            }
+            body, html {
+                overflow: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Simple Navbar -->
+    <header class="login-navbar">
+        <a href="../index.html" class="logo">
+            <img src="../assets/images/logo.png" alt="CampusMart Logo" style="height: 70px; max-height: 70px; width: auto; object-fit: contain; display: block;">
+        </a>
+        <a href="../index.html" class="back-btn">← Back to Home</a>
     </header>
 
-    <!-- Main Login Area -->
-    <main style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 3rem 1rem;">
-        <div class="card" style="width: 100%; max-width: 460px; padding: 2.5rem; border-top: 5px solid var(--secondary-blue);">
-            <div style="text-align: center; margin-bottom: 1.5rem;">
-                <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem;">Welcome Back 👋</h2>
-                <p style="font-size: 0.95rem; color: var(--neutral-text-muted);">Sign in with 2-Step OTP verification</p>
-            </div>
-
-            <!-- Login Method Switcher -->
-            <div class="login-auth-switch">
-                <button type="button" class="login-auth-tab active" id="tab-pwd-login" onclick="switchLoginMethod('pwd')">
-                    🔑 Password + OTP
-                </button>
-                <button type="button" class="login-auth-tab" id="tab-direct-otp" onclick="switchLoginMethod('otp')">
-                    ⚡ Quick OTP Login
-                </button>
-            </div>
-
-            <form id="login-form">
-                <div class="form-group">
-                    <label class="form-label" for="login-role">Select Role</label>
-                    <select class="form-select" id="login-role">
-                        <option value="buyer">Buyer (Browse, Wishlist, Order)</option>
-                        <option value="seller">Seller (List products, Manage Bids/Offers)</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label" for="login-email" id="label-login-identifier">Campus Email</label>
-                    <input type="email" class="form-control" id="login-email" placeholder="student@college.edu" required>
-                </div>
-
-                <div class="form-group" id="group-login-password">
-                    <label class="form-label" for="login-password">Password</label>
-                    <input type="password" class="form-control" id="login-password" placeholder="••••••••" required>
-                </div>
-
-                <!-- Demo Account Fillers -->
-                <div style="margin-bottom: 1.25rem;">
-                    <div style="font-size: 0.75rem; font-weight: 600; color: var(--text-muted); margin-bottom: 4px;">⚡ Demo Auto-Fill:</div>
-                    <div class="demo-account-pills">
-                        <button type="button" class="demo-pill" onclick="fillDemoCredentials('rahul.s@college.edu', 'password123', 'buyer')">👤 Rahul (Buyer)</button>
-                        <button type="button" class="demo-pill" onclick="fillDemoCredentials('aman.v@college.edu', 'password123', 'seller')">👤 Aman (Seller)</button>
-                        <button type="button" class="demo-pill" onclick="fillDemoCredentials('priya.p@college.edu', 'password123', 'seller')">👤 Priya (Seller)</button>
+    <!-- Main Content Area -->
+    <main class="login-container">
+        <div class="login-content">
+            
+            <!-- Left Information Column -->
+            <div class="login-info">
+                <h1>Join Campus<span>Mart</span></h1>
+                <p class="subtitle">Create your account and become a part of your campus marketplace.</p>
+                
+                <div class="feature-list">
+                    <div class="feature-card">
+                        <div class="feature-icon">👥</div>
+                        <div class="feature-text">
+                            <h4>Trusted Campus Community</h4>
+                            <p>Only students from your campus</p>
+                        </div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🛍️</div>
+                        <div class="feature-text">
+                            <h4>Buy. Sell. Connect.</h4>
+                            <p>Everything you need. All in one place</p>
+                        </div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🛡️</div>
+                        <div class="feature-text">
+                            <h4>Secure & Verified</h4>
+                            <p>Safe transactions with verified students</p>
+                        </div>
                     </div>
                 </div>
-
-                <button type="submit" id="btn-login-submit" class="btn btn-primary btn-block btn-lg">
-                    <span>Continue to OTP Verification →</span>
-                </button>
-            </form>
-
-            <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--neutral-border); text-align: center; font-size: 0.9rem; color: var(--neutral-text-muted);">
-                Don't have a CampusMart account? <br>
-                <a href="signup.html" style="font-weight: 700; color: var(--accent-orange); display: inline-block; margin-top: 0.5rem;">Create an Account Now →</a>
             </div>
+
+            <!-- Right Form Column -->
+            <div class="login-form-card">
+                <h2>Sign in to CampusMart</h2>
+                <p class="subtitle">Welcome back! Let's get you started.</p>
+                
+                <form id="login-form">
+                    <div class="input-group">
+                        <label for="login-role">Select Role</label>
+                        <div class="input-wrapper">
+                            <select id="login-role">
+                                <option value="buyer">Buyer (Browse, Wishlist, Order)</option>
+                                <option value="seller">Seller (List products, Manage Bids/Offers)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="login-email">Campus Email</label>
+                        <div class="input-wrapper">
+                            <input type="email" id="login-email" placeholder="disha3268.beai24@chitkara.edu.in" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="login-password">Password</label>
+                        <div class="input-wrapper">
+                            <input type="password" id="login-password" placeholder="••••••" required>
+                        </div>
+                    </div>
+
+                    <div class="privacy-box">
+                        <div class="icon">🛡️</div>
+                        <div class="text">
+                            <h5>We value your privacy & security.</h5>
+                            <p>Your data is safe with us and will never be shared.</p>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-continue">
+                        Continue →
+                    </button>
+                </form>
+
+                <div class="register-link">
+                    Don't have an account? <a href="signup.html">Register here</a>
+                </div>
+            </div>
+            
         </div>
     </main>
-
-    <!-- OTP Verification Modal -->
-    <div id="otp-modal" class="modal-overlay">
-        <div class="modal-container" style="max-width: 440px;">
-            <div class="modal-header">
-                <h3 class="modal-title">🔐 Enter OTP Code</h3>
-                <button type="button" class="modal-close" onclick="closeOtpModal()">&times;</button>
-            </div>
-            <div class="modal-body" style="padding: 1.5rem;">
-                <!-- Simulated Live OTP Delivery Banner -->
-                <div class="otp-banner">
-                    <div>
-                        <div style="font-size: 0.78rem; opacity: 0.9; text-transform: uppercase; letter-spacing: 0.5px;">CampusMart Security</div>
-                        <div style="font-size: 0.85rem; font-weight: 600;">Your Verification OTP is:</div>
-                    </div>
-                    <div class="otp-banner-code" id="modal-otp-display" title="Click to autofill" onclick="autoFillCurrentOTP()">
-                        ------
-                    </div>
-                </div>
-
-                <p style="font-size: 0.9rem; color: var(--text-muted); text-align: center;">
-                    We have sent a 6-digit security code to <br>
-                    <strong id="otp-target-email" style="color: var(--primary);">student@college.edu</strong>
-                </p>
-
-                <!-- 6 Segmented Digit Inputs -->
-                <div class="otp-inputs-grid" id="otp-inputs-wrapper">
-                    <input type="text" maxlength="1" class="otp-digit" data-index="0" autofocus inputmode="numeric" autocomplete="one-time-code">
-                    <input type="text" maxlength="1" class="otp-digit" data-index="1" inputmode="numeric">
-                    <input type="text" maxlength="1" class="otp-digit" data-index="2" inputmode="numeric">
-                    <input type="text" maxlength="1" class="otp-digit" data-index="3" inputmode="numeric">
-                    <input type="text" maxlength="1" class="otp-digit" data-index="4" inputmode="numeric">
-                    <input type="text" maxlength="1" class="otp-digit" data-index="5" inputmode="numeric">
-                </div>
-
-                <div style="display: flex; gap: 0.5rem; justify-content: center; margin-bottom: 1.25rem;">
-                    <button type="button" onclick="autoFillCurrentOTP()" class="btn btn-outline btn-sm" style="font-size: 0.8rem;">
-                        📋 Auto-paste Code
-                    </button>
-                </div>
-
-                <button type="button" id="btn-verify-otp" onclick="verifyLoginOTP()" class="btn btn-accent btn-block btn-lg">
-                    Verify & Login →
-                </button>
-
-                <div class="otp-timer-text">
-                    <span id="otp-timer-status">Code expires in <strong id="otp-timer-count">02:00</strong></span>
-                    <div>
-                        Didn't receive code? 
-                        <button type="button" id="btn-resend-otp" class="otp-resend-btn" onclick="resendLoginOTP()" disabled>Resend OTP</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-            <!-- WHY CAMPUSMART FEATURE BLOCKS -->
-    <section class="section" style="background-color: #171B26; color: var(--neutral-white);">
-        <div class="container">
-            <div class="section-title-wrap" style="text-align: center; margin-bottom: 2.5rem;">
-                <span class="section-subtitle" style="color: var(--accent-orange); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Built For Students</span>
-                <h2 class="section-title" style="color: var(--neutral-white); margin-top: 0.5rem; font-size: 2rem;">Why Choose CampusMart?</h2>
-            </div>
-
-            <div class="grid grid-cols-4" style="gap: 1.5rem;">
-                <div style="padding: 1.5rem; background: #1E2332; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
-                    <div style="font-size: 1.5rem; margin-bottom: 0.75rem;">🎓</div>
-                    <h3 style="font-size: 1.1rem; color: var(--neutral-white); margin-bottom: 0.5rem;">Campus Focused</h3>
-                    <p style="font-size: 0.85rem; color: #94A3B8; line-height: 1.6;">Built specifically for university students with verified college credentials and hostel delivery.</p>
-                </div>
-
-                <div style="padding: 1.5rem; background: #1E2332; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
-                    <div style="font-size: 1.5rem; margin-bottom: 0.75rem;">⚡</div>
-                    <h3 style="font-size: 1.1rem; color: var(--neutral-white); margin-bottom: 0.5rem;">Easy Buying & Selling</h3>
-                    <p style="font-size: 0.85rem; color: #94A3B8; line-height: 1.6;">List your items in 60 seconds with fixed pricing or real-time campus bidding system.</p>
-                </div>
-
-                <div style="padding: 1.5rem; background: #1E2332; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
-                    <div style="font-size: 1.5rem; margin-bottom: 0.75rem;">💬</div>
-                    <h3 style="font-size: 1.1rem; color: var(--neutral-white); margin-bottom: 0.5rem;">Direct Communication</h3>
-                    <p style="font-size: 0.85rem; color: #94A3B8; line-height: 1.6;">Instantly connect with student sellers on WhatsApp with pre-filled product order messages.</p>
-                </div>
-
-                <div style="padding: 1.5rem; background: #1E2332; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
-                    <div style="font-size: 1.5rem; margin-bottom: 0.75rem;">🌟</div>
-                    <h3 style="font-size: 1.1rem; color: var(--neutral-white); margin-bottom: 0.5rem;">Student Services</h3>
-                    <p style="font-size: 0.85rem; color: #94A3B8; line-height: 1.6;">Hire peer experts for project assistance, design, technical troubleshooting, and tutoring.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer class="footer" style="background-color: #171B26; border-top: none; padding-top: 4rem; padding-bottom: 2rem;">
-        <div class="container">
-            <div class="footer-grid" style="grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 2rem; margin-bottom: 3rem; text-align: left;">
-                <div class="footer-brand">
-                    <h3 style="color: #FFFFFF; font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem;">CampusMart</h3>
-                    <p class="footer-desc" style="color: #94A3B8; font-size: 0.9rem; line-height: 1.6; max-width: 250px;">
-                        Your ultimate student-to-student marketplace. Buy, sell, and connect with your campus community instantly.
-                    </p>
-                </div>
-
-                <div>
-                    <h4 class="footer-title" style="color: #FFFFFF; font-size: 1rem; margin-bottom: 1.25rem;">Quick Links</h4>
-                    <ul class="footer-links" style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.75rem;">
-                        <li><a href="../index.html" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem;">Home</a></li>
-                        <li><a href="../marketplace.html" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem;">Marketplace</a></li>
-                        <li><a href="../services.html" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem;">Services</a></li>
-                        <li><a href="../offers.html" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem;">Offers</a></li>
-                        <li><a href="#" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem;">Contact</a></li>
-                        <li><a href="#" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem;">Design</a></li>
-                        <li><a href="#" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem; text-transform: uppercase;">CLIENT SHOW CASE</a></li>
-                        <li><a href="#" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem; text-transform: uppercase;">REVIEWS</a></li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h4 class="footer-title" style="color: #FFFFFF; font-size: 1rem; margin-bottom: 1.25rem;">Contact Us</h4>
-                    <ul class="footer-links" style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 1rem;">
-                        <li style="display: flex; gap: 0.5rem; color: #94A3B8; font-size: 0.9rem; align-items: flex-start;">
-                            <span style="color: #EF4444;">📍</span> CampusMart, Sec-82, SAS Nagar, Punjab
-                        </li>
-                        <li style="display: flex; gap: 0.5rem; color: #94A3B8; font-size: 0.9rem; align-items: center;">
-                            <span>📞</span> (+91) 98765-XXXXX
-                        </li>
-                        <li style="display: flex; gap: 0.5rem; color: #94A3B8; font-size: 0.9rem; align-items: center;">
-                            <span>✉️</span> contact@campusmart.com
-                        </li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h4 class="footer-title" style="color: #FFFFFF; font-size: 1rem; margin-bottom: 1.25rem;">Follow Us</h4>
-                    <div style="display: flex; gap: 0.5rem;">
-                        <a href="#" style="width: 32px; height: 32px; background: #334155; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 0.85rem;">f</a>
-                        <a href="#" style="width: 32px; height: 32px; background: #334155; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 0.85rem;">ig</a>
-                        <a href="#" style="width: 32px; height: 32px; background: #334155; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 0.85rem;">p</a>
-                        <a href="#" style="width: 32px; height: 32px; background: #334155; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 0.85rem;">h</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="footer-bottom" style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 1.5rem; text-align: left;">
-                <p style="color: #64748B; font-size: 0.85rem; margin: 0;">© 2025 CampusMart. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
 
     <script src="../js/data.js"></script>
     <script src="../js/utils.js"></script>

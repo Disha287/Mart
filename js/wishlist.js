@@ -10,7 +10,7 @@ function renderWishlist() {
 
     const wishlistIds = dbGet('wishlist');
     const products = dbGet('products');
-    const wishlistProducts = products.filter(p => wishlistIds.includes(p.id));
+    const wishlistProducts = products.filter(p => wishlistIds.includes(p.id) && (p.stock === undefined || p.stock > 0));
 
     if (wishlistProducts.length === 0) {
         container.innerHTML = `
@@ -42,7 +42,10 @@ function renderWishlist() {
                     <h3 class="product-title">${p.name}</h3>
                     <div class="product-price-wrap">
                         <div class="product-price">${formatCurrency(p.price)}</div>
-                        <span style="font-size: 0.8rem; color: var(--neutral-text-muted)">By ${p.sellerName}</span>
+                        <div style="text-align: right;">
+                            <span style="font-size: 0.8rem; color: var(--neutral-text-muted); display:block;">By ${p.sellerName}</span>
+                            <span style="font-size:0.75rem; color:var(--accent-dark); font-weight:700;">${p.stock !== undefined ? p.stock : 1} Left</span>
+                        </div>
                     </div>
                     <div class="product-actions" style="margin-top: 1rem; display: flex; gap: 0.5rem;">
                         <button onclick="moveWishlistToCart('${p.id}')" class="btn btn-accent btn-sm" style="flex: 2;">

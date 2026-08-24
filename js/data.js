@@ -224,28 +224,7 @@ const SEED_DATA = {
             dateAdded: '2026-08-16',
             views: 33
         },
-        {
-            id: 'prod_109',
-            name: 'Morphy Richards 50L Hostel Mini Refrigerator',
-            category: 'Lifestyle',
-            price: 4800,
-            originalPrice: 9500,
-            condition: 'Good',
-            listingType: 'fixed',
-            sellerId: 'usr_seller_1',
-            sellerName: 'Aman Verma',
-            sellerPhone: '9123456789',
-            sellerRating: 4.8,
-            trustScore: 92,
-            location: 'Hostel Block B, Room 204',
-            description: 'Compact single-door mini fridge. Chilling compartment works great for beverages, milk, and snacks.',
-            image: 'assets/images/products/unsplash_d8bfbf45310efd46b7779c78df6fced7.jpg',
-            rating: 4.9,
-            bids: [],
-            offers: [],
-            dateAdded: '2026-08-16',
-            views: 94
-        },
+
         {
             id: 'prod_110',
             name: 'Fastrack Waterproof College Laptop Backpack',
@@ -400,6 +379,361 @@ const SEED_DATA = {
             offers: [],
             dateAdded: '2026-08-21',
             views: 29
+        },
+        {
+            id: 'prod_117',
+            name: 'Wacom Intuos Drawing Tablet (Small)',
+            category: 'Design & Creative',
+            price: 2500,
+            originalPrice: 4200,
+            condition: 'Good',
+            listingType: 'fixed',
+            sellerId: 'usr_seller_1',
+            sellerName: 'Aman Verma',
+            sellerPhone: '9123456789',
+            sellerRating: 4.8,
+            trustScore: 92,
+            location: 'Hostel Block B, Room 204',
+            description: 'Used for two semesters for a design elective. Works perfectly, includes original pen and cable.',
+            image: 'assets/images/products/prod_wacom.png',
+            rating: 4.8,
+            bids: [],
+            offers: [],
+            dateAdded: '2026-08-22',
+            views: 42,
+            stock: 1
+        },
+        {
+            id: 'prod_118',
+            name: 'Digital Multimeter & Soldering Iron Kit',
+            category: 'Electronics',
+            price: 450,
+            originalPrice: 850,
+            condition: 'Like New',
+            listingType: 'fixed',
+            sellerId: 'usr_seller_2',
+            sellerName: 'Priya Patel',
+            sellerPhone: '9898989898',
+            sellerRating: 4.95,
+            trustScore: 98,
+            location: 'Girls Hostel 1, Room 108',
+            description: 'Complete basic electronics kit. Bought for ECE mini project, barely used.',
+            image: 'assets/images/products/prod_multimeter.png',
+            rating: 4.9,
+            bids: [],
+            offers: [],
+            dateAdded: '2026-08-22',
+            views: 15,
+            stock: 2
+        },
+        {
+            id: 'prod_119',
+            name: 'Dell 24-inch Monitor (FHD, 75Hz)',
+            category: 'Electronics',
+            price: 4500,
+            originalPrice: 9000,
+            condition: 'Good',
+            listingType: 'bidding',
+            currentBid: 4500,
+            sellerId: 'usr_seller_1',
+            sellerName: 'Rohan Mehra',
+            sellerPhone: '9811223344',
+            sellerRating: 4.8,
+            trustScore: 94,
+            location: 'Hostel Block A, Room 405',
+            description: 'Great for a dual-monitor coding setup in your hostel. No dead pixels.',
+            image: 'assets/images/products/prod_monitor.png',
+            rating: 4.7,
+            bids: [],
+            offers: [],
+            dateAdded: '2026-08-23',
+            views: 120,
+            stock: 1
+        },
+        {
+            id: 'prod_120',
+            name: 'JBL Go 3 Portable Bluetooth Speaker',
+            category: 'Electronics',
+            price: 1800,
+            originalPrice: 2999,
+            condition: 'Like New',
+            listingType: 'fixed',
+            sellerId: 'usr_seller_2',
+            sellerName: 'Simranpreet Singh',
+            sellerPhone: '9877665544',
+            sellerRating: 4.9,
+            trustScore: 95,
+            location: 'Hostel Block C, Room 12',
+            description: 'Waterproof compact speaker. Great bass. Barely used.',
+            image: 'assets/images/products/prod_jbl.png',
+            rating: 4.8,
+            bids: [],
+            offers: [],
+            dateAdded: '2026-08-23',
+            views: 55,
+            stock: 1
+        },
+        {
+            id: 'prod_121',
+            name: 'Pigeon 1.5L Electric Kettle',
+            category: 'Lifestyle',
+            price: 350,
+            originalPrice: 650,
+            condition: 'Fair',
+            listingType: 'fixed',
+            sellerId: 'usr_seller_1',
+            sellerName: 'Nikhil Gupta',
+            sellerPhone: '9811223344',
+            sellerRating: 4.75,
+            trustScore: 90,
+            location: 'Hostel Block B, Room 102',
+            description: 'The ultimate hostel survivor item. Works perfectly for Maggi and coffee.',
+            image: 'assets/images/products/prod_kettle.png',
+            rating: 4.5,
+            bids: [],
+            offers: [],
+            dateAdded: '2026-08-23',
+            views: 88,
+            stock: 1
+        },
+        {
+            id: 'prod_122',
+            name: 'Hostel Single Bed Mattress (Cotton)',
+            category: 'Lifestyle',
+            price: 600,
+            originalPrice: 1200,
+            condition: 'Good',
+            listingType: 'fixed',
+            sellerId: 'usr_seller_2',
+            sellerName: 'Divya Sharma',
+            sellerPhone: '9877665544',
+            sellerRating: 4.9,
+            trustScore: 97,
+            location: 'Girls Hostel 2, Room 302',
+            description: 'Clean cotton mattress, used for one year. Moving out so selling it cheap.',
+            image: 'assets/images/products/prod_mattress.png',
+            rating: 4.6,
+            bids: [],
+            offers: [],
+            dateAdded: '2026-08-24',
+            views: 34,
+            stock: 1
+        },
+        {
+            id: 'prod_123',
+            name: 'UNO & Monopoly Board Game Combo',
+            category: 'Electronics',
+            price: 400,
+            originalPrice: 800,
+            condition: 'Good',
+            listingType: 'fixed',
+            sellerId: 'usr_seller_1',
+            sellerName: 'Aman Verma',
+            sellerPhone: '9123456789',
+            sellerRating: 4.8,
+            trustScore: 92,
+            location: 'Hostel Block B, Room 204',
+            description: 'Hostel game night essentials. All cards and pieces are intact.',
+            image: 'assets/images/products/prod_uno.png',
+            rating: 4.8,
+            bids: [],
+            offers: [],
+            dateAdded: '2026-08-24',
+            views: 45,
+            stock: 1
+        },
+        {
+            id: 'prod_124',
+            name: 'Optimum Nutrition Whey Protein (Unopened, 1kg)',
+            category: 'Food',
+            price: 2800,
+            originalPrice: 3500,
+            condition: 'New',
+            listingType: 'fixed',
+            sellerId: 'usr_seller_2',
+            sellerName: 'Priya Patel',
+            sellerPhone: '9898989898',
+            sellerRating: 4.95,
+            trustScore: 98,
+            location: 'Girls Hostel 1, Room 108',
+            description: 'Double chocolate flavor. Completely sealed. Bought an extra tub by mistake.',
+            image: 'assets/images/products/prod_protein.png',
+            rating: 5.0,
+            bids: [],
+            offers: [],
+            dateAdded: '2026-08-24',
+            views: 65,
+            stock: 1
+        },
+        {
+            id: 'prod_125',
+            name: 'Black Formal Placement Shoes (Size 9)',
+            category: 'Fashion',
+            price: 800,
+            originalPrice: 1600,
+            condition: 'Like New',
+            listingType: 'fixed',
+            sellerId: 'usr_seller_1',
+            sellerName: 'Rohan Mehra',
+            sellerPhone: '9811223344',
+            sellerRating: 4.8,
+            trustScore: 94,
+            location: 'Hostel Block A, Room 405',
+            description: 'Worn only once for placement interviews. Very comfortable.',
+            image: 'assets/images/products/prod_shoes.png',
+            rating: 4.9,
+            bids: [],
+            offers: [],
+            dateAdded: '2026-08-24',
+            views: 22,
+            stock: 1
+        },
+        {
+            id: 'prod_126',
+            name: 'Adjustable Dumbbells Set (10kg)',
+            category: 'Lifestyle',
+            price: 700,
+            originalPrice: 1500,
+            condition: 'Good',
+            listingType: 'fixed',
+            sellerId: 'usr_seller_2',
+            sellerName: 'Simranpreet Singh',
+            sellerPhone: '9877665544',
+            sellerRating: 4.9,
+            trustScore: 95,
+            location: 'Hostel Block C, Room 12',
+            description: 'Perfect for hostel room workouts. Includes 4 plates of 2.5kg each.',
+            image: 'assets/images/products/prod_dumbbells.png',
+            rating: 4.7,
+            bids: [],
+            offers: [],
+            dateAdded: '2026-08-25',
+            views: 89,
+            stock: 1
+        },
+        {
+            id: 'prod_127',
+            name: 'LED Fairy Lights (10 Meters, Warm White)',
+            category: 'Birthday & Events',
+            price: 150,
+            originalPrice: 300,
+            condition: 'Like New',
+            listingType: 'fixed',
+            sellerId: 'usr_seller_1',
+            sellerName: 'Nikhil Gupta',
+            sellerPhone: '9811223344',
+            sellerRating: 4.75,
+            trustScore: 90,
+            location: 'Hostel Block B, Room 102',
+            description: 'Perfect for hostel room birthday decorations. Warm white color, plug-in type.',
+            image: 'assets/images/products/prod_fairylights.png',
+            rating: 4.8,
+            bids: [],
+            offers: [],
+            dateAdded: '2026-08-25',
+            views: 45,
+            stock: 2
+        },
+        {
+            id: 'prod_128',
+            name: '"Happy Birthday" Foil Balloon Banner Set',
+            category: 'Birthday & Events',
+            price: 100,
+            originalPrice: 250,
+            condition: 'Good',
+            listingType: 'fixed',
+            sellerId: 'usr_seller_2',
+            sellerName: 'Divya Sharma',
+            sellerPhone: '9877665544',
+            sellerRating: 4.9,
+            trustScore: 97,
+            location: 'Girls Hostel 2, Room 302',
+            description: 'Golden foil balloons. Used once, deflated carefully. Includes string.',
+            image: 'assets/images/products/prod_balloons_new.jpg',
+            rating: 4.5,
+            bids: [],
+            offers: [],
+            dateAdded: '2026-08-25',
+            views: 20,
+            stock: 1
+        },
+        {
+            id: 'prod_129',
+            name: 'Party Props & Photo Booth Accessories',
+            category: 'Birthday & Events',
+            price: 120,
+            originalPrice: 300,
+            condition: 'Good',
+            listingType: 'fixed',
+            sellerId: 'usr_seller_1',
+            sellerName: 'Rohan Mehra',
+            sellerPhone: '9811223344',
+            sellerRating: 4.8,
+            trustScore: 94,
+            location: 'Hostel Block A, Room 405',
+            description: 'Fun glasses, mustaches on sticks, and hats for birthday parties.',
+            image: 'assets/images/products/prod_props_new.jpg',
+            rating: 4.6,
+            bids: [],
+            offers: [],
+            dateAdded: '2026-08-25',
+            views: 31,
+            stock: 1
+        }
+    ],
+    
+    donations: [
+        {
+            id: 'don_101',
+            itemName: 'Bundle of A4 One-Side Used Sheets',
+            category: 'Stationery',
+            description: 'A huge stack of printed assignments. The back side is completely blank, great for rough work and math practice.',
+            donorName: 'Aman Verma',
+            donorPhone: '9123456789',
+            receiverName: null,
+            receiverPhone: null,
+            status: 'Available',
+            datePosted: '2026-08-24',
+            image: 'assets/images/products/unsplash_2a947a63bf0ac0f1a48d91a39816b8cf.jpg'
+        },
+        {
+            id: 'don_102',
+            itemName: 'Slightly Torn White Lab Coat',
+            category: 'Clothing',
+            description: 'Used for chemistry lab. Has a small tear near the pocket and some faint stains, but perfectly usable.',
+            donorName: 'Priya Patel',
+            donorPhone: '9898989898',
+            receiverName: null,
+            receiverPhone: null,
+            status: 'Available',
+            datePosted: '2026-08-23',
+            image: 'assets/images/products/unsplash_a26afdbeb7d3d73a8bd6d237b34ae67f.jpg'
+        },
+        {
+            id: 'don_103',
+            itemName: 'Old Fiction Novels (Assorted)',
+            category: 'Books',
+            description: '3 paperback fiction books. Spines are creased. Free for any reading enthusiast!',
+            donorName: 'Rahul Sharma',
+            donorPhone: '9811223344',
+            receiverName: null,
+            receiverPhone: null,
+            status: 'Available',
+            datePosted: '2026-08-25',
+            image: 'assets/images/products/unsplash_textbook.jpg'
+        },
+        {
+            id: 'don_104',
+            itemName: 'Half-used Poster Colors Set',
+            category: 'Art Supplies',
+            description: '6 small glass jars of Camel poster colors. Some are half empty, but not dried up. Good for a quick project.',
+            donorName: 'Divya Sharma',
+            donorPhone: '9877665544',
+            receiverName: null,
+            receiverPhone: null,
+            status: 'Available',
+            datePosted: '2026-08-25',
+            image: 'assets/images/products/unsplash_designer.jpg'
         }
     ],
 
@@ -598,21 +932,55 @@ function initDatabase(forceReset = false) {
         localStorage.setItem('cm_orders', JSON.stringify(SEED_DATA.orders));
         localStorage.setItem('cm_wishlist', JSON.stringify(SEED_DATA.wishlist));
         localStorage.setItem('cm_cart', JSON.stringify(SEED_DATA.cart));
+        localStorage.setItem('cm_donations', JSON.stringify(SEED_DATA.donations));
         localStorage.setItem('cm_initialized', 'true');
     } else {
         // Migration: Append new seed products if not already in local storage database
         try {
             let currentProducts = JSON.parse(localStorage.getItem('cm_products')) || [];
+            
+            // Migration: Remove Morphy Richards 50L Hostel Mini Refrigerator (prod_109)
+            const initialLen = currentProducts.length;
+            currentProducts = currentProducts.filter(p => p.id !== 'prod_109');
+            let updated = (currentProducts.length !== initialLen);
+
             const currentIds = currentProducts.map(p => p.id);
-            let updated = false;
             SEED_DATA.products.forEach(p => {
                 if (!currentIds.includes(p.id)) {
                     currentProducts.push(p);
                     updated = true;
                 }
             });
+            
+            // Migration: Ensure all products have a varied stock value
+            currentProducts.forEach(p => {
+                if (typeof p.stock === 'undefined' || p.stock === 1) {
+                    // Assign random stock between 1 and 8 if it's 1 (the old default) or undefined
+                    p.stock = Math.floor(Math.random() * 8) + 1;
+                    updated = true;
+                }
+            });
+
             if (updated) {
                 localStorage.setItem('cm_products', JSON.stringify(currentProducts));
+            }
+            
+            // Migration: Seed donations if empty or missing
+            let currentDonations = JSON.parse(localStorage.getItem('cm_donations'));
+            if (!currentDonations || currentDonations.length === 0) {
+                localStorage.setItem('cm_donations', JSON.stringify(SEED_DATA.donations));
+            } else {
+                const currentDonIds = currentDonations.map(d => d.id);
+                let donUpdated = false;
+                SEED_DATA.donations.forEach(d => {
+                    if (!currentDonIds.includes(d.id)) {
+                        currentDonations.push(d);
+                        donUpdated = true;
+                    }
+                });
+                if (donUpdated) {
+                    localStorage.setItem('cm_donations', JSON.stringify(currentDonations));
+                }
             }
             
             // Migration: Append reviews to srv_prov_1 (Karan) if not present
@@ -626,6 +994,40 @@ function initDatabase(forceReset = false) {
                 ];
                 localStorage.setItem('cm_service_providers', JSON.stringify(currentProviders));
             }
+            
+            // Migration: Force update images for fallback items
+            let forceUpdate = false;
+            currentProducts.forEach(p => {
+                if (p.id === 'prod_128' && p.image !== 'assets/images/products/prod_balloons_new.jpg') {
+                    p.image = 'assets/images/products/prod_balloons_new.jpg';
+                    forceUpdate = true;
+                }
+                if (p.id === 'prod_129' && p.image !== 'assets/images/products/prod_props_new.jpg') {
+                    p.image = 'assets/images/products/prod_props_new.jpg';
+                    forceUpdate = true;
+                }
+            });
+            if (forceUpdate) localStorage.setItem('cm_products', JSON.stringify(currentProducts));
+            
+            let donUpdate = false;
+            if (currentDonations && currentDonations.length > 0) {
+                currentDonations.forEach(d => {
+                    if (d.id === 'don_101') {
+                        d.image = 'assets/images/products/unsplash_2a947a63bf0ac0f1a48d91a39816b8cf.jpg'; donUpdate = true;
+                    }
+                    if (d.id === 'don_102') {
+                        d.image = 'assets/images/products/unsplash_a26afdbeb7d3d73a8bd6d237b34ae67f.jpg'; donUpdate = true;
+                    }
+                    if (d.id === 'don_103') {
+                        d.image = 'assets/images/products/unsplash_textbook.jpg'; donUpdate = true;
+                    }
+                    if (d.id === 'don_104') {
+                        d.image = 'assets/images/products/unsplash_designer.jpg'; donUpdate = true;
+                    }
+                });
+                if (donUpdate) localStorage.setItem('cm_donations', JSON.stringify(currentDonations));
+            }
+
         } catch (e) {
             console.error('Database migration failed:', e);
         }

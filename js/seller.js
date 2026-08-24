@@ -69,6 +69,7 @@ function initCreateListingForm() {
         const condition = document.getElementById('list-condition').value;
         const type = document.getElementById('list-type').value;
         const location = document.getElementById('list-location').value.trim();
+        const stock = Number(document.getElementById('list-quantity')?.value || 1);
         const desc = document.getElementById('list-desc').value.trim();
         const imgInput = document.getElementById('list-image-file');
 
@@ -93,6 +94,7 @@ function initCreateListingForm() {
             originalPrice: Math.round(price * 1.3),
             condition: condition,
             listingType: type,
+            stock: stock,
             currentBid: type === 'bidding' ? price : null,
             sellerId: user.id,
             sellerName: user.name,
@@ -144,6 +146,7 @@ function initMyListings() {
 
     let html = '';
     products.forEach(p => {
+        let stockText = (p.stock !== undefined && p.stock <= 0) ? '<span style="color: var(--danger-red); font-weight: bold;">Sold Out</span>' : `${p.stock !== undefined ? p.stock : 1} in stock`;
         html += `
             <div class="card product-card">
                 <div class="product-img-wrap">
@@ -159,6 +162,7 @@ function initMyListings() {
                         <div class="product-price">${formatCurrency(p.price)}</div>
                         <span style="font-size: 0.8rem; color: var(--neutral-text-muted);">Condition: ${p.condition}</span>
                     </div>
+                    <div style="font-size: 0.85rem; margin-top: 0.5rem; text-align: center;">${stockText}</div>
                     <div class="product-actions" style="margin-top: 1rem;">
                         <button onclick="editListing('${p.id}')" class="btn btn-outline btn-sm btn-block">✏️ Edit</button>
                         <button onclick="deleteListing('${p.id}')" class="btn btn-outline btn-sm" style="color: var(--danger-red); border-color: var(--danger-red);">🗑️</button>

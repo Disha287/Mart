@@ -125,6 +125,7 @@ function renderProductUI() {
                         ${currentProduct.listingType === 'bidding' ? '🔨 Auction Listing' : '🏷️ Fixed Price'}
                     </span>
                     <span class="badge-tag badge-condition" style="position: static;">${currentProduct.condition}</span>
+                    <span class="badge-tag" style="position: static; background: var(--accent-dark); color: white;">${currentProduct.stock !== undefined ? currentProduct.stock : 1} Left in Stock</span>
                     <span style="font-size: 0.85rem; color: var(--secondary-blue); font-weight: 600;">${currentProduct.category}</span>
                 </div>
 
@@ -240,6 +241,13 @@ function handleBuyNow() {
     let orders = dbGet('orders');
     orders.push(order);
     dbSet('orders', orders);
+
+    let products = dbGet('products');
+    const p = products.find(prod => prod.id === currentProduct.id);
+    if (p && p.stock !== undefined) {
+        p.stock = Math.max(0, p.stock - 1);
+        dbSet('products', products);
+    }
 
     const waMsg = `Hi ${currentProduct.sellerName}, I placed an order for "${currentProduct.name}" on CampusKart (Order ID: #${order.id}, Price: ${formatCurrency(currentProduct.price)}). I'd like to coordinate payment and pickup!`;
     const waUrl = buildWhatsAppLink(currentProduct.sellerPhone || '9123456789', waMsg);
@@ -357,11 +365,11 @@ function renderRecommendations() {
     const products = dbGet('products');
     
     // Find products in the same category, exclude the current product
-    let recommendations = products.filter(p => p.category === currentProduct.category && p.id !== currentProduct.id);
+    let recommendations = products.filter(p => p.category === currentProduct.category && p.id !== currentProduct.id && (p.stock === undefined || p.stock > 0));
     
     // If not enough products in same category, pad with random products
     if (recommendations.length < 4) {
-        const otherProducts = products.filter(p => p.category !== currentProduct.category && p.id !== currentProduct.id);
+        const otherProducts = products.filter(p => p.category !== currentProduct.category && p.id !== currentProduct.id && (p.stock === undefined || p.stock > 0));
         recommendations = recommendations.concat(otherProducts).slice(0, 4);
     } else {
         // Just take up to 4
@@ -395,6 +403,9 @@ function renderRecommendations() {
                     </div>
                     <div class="product-price-wrap">
                         <div class="product-price">${formatCurrency(p.price)}</div>
+                        <div style="text-align: right;">
+                            <span style="font-size:0.75rem; color:var(--accent-dark); font-weight:700;">${p.stock !== undefined ? p.stock : 1} Left</span>
+                        </div>
                     </div>
                     <div class="product-actions">
                         <a href="product.html?id=${p.id}" class="btn btn-outline btn-sm btn-block">View Details</a>
