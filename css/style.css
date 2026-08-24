@@ -184,7 +184,7 @@ p {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 75px;
+    height: 85px;
     gap: 2rem;
 }
 
@@ -202,8 +202,8 @@ p {
 }
 
 .logo img {
-    height: 55px;
-    max-height: 55px;
+    height: 70px;
+    max-height: 70px;
     width: auto;
     object-fit: contain;
     display: block;
