@@ -44,12 +44,12 @@ function renderWishlist() {
                         <div class="product-price">${formatCurrency(p.price)}</div>
                         <span style="font-size: 0.8rem; color: var(--neutral-text-muted)">By ${p.sellerName}</span>
                     </div>
-                    <div class="product-actions" style="margin-top: 1rem;">
-                        <button onclick="moveWishlistToCart('${p.id}')" class="btn btn-accent btn-sm btn-block">
-                            🛒 Move to Cart
+                    <div class="product-actions" style="margin-top: 1rem; display: flex; gap: 0.5rem;">
+                        <button onclick="moveWishlistToCart('${p.id}')" class="btn btn-accent btn-sm" style="flex: 2;">
+                            Move to Cart
                         </button>
-                        <button onclick="removeFromWishlistPage('${p.id}')" class="btn btn-outline btn-sm">
-                            🗑️
+                        <button onclick="removeFromWishlistPage('${p.id}')" class="btn btn-outline btn-sm" style="flex: 1; border-color: var(--danger-red); color: var(--danger-red);">
+                            Remove
                         </button>
                     </div>
                 </div>

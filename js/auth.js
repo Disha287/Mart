@@ -472,7 +472,7 @@ function updateUserNavUI() {
                 <span>👤 ${user.name.split(' ')[0]}</span>
             </a>
             <button onclick="logoutUser()" class="btn btn-dark btn-sm" title="Logout">
-                🚪
+                Logout
             </button>
         `;
     } else {

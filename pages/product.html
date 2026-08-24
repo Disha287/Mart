@@ -41,6 +41,7 @@
 
                 <a href="tuck-shop.html" class="nav-link">Tuck Shop</a>
                 <a href="assignments.html" class="nav-link">Academic Help</a>
+                <a href="donations.html" class="nav-link">Donations</a>
                 <a href="orders.html" class="nav-link">Orders</a>
                 <a href="create-listing.html" class="nav-link">Sell</a>
 
@@ -61,6 +62,16 @@
     <main class="section">
         <div class="container" id="product-detail-container">
             <!-- Dynamically populated by product.js -->
+        </div>
+
+        <!-- Recommendations Section -->
+        <div class="container" style="margin-top: 4rem;">
+            <div class="section-title-wrap" style="margin-bottom: 1.5rem; text-align: left;">
+                <h3 class="section-title" style="font-size: 1.5rem; margin-bottom: 0;">Recommended For You</h3>
+            </div>
+            <div class="grid grid-cols-4" id="recommendations-container">
+                <!-- Dynamically populated by product.js -->
+            </div>
         </div>
     </main>
 
@@ -119,53 +130,95 @@
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="footer">
+            <!-- WHY CAMPUSMART FEATURE BLOCKS -->
+    <section class="section" style="background-color: #171B26; color: var(--neutral-white);">
         <div class="container">
-            <div class="footer-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-bottom: 3rem;">
+            <div class="section-title-wrap" style="text-align: center; margin-bottom: 2.5rem;">
+                <span class="section-subtitle" style="color: var(--accent-orange); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Built For Students</span>
+                <h2 class="section-title" style="color: var(--neutral-white); margin-top: 0.5rem; font-size: 2rem;">Why Choose CampusMart?</h2>
+            </div>
+
+            <div class="grid grid-cols-4" style="gap: 1.5rem;">
+                <div style="padding: 1.5rem; background: #1E2332; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                    <div style="font-size: 1.5rem; margin-bottom: 0.75rem;">🎓</div>
+                    <h3 style="font-size: 1.1rem; color: var(--neutral-white); margin-bottom: 0.5rem;">Campus Focused</h3>
+                    <p style="font-size: 0.85rem; color: #94A3B8; line-height: 1.6;">Built specifically for university students with verified college credentials and hostel delivery.</p>
+                </div>
+
+                <div style="padding: 1.5rem; background: #1E2332; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                    <div style="font-size: 1.5rem; margin-bottom: 0.75rem;">⚡</div>
+                    <h3 style="font-size: 1.1rem; color: var(--neutral-white); margin-bottom: 0.5rem;">Easy Buying & Selling</h3>
+                    <p style="font-size: 0.85rem; color: #94A3B8; line-height: 1.6;">List your items in 60 seconds with fixed pricing or real-time campus bidding system.</p>
+                </div>
+
+                <div style="padding: 1.5rem; background: #1E2332; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                    <div style="font-size: 1.5rem; margin-bottom: 0.75rem;">💬</div>
+                    <h3 style="font-size: 1.1rem; color: var(--neutral-white); margin-bottom: 0.5rem;">Direct Communication</h3>
+                    <p style="font-size: 0.85rem; color: #94A3B8; line-height: 1.6;">Instantly connect with student sellers on WhatsApp with pre-filled product order messages.</p>
+                </div>
+
+                <div style="padding: 1.5rem; background: #1E2332; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                    <div style="font-size: 1.5rem; margin-bottom: 0.75rem;">🌟</div>
+                    <h3 style="font-size: 1.1rem; color: var(--neutral-white); margin-bottom: 0.5rem;">Student Services</h3>
+                    <p style="font-size: 0.85rem; color: #94A3B8; line-height: 1.6;">Hire peer experts for project assistance, design, technical troubleshooting, and tutoring.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer" style="background-color: #171B26; border-top: none; padding-top: 4rem; padding-bottom: 2rem;">
+        <div class="container">
+            <div class="footer-grid" style="grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 2rem; margin-bottom: 3rem; text-align: left;">
                 <div class="footer-brand">
-                    <h4 class="footer-title" style="margin-bottom: 1rem; color: #fff; font-size: 1.25rem;">CampusMart</h4>
-                    <p class="footer-desc" style="font-size: 0.9rem; line-height: 1.6; color: #94A3B8;">
+                    <h3 style="color: #FFFFFF; font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem;">CampusMart</h3>
+                    <p class="footer-desc" style="color: #94A3B8; font-size: 0.9rem; line-height: 1.6; max-width: 250px;">
                         Your ultimate student-to-student marketplace. Buy, sell, and connect with your campus community instantly.
                     </p>
                 </div>
 
                 <div>
-                    <h4 class="footer-title" style="margin-bottom: 1rem; color: #fff; font-size: 1.15rem;">Quick Links</h4>
-                    <ul class="footer-links" style="list-style: none; padding: 0;">
-                        <li style="margin-bottom: 0.5rem;"><a href="../index.html" style="color: #94A3B8; text-decoration: none;">Home</a></li>
-                        <li style="margin-bottom: 0.5rem;"><a href="../pages/marketplace.html" style="color: #94A3B8; text-decoration: none;">Marketplace</a></li>
-                        <li style="margin-bottom: 0.5rem;"><a href="../pages/services.html" style="color: #94A3B8; text-decoration: none;">Services</a></li>
-                        <li style="margin-bottom: 0.5rem;"><a href="../pages/offers.html" style="color: #94A3B8; text-decoration: none;">Offers</a></li>
-                        <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #94A3B8; text-decoration: none;">Contact</a></li>
-                        <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #94A3B8; text-decoration: none;">Design</a></li>
-                        <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #94A3B8; text-decoration: none;">CLIENT SHOW CASE</a></li>
-                        <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #94A3B8; text-decoration: none;">REVIEWS</a></li>
+                    <h4 class="footer-title" style="color: #FFFFFF; font-size: 1rem; margin-bottom: 1.25rem;">Quick Links</h4>
+                    <ul class="footer-links" style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.75rem;">
+                        <li><a href="../index.html" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem;">Home</a></li>
+                        <li><a href="../marketplace.html" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem;">Marketplace</a></li>
+                        <li><a href="../services.html" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem;">Services</a></li>
+                        <li><a href="../offers.html" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem;">Offers</a></li>
+                        <li><a href="#" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem;">Contact</a></li>
+                        <li><a href="#" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem;">Design</a></li>
+                        <li><a href="#" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem; text-transform: uppercase;">CLIENT SHOW CASE</a></li>
+                        <li><a href="#" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem; text-transform: uppercase;">REVIEWS</a></li>
                     </ul>
                 </div>
 
                 <div>
-                    <h4 class="footer-title" style="margin-bottom: 1rem; color: #fff; font-size: 1.15rem;">Contact Us</h4>
-                    <ul class="footer-links footer-contact" style="list-style: none; padding: 0;">
-                        <li style="display: flex; align-items: flex-start; gap: 0.5rem; color: #94A3B8; margin-bottom: 0.75rem;"><span style="margin-top:2px;">📍</span> CampusMart, Sec-82, SAS Nagar, Punjab</li>
-                        <li style="display: flex; align-items: center; gap: 0.5rem; color: #94A3B8; margin-bottom: 0.75rem;"><span>📞</span> (+91) 98765*</li>
-                        <li style="display: flex; align-items: center; gap: 0.5rem; color: #94A3B8; margin-bottom: 0.75rem;"><span>✉️</span> contact@campusmart.com</li>
+                    <h4 class="footer-title" style="color: #FFFFFF; font-size: 1rem; margin-bottom: 1.25rem;">Contact Us</h4>
+                    <ul class="footer-links" style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 1rem;">
+                        <li style="display: flex; gap: 0.5rem; color: #94A3B8; font-size: 0.9rem; align-items: flex-start;">
+                            <span style="color: #EF4444;">📍</span> CampusMart, Sec-82, SAS Nagar, Punjab
+                        </li>
+                        <li style="display: flex; gap: 0.5rem; color: #94A3B8; font-size: 0.9rem; align-items: center;">
+                            <span>📞</span> (+91) 98765-XXXXX
+                        </li>
+                        <li style="display: flex; gap: 0.5rem; color: #94A3B8; font-size: 0.9rem; align-items: center;">
+                            <span>✉️</span> contact@campusmart.com
+                        </li>
                     </ul>
                 </div>
 
                 <div>
-                    <h4 class="footer-title" style="margin-bottom: 1rem; color: #fff; font-size: 1.15rem;">Follow Us</h4>
-                    <div class="social-icons" style="display: flex; gap: 0.75rem;">
-                        <a href="#" style="width: 35px; height: 35px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: #fff; text-decoration: none; font-weight: bold;">f</a>
-                        <a href="#" style="width: 35px; height: 35px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: #fff; text-decoration: none; font-weight: bold;">ig</a>
-                        <a href="#" style="width: 35px; height: 35px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: #fff; text-decoration: none; font-weight: bold;">p</a>
-                        <a href="#" style="width: 35px; height: 35px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: #fff; text-decoration: none; font-weight: bold;">h</a>
+                    <h4 class="footer-title" style="color: #FFFFFF; font-size: 1rem; margin-bottom: 1.25rem;">Follow Us</h4>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <a href="#" style="width: 32px; height: 32px; background: #334155; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 0.85rem;">f</a>
+                        <a href="#" style="width: 32px; height: 32px; background: #334155; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 0.85rem;">ig</a>
+                        <a href="#" style="width: 32px; height: 32px; background: #334155; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 0.85rem;">p</a>
+                        <a href="#" style="width: 32px; height: 32px; background: #334155; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 0.85rem;">h</a>
                     </div>
                 </div>
             </div>
 
-            <div class="footer-bottom" style="padding: 1.5rem 0; border-top: 1px solid rgba(255,255,255,0.1); text-align: center; color: #94A3B8; font-size: 0.9rem;">
-                <p>© 2025 CampusMart. All rights reserved.</p>
+            <div class="footer-bottom" style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 1.5rem; text-align: left;">
+                <p style="color: #64748B; font-size: 0.85rem; margin: 0;">© 2025 CampusMart. All rights reserved.</p>
             </div>
         </div>
     </footer>

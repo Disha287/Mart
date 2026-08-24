@@ -56,6 +56,7 @@ function initProductDetails() {
     localStorage.setItem('current_product_id', currentProduct.id);
 
     renderProductUI();
+    renderRecommendations();
 }
 
 function renderProductUI() {
@@ -164,7 +165,7 @@ function renderProductUI() {
                             ⚡ Buy Now
                         </button>
                         <button onclick="addToCartDetail('${currentProduct.id}')" class="btn btn-primary btn-lg" style="flex: 2;">
-                            🛒 Add to Cart
+                            Add to Cart
                         </button>
                     </div>
 
@@ -347,4 +348,61 @@ function submitOffer() {
 
     closeModal('offer-modal');
     showToast(`Offer of ${formatCurrency(amount)} submitted to seller!`, 'success');
+}
+
+function renderRecommendations() {
+    const container = document.getElementById('recommendations-container');
+    if (!container) return;
+
+    const products = dbGet('products');
+    
+    // Find products in the same category, exclude the current product
+    let recommendations = products.filter(p => p.category === currentProduct.category && p.id !== currentProduct.id);
+    
+    // If not enough products in same category, pad with random products
+    if (recommendations.length < 4) {
+        const otherProducts = products.filter(p => p.category !== currentProduct.category && p.id !== currentProduct.id);
+        recommendations = recommendations.concat(otherProducts).slice(0, 4);
+    } else {
+        // Just take up to 4
+        recommendations = recommendations.slice(0, 4);
+    }
+
+    if (recommendations.length === 0) {
+        container.innerHTML = '<p style="color: var(--neutral-text-muted); grid-column: span 4;">No recommendations available.</p>';
+        return;
+    }
+
+    let html = '';
+    recommendations.forEach(p => {
+        const isWishlist = dbGet('wishlist').includes(p.id);
+        html += `
+            <div class="card product-card">
+                <div class="product-img-wrap">
+                    <span class="badge-tag ${p.listingType === 'bidding' ? 'badge-bidding' : 'badge-fixed'}">
+                        ${p.listingType === 'bidding' ? '🔨 Auction' : '🏷️ Fixed'}
+                    </span>
+                    <button class="wishlist-btn-toggle ${isWishlist ? 'active' : ''}" onclick="event.stopPropagation(); toggleWishlistDetail('${p.id}', this)">
+                        ${isWishlist ? '❤️' : '🤍'}
+                    </button>
+                    <img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.src='../assets/images/campus-fallback.jpg'">
+                </div>
+                <div class="product-content">
+                    <span class="product-category">${p.category}</span>
+                    <h3 class="product-title">${p.name}</h3>
+                    <div class="product-meta">
+                        <span>Condition: <strong>${p.condition}</strong></span>
+                    </div>
+                    <div class="product-price-wrap">
+                        <div class="product-price">${formatCurrency(p.price)}</div>
+                    </div>
+                    <div class="product-actions">
+                        <a href="product.html?id=${p.id}" class="btn btn-outline btn-sm btn-block">View Details</a>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+    
+    container.innerHTML = html;
 }

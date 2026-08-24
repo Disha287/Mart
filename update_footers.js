@@ -1,79 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Wishlist | CampusMart</title>
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/responsive.css">
-    <link rel="stylesheet" href="../css/animations.css">
-</head>
-<body>
+const fs = require('fs');
+const path = require('path');
 
-    <!-- Header / Navbar -->
-    <header class="header">
-        <div class="container navbar">
-            <a href="../index.html" class="logo"><img src="../assets/images/logo.png" alt="CampusMart Logo"></a>
+const basePath = 'c:\\Users\\harsh\\OneDrive\\Desktop\\Mart';
+const filesToProcess = [];
 
-            <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle navigation">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
+// Get root html
+fs.readdirSync(basePath).forEach(file => {
+    if (file.endsWith('.html')) {
+        filesToProcess.push(path.join(basePath, file));
+    }
+});
 
-            <nav class="nav-menu" id="nav-menu">
-                <a href="../index.html" class="nav-link">Home</a>
-                
-                <div class="dropdown">
-                    <a href="marketplace.html" class="nav-link">Marketplace ▼</a>
-                    <div class="dropdown-menu">
-                        <a href="marketplace.html?cat=Academic" class="dropdown-item">📚 Academic & Books</a>
-                        <a href="marketplace.html?cat=Electronics" class="dropdown-item">💻 Electronics & Tech</a>
-                        <a href="marketplace.html?cat=Fashion" class="dropdown-item">👕 Clothing & Fashion</a>
-                        <a href="marketplace.html?cat=Food" class="dropdown-item">🍔 Food & Snacks</a>
-                        <a href="marketplace.html?cat=Birthday%20%26%20Events" class="dropdown-item">🎂 Birthday & Celebrations</a>
-                        <a href="marketplace.html?cat=Lifestyle" class="dropdown-item">🏠 Lifestyle & Hostel</a>
-                        <a href="marketplace.html?cat=Gaming" class="dropdown-item">🎮 Gaming & Sports</a>
-                        <a href="marketplace.html?cat=Design%20%26%20Creative" class="dropdown-item">🎨 Design & Creative</a>
-                        <a href="marketplace.html?cat=Hardware%20%2F%20Technical%20Help" class="dropdown-item">🔧 Hardware / Tech Support</a>
-                    </div>
-                </div>
+// Get pages html
+const pagesDir = path.join(basePath, 'pages');
+if (fs.existsSync(pagesDir)) {
+    fs.readdirSync(pagesDir).forEach(file => {
+        if (file.endsWith('.html')) {
+            filesToProcess.push(path.join(pagesDir, file));
+        }
+    });
+}
 
-                <a href="tuck-shop.html" class="nav-link">Tuck Shop</a>
-                <a href="assignments.html" class="nav-link">Academic Help</a>
-                <a href="donations.html" class="nav-link">Donations</a>
-                <a href="orders.html" class="nav-link">Orders</a>
-                <a href="create-listing.html" class="nav-link">Sell</a>
+const getFooterTemplate = (isRoot) => {
+    const rootPrefix = isRoot ? '' : '../';
+    const pagesPrefix = isRoot ? 'pages/' : '';
 
-                <div class="nav-actions">
-                    <a href="wishlist.html" class="nav-icon-btn active" title="Wishlist">
-                        ❤️ <span class="badge-count" id="nav-wishlist-badge" style="display:none;">0</span>
-                    </a>
-                    <a href="cart.html" class="nav-icon-btn" title="Cart">
-                        🛒 <span class="badge-count" id="nav-cart-badge" style="display:none;">0</span>
-                    </a>
-                    <div id="nav-user-btn"></div>
-                </div>
-            </nav>
-        </div>
-    </header>
-
-    <div style="background-color: var(--primary-charcoal); color: var(--neutral-white); padding: 2rem 0; text-align: center;">
-        <div class="container">
-            <h1 style="font-size: 2rem; color: var(--neutral-white);">❤️ My Wishlist</h1>
-            <p style="color: #94A3B8;">Saved campus product listings</p>
-        </div>
-    </div>
-
-    <main class="section">
-        <div class="container">
-            <div class="grid grid-cols-4" id="wishlist-grid">
-                <!-- Populated by wishlist.js -->
-            </div>
-        </div>
-    </main>
-
-            <!-- WHY CAMPUSMART FEATURE BLOCKS -->
+    return `    <!-- WHY CAMPUSMART FEATURE BLOCKS -->
     <section class="section" style="background-color: #171B26; color: var(--neutral-white);">
         <div class="container">
             <div class="section-title-wrap" style="text-align: center; margin-bottom: 2.5rem;">
@@ -123,10 +75,10 @@
                 <div>
                     <h4 class="footer-title" style="color: #FFFFFF; font-size: 1rem; margin-bottom: 1.25rem;">Quick Links</h4>
                     <ul class="footer-links" style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.75rem;">
-                        <li><a href="../index.html" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem;">Home</a></li>
-                        <li><a href="../marketplace.html" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem;">Marketplace</a></li>
-                        <li><a href="../services.html" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem;">Services</a></li>
-                        <li><a href="../offers.html" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem;">Offers</a></li>
+                        <li><a href="${rootPrefix}index.html" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem;">Home</a></li>
+                        <li><a href="${rootPrefix}${pagesPrefix}marketplace.html" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem;">Marketplace</a></li>
+                        <li><a href="${rootPrefix}${pagesPrefix}services.html" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem;">Services</a></li>
+                        <li><a href="${rootPrefix}${pagesPrefix}offers.html" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem;">Offers</a></li>
                         <li><a href="#" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem;">Contact</a></li>
                         <li><a href="#" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem;">Design</a></li>
                         <li><a href="#" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem; text-transform: uppercase;">CLIENT SHOW CASE</a></li>
@@ -164,12 +116,31 @@
                 <p style="color: #64748B; font-size: 0.85rem; margin: 0;">© 2025 CampusMart. All rights reserved.</p>
             </div>
         </div>
-    </footer>
+    </footer>`;
+}
 
-    <script src="../js/data.js"></script>
-    <script src="../js/utils.js"></script>
-    <script src="../js/auth.js"></script>
-    <script src="../js/app.js"></script>
-    <script src="../js/wishlist.js"></script>
-</body>
-</html>
+filesToProcess.forEach(file => {
+    let content = fs.readFileSync(file, 'utf8');
+    
+    let startIndex = content.indexOf('<!-- WHY CAMPUSMART FEATURE BLOCKS -->');
+    if (startIndex === -1) {
+        startIndex = content.indexOf('<!-- FOOTER -->');
+    }
+    if (startIndex === -1) {
+        startIndex = content.indexOf('<!-- Footer -->');
+    }
+    
+    let endIndex = content.lastIndexOf('</footer>');
+    if (startIndex !== -1 && endIndex !== -1) {
+        endIndex += '</footer>'.length;
+        
+        const isRoot = path.dirname(file) === basePath;
+        const newFooter = getFooterTemplate(isRoot);
+        
+        content = content.substring(0, startIndex) + newFooter + content.substring(endIndex);
+        fs.writeFileSync(file, content);
+        console.log('Updated: ' + file);
+    } else {
+        console.log('Could not find footer in: ' + file);
+    }
+});
