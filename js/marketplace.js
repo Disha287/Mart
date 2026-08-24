@@ -184,7 +184,7 @@ function renderMarketplaceProducts() {
                     </div>
                     <div class="product-actions">
                         <a href="product.html?id=${p.id}" class="btn btn-outline btn-sm btn-block">View Details</a>
-                        <button onclick="quickAddToCart('${p.id}')" class="btn btn-accent btn-sm">🛒 Add</button>
+                        <button onclick="quickAddToCart('${p.id}')" class="btn btn-accent btn-sm">Add to Cart</button>
                     </div>
                 </div>
             </div>
