@@ -183,8 +183,8 @@ function renderMarketplaceProducts() {
                         <span style="font-size:0.8rem; color:var(--neutral-text-muted)">By ${p.sellerName}</span>
                     </div>
                     <div class="product-actions">
-                        <a href="product.html?id=${p.id}" class="btn btn-outline btn-sm btn-block">View Details</a>
-                        <button onclick="quickAddToCart('${p.id}')" class="btn btn-accent btn-sm">🛒 Add</button>
+                        <a href="product.html?id=${p.id}" onclick="localStorage.setItem('current_product_id', '${p.id}')" class="btn btn-outline btn-sm btn-block">View Details</a>
+                        <button onclick="quickAddToCart('${p.id}')" class="btn btn-accent btn-sm" style="font-weight: 600;">+ Add</button>
                     </div>
                 </div>
             </div>

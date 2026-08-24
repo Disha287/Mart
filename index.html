@@ -1,14 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CampusMart | Your Campus. Your Marketplace.</title>
-    <meta name="description" content="CampusMart is the ultimate digital student marketplace for buying, selling, discovering services, and getting academic assistance.">
+    <meta name="description"
+        content="CampusMart is the ultimate digital student marketplace for buying, selling, discovering services, and getting academic assistance.">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/responsive.css">
     <link rel="stylesheet" href="css/animations.css">
+    <style>
+        @keyframes activeFloat {
+            0% {
+                transform: translateY(0px);
+                box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+            }
+
+            50% {
+                transform: translateY(-12px);
+                box-shadow: 0 20px 32px rgba(15, 23, 42, 0.13);
+            }
+
+            100% {
+                transform: translateY(0px);
+                box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+            }
+        }
+
+        .floating-card-item {
+            background: #FFFFFF !important;
+            border: 1.5px solid #E2E8F0 !important;
+            border-radius: 16px !important;
+            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06) !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            text-align: center !important;
+            text-decoration: none !important;
+            padding: 1.85rem 1.4rem !important;
+            will-change: transform, box-shadow;
+            transition: border-color 0.3s ease !important;
+        }
+
+        .floating-card-item:hover {
+            border-color: #3B5CCC !important;
+        }
+    </style>
 </head>
+
 <body>
 
     <!-- Header / Sticky Navbar -->
@@ -35,11 +76,14 @@
                         <a href="pages/marketplace.html?cat=Electronics" class="dropdown-item">💻 Electronics & Tech</a>
                         <a href="pages/marketplace.html?cat=Fashion" class="dropdown-item">👕 Clothing & Fashion</a>
                         <a href="pages/marketplace.html?cat=Food" class="dropdown-item">🍔 Food & Snacks</a>
-                        <a href="pages/marketplace.html?cat=Birthday%20%26%20Events" class="dropdown-item">🎂 Birthday & Celebrations</a>
+                        <a href="pages/marketplace.html?cat=Birthday%20%26%20Events" class="dropdown-item">🎂 Birthday &
+                            Celebrations</a>
                         <a href="pages/marketplace.html?cat=Lifestyle" class="dropdown-item">🏠 Lifestyle & Hostel</a>
                         <a href="pages/marketplace.html?cat=Gaming" class="dropdown-item">🎮 Gaming & Sports</a>
-                        <a href="pages/marketplace.html?cat=Design%20%26%20Creative" class="dropdown-item">🎨 Design & Creative</a>
-                        <a href="pages/marketplace.html?cat=Hardware%20%2F%20Technical%20Help" class="dropdown-item">🔧 Hardware / Tech Support</a>
+                        <a href="pages/marketplace.html?cat=Design%20%26%20Creative" class="dropdown-item">🎨 Design &
+                            Creative</a>
+                        <a href="pages/marketplace.html?cat=Hardware%20%2F%20Technical%20Help" class="dropdown-item">🔧
+                            Hardware / Tech Support</a>
                     </div>
                 </div>
 
@@ -64,28 +108,39 @@
     </header>
 
     <!-- HERO SECTION WITH MIDNIGHT BLUE + PEACH THEME -->
-    <section class="hero-section" style="position: relative; width: 100%; min-height: 88vh; display: flex; align-items: center; justify-content: center; overflow: hidden; background: linear-gradient(135deg, #172554 0%, #3B5CCC 100%);">
+    <section class="hero-section"
+        style="position: relative; width: 100%; min-height: 88vh; display: flex; align-items: center; justify-content: center; overflow: hidden; background: linear-gradient(135deg, #172554 0%, #3B5CCC 100%);">
         <!-- Muted Looping Background Drone Video - Chitkara University, Rajpura, Punjab -->
-        <video autoplay loop muted playsinline id="hero-video" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;">
+        <video autoplay loop muted playsinline id="hero-video"
+            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;">
             <source src="assets/video/chitkara-drone.mp4" type="video/mp4">
             <source src="assets/video/campus-drone.mp4" type="video/mp4">
         </video>
 
         <!-- Midnight Blue Translucent Overlay (#172554 -> #0F172A) -->
-        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(180deg, rgba(23, 37, 84, 0.72) 0%, rgba(15, 23, 42, 0.86) 100%); z-index: 2; backdrop-filter: blur(1px);"></div>
+        <div
+            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(180deg, rgba(23, 37, 84, 0.72) 0%, rgba(15, 23, 42, 0.86) 100%); z-index: 2; backdrop-filter: blur(1px);">
+        </div>
 
-        <div class="container" style="position: relative; z-index: 3; text-align: center; color: var(--surface); max-width: 880px; padding: 5rem 1.5rem;">
-            <span style="background: rgba(255, 155, 113, 0.2); border: 1px solid var(--accent); color: var(--accent); font-size: 0.85rem; font-weight: 700; padding: 6px 16px; border-radius: var(--radius-full); text-transform: uppercase; letter-spacing: 1.2px; display: inline-block; margin-bottom: 1.25rem;" class="fade-in">
+        <div class="container"
+            style="position: relative; z-index: 3; text-align: center; color: var(--surface); max-width: 880px; padding: 5rem 1.5rem;">
+            <span
+                style="background: rgba(255, 155, 113, 0.2); border: 1px solid var(--accent); color: var(--accent); font-size: 0.85rem; font-weight: 700; padding: 6px 16px; border-radius: var(--radius-full); text-transform: uppercase; letter-spacing: 1.2px; display: inline-block; margin-bottom: 1.25rem;"
+                class="fade-in">
                 📍 Chitkara University, Rajpura (Punjab) • Official Marketplace
             </span>
-            <h1 style="font-size: 3.75rem; font-weight: 800; line-height: 1.1; margin-bottom: 1rem; color: #FFFFFF; text-shadow: 0 4px 25px rgba(0,0,0,0.5);" class="fade-in">
-                CAMPUSMART
+            <h1 style="font-size: 3.75rem; font-weight: 800; line-height: 1.1; margin-bottom: 1rem; color: #FFFFFF; text-shadow: 0 4px 25px rgba(0,0,0,0.5);"
+                class="fade-in">
+                CampusMart
             </h1>
-            <p style="font-size: 1.5rem; font-weight: 600; color: var(--accent); margin-bottom: 1rem; text-shadow: 0 2px 10px rgba(0,0,0,0.4);" class="fade-in">
+            <p style="font-size: 1.5rem; font-weight: 600; color: var(--accent); margin-bottom: 1rem; text-shadow: 0 2px 10px rgba(0,0,0,0.4);"
+                class="fade-in">
                 "Your Campus. Your Marketplace."
             </p>
-            <p style="font-size: 1.15rem; color: #F1F5F9; margin-bottom: 2.5rem; line-height: 1.6; max-width: 720px; margin-left: auto; margin-right: auto;" class="fade-in">
-                Buy, sell, discover services, and connect with your campus community—all in one place. Built exclusively for students.
+            <p style="font-size: 1.15rem; color: #F1F5F9; margin-bottom: 2.5rem; line-height: 1.6; max-width: 720px; margin-left: auto; margin-right: auto;"
+                class="fade-in">
+                Buy, sell, discover services, and connect with your campus community—all in one place. Built exclusively
+                for students.
             </p>
             
             <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;" class="fade-in">
@@ -118,32 +173,44 @@
             <div class="section-title-wrap">
                 <span class="section-subtitle">Quick Navigation</span>
                 <h2 class="section-title">What would you like to explore?</h2>
-                <p class="section-desc">Access student product listings, tuck shop supplies, campus services, and academic assistance instantly.</p>
+                <p class="section-desc">Access student product listings, tuck shop supplies, campus services, and
+                    academic assistance instantly.</p>
             </div>
 
             <div class="grid grid-cols-4">
-                <a href="pages/marketplace.html" class="card" style="padding: 2rem 1.5rem; text-align: center; border-left: 4px solid var(--secondary-blue);">
+                <a href="pages/marketplace.html" class="card"
+                    style="padding: 2rem 1.5rem; text-align: center; border-left: 4px solid var(--secondary-blue);">
                     <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">🛍️</div>
                     <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">Marketplace</h3>
-                    <p style="font-size: 0.9rem; color: var(--neutral-text-muted);">Buy & sell verified student products, gadgets, books, and gear.</p>
+                    <p style="font-size: 0.9rem; color: var(--neutral-text-muted);">Buy & sell verified student
+                        products, gadgets, books, and gear.</p>
                 </a>
 
-                <a href="pages/tuck-shop.html" class="card" style="padding: 2rem 1.5rem; text-align: center; border-left: 4px solid var(--accent-orange);">
+                <a href="pages/tuck-shop.html" class="card"
+                    style="padding: 2rem 1.5rem; text-align: center; border-left: 4px solid var(--accent-orange); position: relative;">
+                    <span
+                        style="position: absolute; top: 12px; right: 12px; background: #DCFCE7; color: #166534; font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 999px;">💬
+                        WhatsApp Direct</span>
                     <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">✏️</div>
                     <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">Tuck Shop</h3>
-                    <p style="font-size: 0.9rem; color: var(--neutral-text-muted);">Stationery, practical sheets, notebooks & exam essentials.</p>
+                    <p style="font-size: 0.9rem; color: var(--neutral-text-muted);">Stationery, practical sheets,
+                        notebooks & direct WhatsApp ordering.</p>
                 </a>
 
-                <a href="pages/services.html" class="card" style="padding: 2rem 1.5rem; text-align: center; border-left: 4px solid var(--success-green);">
+                <a href="pages/services.html" class="card"
+                    style="padding: 2rem 1.5rem; text-align: center; border-left: 4px solid var(--success-green);">
                     <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">🛠️</div>
                     <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">Services</h3>
-                    <p style="font-size: 0.9rem; color: var(--neutral-text-muted);">Discover student services from tech support to creative design.</p>
+                    <p style="font-size: 0.9rem; color: var(--neutral-text-muted);">Discover student services from tech
+                        support to creative design.</p>
                 </a>
 
-                <a href="pages/assignments.html" class="card" style="padding: 2rem 1.5rem; text-align: center; border-left: 4px solid #8B5CF6;">
+                <a href="pages/assignments.html" class="card"
+                    style="padding: 2rem 1.5rem; text-align: center; border-left: 4px solid #8B5CF6;">
                     <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">📚</div>
                     <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">Academic Assistance</h3>
-                    <p style="font-size: 0.9rem; color: var(--neutral-text-muted);">Find qualified campus peers for project guidance and help.</p>
+                    <p style="font-size: 0.9rem; color: var(--neutral-text-muted);">Find qualified campus peers for
+                        project guidance and help.</p>
                 </a>
             </div>
         </div>
@@ -152,7 +219,8 @@
     <!-- TRENDING PRODUCTS SECTION -->
     <section class="section">
         <div class="container">
-            <div style="display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem;">
+            <div
+                style="display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem;">
                 <div>
                     <span class="section-subtitle">Hot Listings</span>
                     <h2 class="section-title" style="margin-bottom: 0;">Trending Products</h2>
@@ -175,51 +243,69 @@
             </div>
 
             <div class="grid grid-cols-3">
-                <a href="pages/marketplace.html?cat=Academic" class="card" style="padding: 1.5rem; display: flex; align-items: center; gap: 1rem;">
-                    <span style="font-size: 2rem; background: var(--secondary-blue-light); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-md);">📖</span>
+                <a href="pages/marketplace.html?cat=Academic" class="card"
+                    style="padding: 1.5rem; display: flex; align-items: center; gap: 1rem;">
+                    <span
+                        style="font-size: 2rem; background: var(--secondary-blue-light); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-md);">📖</span>
                     <div>
                         <h4 style="font-size: 1.1rem;">Academic</h4>
-                        <span style="font-size: 0.85rem; color: var(--neutral-text-muted);">Calculators, textbooks, kits</span>
+                        <span style="font-size: 0.85rem; color: var(--neutral-text-muted);">Calculators, textbooks,
+                            kits</span>
                     </div>
                 </a>
 
-                <a href="pages/marketplace.html?cat=Electronics" class="card" style="padding: 1.5rem; display: flex; align-items: center; gap: 1rem;">
-                    <span style="font-size: 2rem; background: var(--secondary-blue-light); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-md);">💻</span>
+                <a href="pages/marketplace.html?cat=Electronics" class="card"
+                    style="padding: 1.5rem; display: flex; align-items: center; gap: 1rem;">
+                    <span
+                        style="font-size: 2rem; background: var(--secondary-blue-light); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-md);">💻</span>
                     <div>
                         <h4 style="font-size: 1.1rem;">Electronics</h4>
-                        <span style="font-size: 0.85rem; color: var(--neutral-text-muted);">Laptops, headphones, gadgets</span>
+                        <span style="font-size: 0.85rem; color: var(--neutral-text-muted);">Laptops, headphones,
+                            gadgets</span>
                     </div>
                 </a>
 
-                <a href="pages/marketplace.html?cat=Fashion" class="card" style="padding: 1.5rem; display: flex; align-items: center; gap: 1rem;">
-                    <span style="font-size: 2rem; background: var(--secondary-blue-light); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-md);">👕</span>
+                <a href="pages/marketplace.html?cat=Fashion" class="card"
+                    style="padding: 1.5rem; display: flex; align-items: center; gap: 1rem;">
+                    <span
+                        style="font-size: 2rem; background: var(--secondary-blue-light); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-md);">👕</span>
                     <div>
                         <h4 style="font-size: 1.1rem;">Fashion</h4>
-                        <span style="font-size: 0.85rem; color: var(--neutral-text-muted);">Hoodies, apparel, accessories</span>
+                        <span style="font-size: 0.85rem; color: var(--neutral-text-muted);">Hoodies, apparel,
+                            accessories</span>
                     </div>
                 </a>
 
-                <a href="pages/marketplace.html?cat=Lifestyle" class="card" style="padding: 1.5rem; display: flex; align-items: center; gap: 1rem;">
-                    <span style="font-size: 2rem; background: var(--secondary-blue-light); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-md);">💡</span>
+                <a href="pages/marketplace.html?cat=Lifestyle" class="card"
+                    style="padding: 1.5rem; display: flex; align-items: center; gap: 1rem;">
+                    <span
+                        style="font-size: 2rem; background: var(--secondary-blue-light); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-md);">💡</span>
                     <div>
                         <h4 style="font-size: 1.1rem;">Lifestyle</h4>
-                        <span style="font-size: 0.85rem; color: var(--neutral-text-muted);">Desk lamps, hostel essentials</span>
+                        <span style="font-size: 0.85rem; color: var(--neutral-text-muted);">Desk lamps, hostel
+                            essentials</span>
                     </div>
                 </a>
 
-                <a href="pages/marketplace.html?cat=Gaming" class="card" style="padding: 1.5rem; display: flex; align-items: center; gap: 1rem;">
-                    <span style="font-size: 2rem; background: var(--secondary-blue-light); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-md);">🎮</span>
+                <a href="pages/marketplace.html?cat=Gaming" class="card"
+                    style="padding: 1.5rem; display: flex; align-items: center; gap: 1rem;">
+                    <span
+                        style="font-size: 2rem; background: var(--secondary-blue-light); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-md);">🎮</span>
                     <div>
                         <h4 style="font-size: 1.1rem;">Gaming</h4>
-                        <span style="font-size: 0.85rem; color: var(--neutral-text-muted);">Keyboards, controllers, gear</span>
+                        <span style="font-size: 0.85rem; color: var(--neutral-text-muted);">Keyboards, controllers,
+                            gear</span>
                     </div>
                 </a>
 
-                <a href="pages/tuck-shop.html" class="card" style="padding: 1.5rem; display: flex; align-items: center; gap: 1rem;">
-                    <span style="font-size: 2rem; background: var(--accent-orange-light); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-md);">✏️</span>
+                <a href="pages/tuck-shop.html" class="card"
+                    style="padding: 1.5rem; display: flex; align-items: center; gap: 1rem;">
+                    <span
+                        style="font-size: 2rem; background: var(--accent-orange-light); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-md);">✏️</span>
                     <div>
                         <h4 style="font-size: 1.1rem;">Stationery</h4>
-                        <span style="font-size: 0.85rem; color: var(--neutral-text-muted);">Notebooks, pens, practical sheets</span>
+                        <span style="font-size: 0.85rem; color: var(--neutral-text-muted);">Notebooks, pens, practical
+                            sheets</span>
                     </div>
                 </a>
             </div>
@@ -250,83 +336,118 @@
             </div>
 
             <div class="grid grid-cols-4">
-                <div style="padding: 1.5rem; background: rgba(255,255,255,0.05); border-radius: var(--radius-lg); border: 1px solid rgba(255,255,255,0.1);">
+                <div
+                    style="padding: 1.5rem; background: rgba(255,255,255,0.05); border-radius: var(--radius-lg); border: 1px solid rgba(255,255,255,0.1);">
                     <div style="font-size: 2rem; margin-bottom: 1rem;">🎓</div>
-                    <h3 style="font-size: 1.15rem; color: var(--neutral-white); margin-bottom: 0.5rem;">Campus Focused</h3>
-                    <p style="font-size: 0.88rem; color: #94A3B8;">Built specifically for university students with verified college credentials and hostel delivery.</p>
+                    <h3 style="font-size: 1.15rem; color: var(--neutral-white); margin-bottom: 0.5rem;">Campus Focused
+                    </h3>
+                    <p style="font-size: 0.88rem; color: #94A3B8;">Built specifically for university students with
+                        verified college credentials and hostel delivery.</p>
                 </div>
 
-                <div style="padding: 1.5rem; background: rgba(255,255,255,0.05); border-radius: var(--radius-lg); border: 1px solid rgba(255,255,255,0.1);">
+                <div
+                    style="padding: 1.5rem; background: rgba(255,255,255,0.05); border-radius: var(--radius-lg); border: 1px solid rgba(255,255,255,0.1);">
                     <div style="font-size: 2rem; margin-bottom: 1rem;">⚡</div>
-                    <h3 style="font-size: 1.15rem; color: var(--neutral-white); margin-bottom: 0.5rem;">Easy Buying & Selling</h3>
-                    <p style="font-size: 0.88rem; color: #94A3B8;">List your items in 60 seconds with fixed pricing or real-time campus bidding system.</p>
+                    <h3 style="font-size: 1.15rem; color: var(--neutral-white); margin-bottom: 0.5rem;">Easy Buying &
+                        Selling</h3>
+                    <p style="font-size: 0.88rem; color: #94A3B8;">List your items in 60 seconds with fixed pricing or
+                        real-time campus bidding system.</p>
                 </div>
 
-                <div style="padding: 1.5rem; background: rgba(255,255,255,0.05); border-radius: var(--radius-lg); border: 1px solid rgba(255,255,255,0.1);">
+                <div
+                    style="padding: 1.5rem; background: rgba(255,255,255,0.05); border-radius: var(--radius-lg); border: 1px solid rgba(255,255,255,0.1);">
                     <div style="font-size: 2rem; margin-bottom: 1rem;">💬</div>
-                    <h3 style="font-size: 1.15rem; color: var(--neutral-white); margin-bottom: 0.5rem;">Direct Communication</h3>
-                    <p style="font-size: 0.88rem; color: #94A3B8;">Instantly connect with student sellers on WhatsApp with pre-filled product order messages.</p>
+                    <h3 style="font-size: 1.15rem; color: var(--neutral-white); margin-bottom: 0.5rem;">Direct
+                        Communication</h3>
+                    <p style="font-size: 0.88rem; color: #94A3B8;">Instantly connect with student sellers on WhatsApp
+                        with pre-filled product order messages.</p>
                 </div>
 
-                <div style="padding: 1.5rem; background: rgba(255,255,255,0.05); border-radius: var(--radius-lg); border: 1px solid rgba(255,255,255,0.1);">
+                <div
+                    style="padding: 1.5rem; background: rgba(255,255,255,0.05); border-radius: var(--radius-lg); border: 1px solid rgba(255,255,255,0.1);">
                     <div style="font-size: 2rem; margin-bottom: 1rem;">🌟</div>
-                    <h3 style="font-size: 1.15rem; color: var(--neutral-white); margin-bottom: 0.5rem;">Student Services</h3>
-                    <p style="font-size: 0.88rem; color: #94A3B8;">Hire peer experts for project assistance, design, technical troubleshooting, and tutoring.</p>
+                    <h3 style="font-size: 1.15rem; color: var(--neutral-white); margin-bottom: 0.5rem;">Student Services
+                    </h3>
+                    <p style="font-size: 0.88rem; color: #94A3B8;">Hire peer experts for project assistance, design,
+                        technical troubleshooting, and tutoring.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- FOOTER -->
-    <footer class="footer">
+    <footer class="footer"
+        style="background-color: var(--primary-charcoal); color: var(--neutral-white); padding-top: 4rem;">
         <div class="container">
-            <div class="footer-grid">
+            <div class="footer-grid"
+                style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-bottom: 3rem;">
                 <div class="footer-brand">
-                    <a href="index.html" class="logo">
-                        CAMPUS<span>MART</span>
-                    </a>
-                    <p class="footer-desc">
-                        "Your Campus. Your Marketplace."<br>
-                        The ultimate student-to-student digital marketplace designed for campus life.
+                    <h4 class="footer-title" style="margin-bottom: 1rem; color: #fff; font-size: 1.25rem;">CampusMart
+                    </h4>
+                    <p class="footer-desc" style="font-size: 0.9rem; line-height: 1.6; color: #94A3B8;">
+                        Your ultimate student-to-student marketplace. Buy, sell, and connect with your campus community
+                        instantly.
                     </p>
                 </div>
 
                 <div>
-                    <h4 class="footer-title">Navigation</h4>
-                    <ul class="footer-links">
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="pages/marketplace.html">Marketplace</a></li>
-                        <li><a href="pages/tuck-shop.html">Tuck Shop</a></li>
-                        <li><a href="pages/services.html">Services</a></li>
-                        <li><a href="pages/assignments.html">Academic Assistance</a></li>
+                    <h4 class="footer-title" style="margin-bottom: 1rem; color: #fff; font-size: 1.15rem;">Quick Links
+                    </h4>
+                    <ul class="footer-links" style="list-style: none; padding: 0;">
+                        <li style="margin-bottom: 0.5rem;"><a href="index.html"
+                                style="color: #94A3B8; text-decoration: none;">Home</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="pages/marketplace.html"
+                                style="color: #94A3B8; text-decoration: none;">Marketplace</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="pages/services.html"
+                                style="color: #94A3B8; text-decoration: none;">Services</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="pages/offers.html"
+                                style="color: #94A3B8; text-decoration: none;">Offers</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="#"
+                                style="color: #94A3B8; text-decoration: none;">Contact</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="#"
+                                style="color: #94A3B8; text-decoration: none;">Design</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="#"
+                                style="color: #94A3B8; text-decoration: none;">CLIENT SHOW CASE</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="#"
+                                style="color: #94A3B8; text-decoration: none;">REVIEWS</a></li>
                     </ul>
                 </div>
 
                 <div>
-                    <h4 class="footer-title">User Hub</h4>
-                    <ul class="footer-links">
-                        <li><a href="pages/wishlist.html">Wishlist</a></li>
-                        <li><a href="pages/cart.html">Shopping Cart</a></li>
-                        <li><a href="pages/orders.html">My Orders</a></li>
-                        <li><a href="pages/create-listing.html">Sell Product</a></li>
-                        <li><a href="pages/login.html">Account Login</a></li>
+                    <h4 class="footer-title" style="margin-bottom: 1rem; color: #fff; font-size: 1.15rem;">Contact Us
+                    </h4>
+                    <ul class="footer-links footer-contact" style="list-style: none; padding: 0;">
+                        <li
+                            style="display: flex; align-items: flex-start; gap: 0.5rem; color: #94A3B8; margin-bottom: 0.75rem;">
+                            <span style="margin-top:2px;">📍</span> CampusMart, Sec-82, SAS Nagar, Punjab</li>
+                        <li
+                            style="display: flex; align-items: center; gap: 0.5rem; color: #94A3B8; margin-bottom: 0.75rem;">
+                            <span>📞</span> (+91) 98765*</li>
+                        <li
+                            style="display: flex; align-items: center; gap: 0.5rem; color: #94A3B8; margin-bottom: 0.75rem;">
+                            <span>✉️</span> contact@campusmart.com</li>
                     </ul>
                 </div>
 
                 <div>
-                    <h4 class="footer-title">Support</h4>
-                    <ul class="footer-links">
-                        <li><a href="#">Campus Guidelines</a></li>
-                        <li><a href="#">Trust & Safety</a></li>
-                        <li><a href="#">Bidding Rules</a></li>
-                        <li><a href="#">FAQ & Help</a></li>
-                    </ul>
+                    <h4 class="footer-title" style="margin-bottom: 1rem; color: #fff; font-size: 1.15rem;">Follow Us
+                    </h4>
+                    <div class="social-icons" style="display: flex; gap: 0.75rem;">
+                        <a href="#"
+                            style="width: 35px; height: 35px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: #fff; text-decoration: none; font-weight: bold;">f</a>
+                        <a href="#"
+                            style="width: 35px; height: 35px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: #fff; text-decoration: none; font-weight: bold;">ig</a>
+                        <a href="#"
+                            style="width: 35px; height: 35px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: #fff; text-decoration: none; font-weight: bold;">p</a>
+                        <a href="#"
+                            style="width: 35px; height: 35px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: #fff; text-decoration: none; font-weight: bold;">h</a>
+                    </div>
                 </div>
             </div>
 
-            <div class="footer-bottom">
-                <p>© 2026 CampusMart. Built for students.</p>
-                <p>Designed with Vanilla JS & CSS3</p>
+            <div class="footer-bottom"
+                style="padding: 1.5rem 0; border-top: 1px solid rgba(255,255,255,0.1); text-align: center; color: #94A3B8; font-size: 0.9rem;">
+                <p>© 2025 CampusMart. All rights reserved.</p>
             </div>
         </div>
     </footer>
@@ -375,7 +496,7 @@
                                 <span style="font-size:0.8rem; color:var(--neutral-text-muted)">By ${p.sellerName}</span>
                             </div>
                             <div class="product-actions">
-                                <a href="pages/product.html?id=${p.id}" class="btn btn-outline btn-sm btn-block">View Details</a>
+                                <a href="pages/product.html?id=${p.id}" onclick="localStorage.setItem('current_product_id', '${p.id}')" class="btn btn-outline btn-sm btn-block">View Details</a>
                                 <button onclick="quickAddToCart('${p.id}')" class="btn btn-accent btn-sm">🛒 Add</button>
                             </div>
                         </div>
@@ -435,4 +556,5 @@
         }
     </script>
 </body>
+
 </html>
