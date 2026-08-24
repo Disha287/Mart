@@ -428,6 +428,10 @@
     <!-- Page Specific Script for Home Rendering -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // Disable browser's automatic scroll position restoration to prevent carousel offset bugs
+            if ('scrollRestoration' in history) {
+                history.scrollRestoration = 'manual';
+            }
             renderHomeTrendingProducts();
             renderHomeServicesPreview();
             initTrendingCarousel();
@@ -483,49 +487,86 @@
             const nextBtn = document.getElementById('trending-next');
             if (!container) return;
 
-            let scrollSpeed = 0.8; // Pixels per frame
+            let scrollSpeed = 1.2; // Pixels per frame (1.2px @ 60fps = ~72px/sec)
+            let currentScroll = 0;
             let isHovered = false;
+            let isNavigating = false;
+            let isProgrammaticScroll = false;
             let animationFrameId = null;
+            let navigationPauseTimeout = null;
+
+            // Sync continuous scroll pointer with any manual/external scroll actions
+            container.addEventListener('scroll', () => {
+                if (!isProgrammaticScroll) {
+                    currentScroll = container.scrollLeft;
+                }
+            });
 
             // Smooth continuous scroll animation loop
             function scrollLoop() {
-                if (!isHovered) {
-                    container.scrollLeft += scrollSpeed;
+                if (!isHovered && !isNavigating) {
+                    // Increment the float position accumulator
+                    currentScroll += scrollSpeed;
                     
                     // Halfway mark represents the end of the original list of 12 items
                     const midPoint = container.scrollWidth / 2;
-                    if (container.scrollLeft >= midPoint) {
+                    if (midPoint > 0 && currentScroll >= midPoint) {
                         // Reset scroll position back to beginning seamlessly
-                        container.scrollLeft = 0;
+                        currentScroll = 0;
                     }
+                    
+                    isProgrammaticScroll = true;
+                    container.scrollLeft = Math.round(currentScroll);
+                    
+                    // Reset programmatic flag after scroll event dispatch queue executes
+                    setTimeout(() => {
+                        isProgrammaticScroll = false;
+                    }, 0);
                 }
                 animationFrameId = requestAnimationFrame(scrollLoop);
             }
 
-            // Start continuous scroll
-            animationFrameId = requestAnimationFrame(scrollLoop);
+            // Start continuous scroll after layout settles
+            setTimeout(() => {
+                currentScroll = container.scrollLeft;
+                animationFrameId = requestAnimationFrame(scrollLoop);
+            }, 250);
+
+            // Temporary pause during manual button navigation to prevent animation fights
+            function pauseForNavigation() {
+                isNavigating = true;
+                if (navigationPauseTimeout) {
+                    clearTimeout(navigationPauseTimeout);
+                }
+                navigationPauseTimeout = setTimeout(() => {
+                    isNavigating = false;
+                    currentScroll = container.scrollLeft;
+                }, 600);
+            }
 
             // Manual controls
             if (prevBtn) {
                 prevBtn.addEventListener('click', () => {
+                    pauseForNavigation();
                     container.scrollBy({ left: -320, behavior: 'smooth' });
-                    // Loop back safety bounds check
                     setTimeout(() => {
                         if (container.scrollLeft <= 2) {
                             container.scrollLeft = container.scrollWidth / 2;
                         }
-                    }, 400);
+                        currentScroll = container.scrollLeft;
+                    }, 450);
                 });
             }
             if (nextBtn) {
                 nextBtn.addEventListener('click', () => {
+                    pauseForNavigation();
                     container.scrollBy({ left: 320, behavior: 'smooth' });
-                    // Loop back safety bounds check
                     setTimeout(() => {
                         if (container.scrollLeft >= container.scrollWidth / 2 - 2) {
                             container.scrollLeft = 0;
                         }
-                    }, 400);
+                        currentScroll = container.scrollLeft;
+                    }, 450);
                 });
             }
 
@@ -535,6 +576,7 @@
             });
             container.addEventListener('mouseleave', () => {
                 isHovered = false;
+                currentScroll = container.scrollLeft; // Sync scroll pos immediately
             });
 
             // Clean up animation frames
