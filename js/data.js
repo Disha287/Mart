@@ -59,7 +59,7 @@ const SEED_DATA = {
             trustScore: 92,
             location: 'Hostel Block B, Room 204',
             description: 'Original Casio ClassWiz scientific calculator in mint condition with dual power solar battery. Essential for Engineering Mathematics, Circuit Theory, and Physics.',
-            image: 'assets/images/campus-fallback.jpg',
+            image: 'assets/images/products/unsplash_calculator.jpg',
             rating: 4.8,
             bids: [],
             offers: [],
@@ -331,7 +331,7 @@ const SEED_DATA = {
             category: 'Pens',
             price: 180,
             stock: 35,
-            image: 'assets/images/campus-fallback.jpg',
+            image: 'assets/images/products/unsplash_pens.jpg',
             description: 'Smooth quick-dry gel ink ideal for fast exam writing.'
         },
         {
@@ -411,7 +411,7 @@ const SEED_DATA = {
             trustScore: 99,
             completedCount: 52,
             phone: '9877665544',
-            image: 'assets/images/campus-fallback.jpg'
+            image: 'assets/images/products/unsplash_designer.jpg'
         },
         {
             id: 'srv_prov_3',
@@ -439,7 +439,7 @@ const SEED_DATA = {
             trustScore: 98,
             completedCount: 48,
             phone: '9822110099',
-            image: 'assets/images/campus-fallback.jpg'
+            image: 'assets/images/products/unsplash_cake.jpg'
         }
     ],
 
