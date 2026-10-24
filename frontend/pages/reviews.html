@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Student Reviews & Trust Ratings | CampusMart</title>
+    <meta name="description" content="Read 100% verified campus peer reviews, seller trust scores, and student testimonials on CampusMart.">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    <link rel="stylesheet" href="../css/animations.css">
+</head>
+<body>
+
+    <!-- Header / Navbar -->
+    <header class="header">
+        <div class="container navbar">
+            <a href="../index.html" class="logo"><img src="../assets/images/logo.png" alt="CampusMart Logo"></a>
+
+            <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <nav class="nav-menu" id="nav-menu">
+                <a href="../index.html" class="nav-link">Home</a>
+                
+                <div class="dropdown">
+                    <a href="marketplace.html" class="nav-link">Marketplace ▼</a>
+                    <div class="dropdown-menu">
+                        <a href="marketplace.html?cat=Academic" class="dropdown-item">📚 Academic & Books</a>
+                        <a href="marketplace.html?cat=Electronics" class="dropdown-item">💻 Electronics & Tech</a>
+                        <a href="marketplace.html?cat=Fashion" class="dropdown-item">👕 Clothing & Fashion</a>
+                        <a href="marketplace.html?cat=Food" class="dropdown-item">🍔 Food & Snacks</a>
+                        <a href="marketplace.html?cat=Birthday%20%26%20Events" class="dropdown-item">🎂 Birthday & Celebrations</a>
+                        <a href="marketplace.html?cat=Lifestyle" class="dropdown-item">🏠 Lifestyle & Hostel</a>
+                        <a href="marketplace.html?cat=Gaming" class="dropdown-item">🎮 Gaming & Sports</a>
+                        <a href="marketplace.html?cat=Design%20%26%20Creative" class="dropdown-item">🎨 Design & Creative</a>
+                        <a href="marketplace.html?cat=Hardware%20%2F%20Technical%20Help" class="dropdown-item">🔧 Hardware / Tech Support</a>
+                    </div>
+                </div>
+
+                <a href="tuck-shop.html" class="nav-link">Tuck Shop</a>
+                <a href="assignments.html" class="nav-link">Academic Help</a>
+                <a href="donations.html" class="nav-link">Donations</a>
+                <a href="orders.html" class="nav-link">Orders</a>
+                <a href="create-listing.html" class="nav-link">Sell</a>
+
+                <div class="nav-actions">
+                    <a href="wishlist.html" class="nav-icon-btn" title="Wishlist">
+                        ❤️ <span class="badge-count" id="nav-wishlist-badge" style="display:none;">0</span>
+                    </a>
+                    <a href="cart.html" class="nav-icon-btn" title="Cart">
+                        🛒 <span class="badge-count" id="nav-cart-badge" style="display:none;">0</span>
+                    </a>
+                    <div id="nav-user-btn"></div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <div style="background: linear-gradient(135deg, #172554 0%, #1E2332 100%); color: var(--neutral-white); padding: 3.5rem 0; text-align: center;">
+        <div class="container">
+            <span style="background: rgba(255,155,113,0.25); color: var(--accent); padding: 5px 16px; border-radius: 999px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; display: inline-block; margin-bottom: 0.75rem;">
+                Verified Student Feedback
+            </span>
+            <h1 style="font-size: 2.6rem; color: var(--neutral-white); margin-bottom: 0.75rem;">⭐ CampusMart Reviews</h1>
+            <p style="color: #94A3B8; max-width: 650px; margin: 0 auto; font-size: 1.1rem; line-height: 1.6;">
+                100% authentic ratings from university peers. See why thousands of students trust CampusMart for buying, selling, and academic services.
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="section">
+        <div class="container">
+            
+            <!-- Trust Stats Grid -->
+            <div class="grid grid-cols-4" style="gap: 1.5rem; margin-bottom: 3.5rem;">
+                <div class="card" style="padding: 1.75rem; text-align: center; border-top: 4px solid #F59E0B;">
+                    <div style="font-size: 2.5rem; font-weight: 800; color: var(--primary-charcoal); margin-bottom: 0.25rem;">4.9 / 5</div>
+                    <div style="color: #F59E0B; font-size: 1.1rem; margin-bottom: 0.4rem;">★★★★★</div>
+                    <p style="font-size: 0.85rem; color: var(--neutral-text-muted); margin: 0;">Overall Satisfaction Rating</p>
+                </div>
+
+                <div class="card" style="padding: 1.75rem; text-align: center; border-top: 4px solid var(--secondary-blue);">
+                    <div style="font-size: 2.5rem; font-weight: 800; color: var(--primary-charcoal); margin-bottom: 0.25rem;">1,200+</div>
+                    <div style="font-size: 1rem; font-weight: 700; color: var(--secondary-blue); margin-bottom: 0.4rem;">Orders Handed Over</div>
+                    <p style="font-size: 0.85rem; color: var(--neutral-text-muted); margin: 0;">In-person hostel & campus pickups</p>
+                </div>
+
+                <div class="card" style="padding: 1.75rem; text-align: center; border-top: 4px solid #10B981;">
+                    <div style="font-size: 2.5rem; font-weight: 800; color: var(--primary-charcoal); margin-bottom: 0.25rem;">98.4%</div>
+                    <div style="font-size: 1rem; font-weight: 700; color: #10B981; margin-bottom: 0.4rem;">Seller Trust Score</div>
+                    <p style="font-size: 0.85rem; color: var(--neutral-text-muted); margin: 0;">Verified college email credentials</p>
+                </div>
+
+                <div class="card" style="padding: 1.75rem; text-align: center; border-top: 4px solid var(--accent-orange);">
+                    <div style="font-size: 2.5rem; font-weight: 800; color: var(--primary-charcoal); margin-bottom: 0.25rem;">450+</div>
+                    <div style="font-size: 1rem; font-weight: 700; color: var(--accent-dark); margin-bottom: 0.4rem;">Offers Negotiated</div>
+                    <p style="font-size: 0.85rem; color: var(--neutral-text-muted); margin: 0;">Fair prices agreed via Offer tool</p>
+                </div>
+            </div>
+
+            <!-- Action Bar -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+                <!-- Filter Pills -->
+                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;" id="review-filter-tabs">
+                    <button class="btn btn-primary btn-sm review-filter-btn" onclick="filterReviews('all', this)">All Reviews</button>
+                    <button class="btn btn-outline btn-sm review-filter-btn" onclick="filterReviews('marketplace', this)">🛍️ Marketplace Purchases</button>
+                    <button class="btn btn-outline btn-sm review-filter-btn" onclick="filterReviews('offers', this)">🏷️ Price Negotiation Offers</button>
+                    <button class="btn btn-outline btn-sm review-filter-btn" onclick="filterReviews('services', this)">🛠️ Student Skill Services</button>
+                    <button class="btn btn-outline btn-sm review-filter-btn" onclick="filterReviews('tuck', this)">✏️ Tuck Shop Deliveries</button>
+                </div>
+
+                <button onclick="openModal('add-review-modal')" class="btn btn-accent">
+                    ✍️ Write a Campus Review
+                </button>
+            </div>
+
+            <!-- Reviews Container -->
+            <div class="grid grid-cols-3" style="gap: 1.5rem; margin-bottom: 3.5rem;" id="reviews-list-container">
+                <!-- Dynamically populated by JS -->
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Write Review Modal -->
+    <div class="modal-overlay" id="add-review-modal">
+        <div class="modal-container" style="max-width: 520px;">
+            <div class="modal-header">
+                <h3 class="modal-title">✍️ Submit a Peer Review</h3>
+                <button class="modal-close" onclick="closeModal('add-review-modal')">✕</button>
+            </div>
+            <form id="add-review-form" onsubmit="handleReviewSubmit(event)">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="form-label">Your Full Name *</label>
+                        <input type="text" id="review-author" class="form-control" placeholder="e.g. Ananya Sen" required>
+                    </div>
+
+                    <div class="grid grid-cols-2" style="gap: 1rem;">
+                        <div class="form-group">
+                            <label class="form-label">Category *</label>
+                            <select id="review-cat" class="form-select" required>
+                                <option value="marketplace">🛍️ Marketplace Item</option>
+                                <option value="offers">🏷️ Price Negotiation Offer</option>
+                                <option value="services">🛠️ Student Skill Service</option>
+                                <option value="tuck">✏️ Tuck Shop Order</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Rating *</label>
+                            <select id="review-rating" class="form-select" required>
+                                <option value="5">⭐⭐⭐⭐⭐ (5/5)</option>
+                                <option value="4">⭐⭐⭐⭐ (4/5)</option>
+                                <option value="3">⭐⭐⭐ (3/5)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Item / Service Name *</label>
+                        <input type="text" id="review-item" class="form-control" placeholder="e.g. Casio Scientific Calculator or Python Tutor" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Your Review Comment *</label>
+                        <textarea id="review-comment" class="form-control" rows="3" placeholder="Share your experience dealing with this student peer..." required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="closeModal('add-review-modal')" class="btn btn-outline">Cancel</button>
+                    <button type="submit" class="btn btn-accent">Publish Review</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+                    <!-- WHY CAMPUSMART FEATURE BLOCKS -->
+    <section class="section" style="background-color: #171B26; color: var(--neutral-white);">
+        <div class="container">
+            <div class="section-title-wrap" style="text-align: center; margin-bottom: 2.5rem;">
+                <span class="section-subtitle" style="color: var(--accent-orange); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Built For Students</span>
+                <h2 class="section-title" style="color: var(--neutral-white); margin-top: 0.5rem; font-size: 2rem;">Why Choose CampusMart?</h2>
+            </div>
+
+            <div class="grid grid-cols-4" style="gap: 1.5rem;">
+                <div style="padding: 1.5rem; background: #1E2332; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                    <div style="font-size: 1.5rem; margin-bottom: 0.75rem;">🎓</div>
+                    <h3 style="font-size: 1.1rem; color: var(--neutral-white); margin-bottom: 0.5rem;">Campus Focused</h3>
+                    <p style="font-size: 0.85rem; color: #94A3B8; line-height: 1.6;">Built specifically for university students with verified college credentials and hostel delivery.</p>
+                </div>
+
+                <div style="padding: 1.5rem; background: #1E2332; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                    <div style="font-size: 1.5rem; margin-bottom: 0.75rem;">⚡</div>
+                    <h3 style="font-size: 1.1rem; color: var(--neutral-white); margin-bottom: 0.5rem;">Easy Buying & Selling</h3>
+                    <p style="font-size: 0.85rem; color: #94A3B8; line-height: 1.6;">List your items in 60 seconds with fixed pricing or real-time campus bidding system.</p>
+                </div>
+
+                <div style="padding: 1.5rem; background: #1E2332; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                    <div style="font-size: 1.5rem; margin-bottom: 0.75rem;">💬</div>
+                    <h3 style="font-size: 1.1rem; color: var(--neutral-white); margin-bottom: 0.5rem;">Direct Communication</h3>
+                    <p style="font-size: 0.85rem; color: #94A3B8; line-height: 1.6;">Instantly connect with student sellers on WhatsApp with pre-filled product order messages.</p>
+                </div>
+
+                <div style="padding: 1.5rem; background: #1E2332; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                    <div style="font-size: 1.5rem; margin-bottom: 0.75rem;">🌟</div>
+                    <h3 style="font-size: 1.1rem; color: var(--neutral-white); margin-bottom: 0.5rem;">Student Services</h3>
+                    <p style="font-size: 0.85rem; color: #94A3B8; line-height: 1.6;">Hire peer experts for project assistance, design, technical troubleshooting, and tutoring.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer" style="background-color: #171B26; border-top: none; padding-top: 4rem; padding-bottom: 2rem;">
+        <div class="container">
+            <div class="footer-grid" style="grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 2rem; margin-bottom: 3rem; text-align: left;">
+                <div class="footer-brand">
+                    <h3 style="color: #FFFFFF; font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem;"><a href="../index.html" style="color: #FFFFFF; text-decoration: none;">CampusMart</a></h3>
+                    <p class="footer-desc" style="color: #94A3B8; font-size: 0.9rem; line-height: 1.6; max-width: 250px;">
+                        Your ultimate student-to-student marketplace. Buy, sell, and connect with your campus community instantly.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="footer-title" style="color: #FFFFFF; font-size: 1rem; margin-bottom: 1.25rem;">Quick Links</h4>
+                    <ul class="footer-links" style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.75rem;">
+                        <li><a href="../index.html" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem;">Home</a></li>
+                        <li><a href="marketplace.html" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem;">Marketplace</a></li>
+                        <li><a href="services.html" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem;">Services</a></li>
+                        <li><a href="offers.html" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem;">Offers</a></li>
+                        <li><a href="contact.html" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem;">Contact</a></li>
+                        <li><a href="services.html?cat=Design%20%26%20Creative" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem;">Design</a></li>
+                        <li><a href="showcase.html" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem; text-transform: uppercase;">CLIENT SHOW CASE</a></li>
+                        <li><a href="reviews.html" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem; text-transform: uppercase;">REVIEWS</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="footer-title" style="color: #FFFFFF; font-size: 1rem; margin-bottom: 1.25rem;">Contact Us</h4>
+                    <ul class="footer-links" style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 1rem;">
+                        <li style="display: flex; gap: 0.5rem; color: #94A3B8; font-size: 0.9rem; align-items: flex-start;">
+                            <span style="color: #EF4444;">📍</span> <a href="contact.html" style="color: #94A3B8; text-decoration: none;">CampusMart, Sec-82, SAS Nagar, Punjab</a>
+                        </li>
+                        <li style="display: flex; gap: 0.5rem; color: #94A3B8; font-size: 0.9rem; align-items: center;">
+                            <span>📞</span> <a href="tel:+919876543210" style="color: #94A3B8; text-decoration: none;">(+91) 98765-XXXXX</a>
+                        </li>
+                        <li style="display: flex; gap: 0.5rem; color: #94A3B8; font-size: 0.9rem; align-items: center;">
+                            <span>✉️</span> <a href="mailto:contact@campusmart.com" style="color: #94A3B8; text-decoration: none;">contact@campusmart.com</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="footer-title" style="color: #FFFFFF; font-size: 1rem; margin-bottom: 1.25rem;">Follow Us</h4>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" title="Facebook" style="width: 32px; height: 32px; background: #334155; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 0.85rem;">f</a>
+                        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" title="Instagram" style="width: 32px; height: 32px; background: #334155; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 0.85rem;">ig</a>
+                        <a href="https://pinterest.com" target="_blank" rel="noopener noreferrer" title="Pinterest" style="width: 32px; height: 32px; background: #334155; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 0.85rem;">p</a>
+                        <a href="https://github.com/Disha287/Mart" target="_blank" rel="noopener noreferrer" title="GitHub" style="width: 32px; height: 32px; background: #334155; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 0.85rem;">h</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom" style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 1.5rem; text-align: left;">
+                <p style="color: #64748B; font-size: 0.85rem; margin: 0;">© 2025 CampusMart. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../js/data.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/app.js"></script>
+
+    <script>
+        const initialReviews = [
+            {
+                author: 'Rahul Sharma',
+                role: 'BTech CSE 3rd Year',
+                rating: 5,
+                category: 'offers',
+                item: 'Boat Rockerz 450 Over-Ear Headphones',
+                comment: 'Used the price offer feature to negotiate from ₹750 down to ₹600. Priya accepted within 15 minutes, and we met at Girls Hostel reception for pickup. Super smooth!',
+                date: '2026-10-21'
+            },
+            {
+                author: 'Aman Verma',
+                role: 'BTech ECE 3rd Year',
+                rating: 5,
+                category: 'marketplace',
+                item: 'Casio FX-991EX ClassWiz',
+                comment: 'Sold my scientific calculator to a 1st year fresher in less than 24 hours. No shipping hassle, just cash on campus handover.',
+                date: '2026-10-18'
+            },
+            {
+                author: 'Priya Patel',
+                role: 'BTech Mech 3rd Year',
+                rating: 5,
+                category: 'services',
+                item: 'Dual-Boot Ubuntu Setup by Karan',
+                comment: 'Karan helped me install Ubuntu and dual-boot my laptop. Very professional, fast, and patient with all my terminal questions!',
+                date: '2026-10-19'
+            },
+            {
+                author: 'Divya Sharma',
+                role: 'Design Lead',
+                rating: 5,
+                category: 'offers',
+                item: 'Casio Scientific Calculator Bargain',
+                comment: 'The buyer offers dashboard is so convenient! As a seller I can immediately see the proposed price and hit Accept or Reject in one tap.',
+                date: '2026-10-22'
+            },
+            {
+                author: 'Sahil Kapoor',
+                role: 'BTech Civil 2nd Year',
+                rating: 5,
+                category: 'tuck',
+                item: 'A4 Spiral Notebook Set x 3',
+                comment: 'Ordered via WhatsApp Tuck Shop link right from my hostel bed during exam prep. Got practical sheets delivered in under 2 hours.',
+                date: '2026-10-20'
+            },
+            {
+                author: 'Neha Mehra',
+                role: 'BTech CSE 4th Year',
+                rating: 4,
+                category: 'marketplace',
+                item: 'Engineering Graphics Drafter Tool Kit',
+                comment: 'Bought complete drawing kit at half the market price. In great condition and verified by student hostel coordinator.',
+                date: '2026-10-15'
+            }
+        ];
+
+        let activeReviewCategory = 'all';
+
+        document.addEventListener('DOMContentLoaded', function() {
+            let storedReviews = JSON.parse(localStorage.getItem('cm_user_reviews'));
+            if (!storedReviews) {
+                storedReviews = initialReviews;
+                localStorage.setItem('cm_user_reviews', JSON.stringify(storedReviews));
+            }
+            renderReviews();
+        });
+
+        function renderReviews() {
+            const container = document.getElementById('reviews-list-container');
+            if (!container) return;
+
+            let reviews = JSON.parse(localStorage.getItem('cm_user_reviews')) || initialReviews;
+
+            if (activeReviewCategory !== 'all') {
+                reviews = reviews.filter(r => r.category === activeReviewCategory);
+            }
+
+            let html = '';
+            reviews.forEach(r => {
+                const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+                html += `
+                    <div class="card" style="padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between;">
+                        <div>
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+                                <div>
+                                    <div style="color: #F59E0B; font-size: 1.05rem; letter-spacing: 2px;">${stars}</div>
+                                    <h4 style="font-size: 1rem; margin-top: 0.25rem;">${r.item}</h4>
+                                </div>
+                                <span class="badge-tag" style="background: #EBF2FF; color: #3B5CCC; font-size: 0.72rem;">Verified Student</span>
+                            </div>
+                            <p style="font-size: 0.85rem; color: var(--neutral-text-muted); line-height: 1.6; margin-bottom: 1.25rem;">
+                                "${r.comment}"
+                            </p>
+                        </div>
+                        <div style="border-top: 1px solid var(--neutral-border); padding-top: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <strong style="font-size: 0.85rem; display: block;">👤 ${r.author}</strong>
+                                <span style="font-size: 0.75rem; color: var(--neutral-text-muted);">${r.role || 'Campus Student'}</span>
+                            </div>
+                            <span style="font-size: 0.75rem; color: var(--neutral-text-muted);">${r.date}</span>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function filterReviews(category, btn) {
+            activeReviewCategory = category;
+            document.querySelectorAll('.review-filter-btn').forEach(b => {
+                b.classList.remove('btn-primary');
+                b.classList.add('btn-outline');
+            });
+            if (btn) {
+                btn.classList.remove('btn-outline');
+                btn.classList.add('btn-primary');
+            }
+            renderReviews();
+        }
+
+        function handleReviewSubmit(e) {
+            e.preventDefault();
+            const author = document.getElementById('review-author').value.trim();
+            const category = document.getElementById('review-cat').value;
+            const rating = Number(document.getElementById('review-rating').value);
+            const item = document.getElementById('review-item').value.trim();
+            const comment = document.getElementById('review-comment').value.trim();
+
+            const newRev = {
+                author: author,
+                role: 'Verified Campus Member',
+                rating: rating,
+                category: category,
+                item: item,
+                comment: comment,
+                date: new Date().toISOString().split('T')[0]
+            };
+
+            let storedReviews = JSON.parse(localStorage.getItem('cm_user_reviews')) || initialReviews;
+            storedReviews.unshift(newRev);
+            localStorage.setItem('cm_user_reviews', JSON.stringify(storedReviews));
+
+            closeModal('add-review-modal');
+            document.getElementById('add-review-form').reset();
+            showToast('Thank you! Your peer review has been published.', 'success');
+            renderReviews();
+        }
+    </script>
+</body>
+</html>

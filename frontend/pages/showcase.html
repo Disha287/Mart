@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Client Showcase | CampusMart</title>
+    <meta name="description" content="Discover student freelance work, design deliverables, technical setups, and campus project success stories delivered via CampusMart.">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    <link rel="stylesheet" href="../css/animations.css">
+</head>
+<body>
+
+    <!-- Header / Navbar -->
+    <header class="header">
+        <div class="container navbar">
+            <a href="../index.html" class="logo"><img src="../assets/images/logo.png" alt="CampusMart Logo"></a>
+
+            <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <nav class="nav-menu" id="nav-menu">
+                <a href="../index.html" class="nav-link">Home</a>
+                
+                <div class="dropdown">
+                    <a href="marketplace.html" class="nav-link">Marketplace ▼</a>
+                    <div class="dropdown-menu">
+                        <a href="marketplace.html?cat=Academic" class="dropdown-item">📚 Academic & Books</a>
+                        <a href="marketplace.html?cat=Electronics" class="dropdown-item">💻 Electronics & Tech</a>
+                        <a href="marketplace.html?cat=Fashion" class="dropdown-item">👕 Clothing & Fashion</a>
+                        <a href="marketplace.html?cat=Food" class="dropdown-item">🍔 Food & Snacks</a>
+                        <a href="marketplace.html?cat=Birthday%20%26%20Events" class="dropdown-item">🎂 Birthday & Celebrations</a>
+                        <a href="marketplace.html?cat=Lifestyle" class="dropdown-item">🏠 Lifestyle & Hostel</a>
+                        <a href="marketplace.html?cat=Gaming" class="dropdown-item">🎮 Gaming & Sports</a>
+                        <a href="marketplace.html?cat=Design%20%26%20Creative" class="dropdown-item">🎨 Design & Creative</a>
+                        <a href="marketplace.html?cat=Hardware%20%2F%20Technical%20Help" class="dropdown-item">🔧 Hardware / Tech Support</a>
+                    </div>
+                </div>
+
+                <a href="tuck-shop.html" class="nav-link">Tuck Shop</a>
+                <a href="assignments.html" class="nav-link">Academic Help</a>
+                <a href="donations.html" class="nav-link">Donations</a>
+                <a href="orders.html" class="nav-link">Orders</a>
+                <a href="create-listing.html" class="nav-link">Sell</a>
+
+                <div class="nav-actions">
+                    <a href="wishlist.html" class="nav-icon-btn" title="Wishlist">
+                        ❤️ <span class="badge-count" id="nav-wishlist-badge" style="display:none;">0</span>
+                    </a>
+                    <a href="cart.html" class="nav-icon-btn" title="Cart">
+                        🛒 <span class="badge-count" id="nav-cart-badge" style="display:none;">0</span>
+                    </a>
+                    <div id="nav-user-btn"></div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <div style="background: linear-gradient(135deg, #172554 0%, #3B5CCC 100%); color: var(--neutral-white); padding: 3.5rem 0; text-align: center;">
+        <div class="container">
+            <span style="background: rgba(255,155,113,0.25); color: var(--accent); padding: 5px 16px; border-radius: 999px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; display: inline-block; margin-bottom: 0.75rem;">
+                Peer Freelancing & Projects
+            </span>
+            <h1 style="font-size: 2.6rem; color: var(--neutral-white); margin-bottom: 0.75rem;">🌟 Client Showcase</h1>
+            <p style="color: #E2E8F0; max-width: 650px; margin: 0 auto; font-size: 1.1rem; line-height: 1.6;">
+                Real campus projects, student deliverables, design branding, and engineering setups completed by students for peers and college clubs.
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="section">
+        <div class="container">
+            
+            <!-- Category Filter Tabs -->
+            <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2.5rem;" id="showcase-filter-tabs">
+                <button class="btn btn-primary btn-sm showcase-filter-btn" onclick="filterShowcase('all', this)">All Projects (6)</button>
+                <button class="btn btn-outline btn-sm showcase-filter-btn" onclick="filterShowcase('design', this)">🎨 Design & Branding</button>
+                <button class="btn btn-outline btn-sm showcase-filter-btn" onclick="filterShowcase('tech', this)">💻 Tech & Software</button>
+                <button class="btn btn-outline btn-sm showcase-filter-btn" onclick="filterShowcase('hardware', this)">🔧 Hardware & 3D</button>
+                <button class="btn btn-outline btn-sm showcase-filter-btn" onclick="filterShowcase('media', this)">📹 Video & Reels</button>
+            </div>
+
+            <!-- Showcase Cards Grid -->
+            <div class="grid grid-cols-3" style="gap: 2rem; margin-bottom: 3.5rem;" id="showcase-grid">
+                
+                <!-- Showcase 1 -->
+                <div class="card showcase-card" data-category="design" style="overflow: hidden; display: flex; flex-direction: column;">
+                    <div style="height: 200px; background: linear-gradient(135deg, #FF6B6B, #556270); display: flex; align-items: center; justify-content: center; font-size: 3.5rem; color: white;">
+                        🎨
+                    </div>
+                    <div style="padding: 1.5rem; flex: 1; display: flex; flex-direction: column;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                            <span class="badge-tag" style="background: #FFF1EB; color: #F97316;">Design & Creative</span>
+                            <span style="font-size: 0.8rem; color: var(--neutral-text-muted);">Fest 2026</span>
+                        </div>
+                        <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">College Tech Fest 2026 - Branding & UI Kit</h3>
+                        <p style="font-size: 0.85rem; color: var(--neutral-text-muted); line-height: 1.6; margin-bottom: 1rem; flex: 1;">
+                            Created complete logo identity, 12 Instagram post layouts, registration web UI kit in Figma, and lanyard passes for 1,500+ attendees.
+                        </p>
+                        <div style="background: #F8FAFC; border: 1px solid var(--neutral-border); border-radius: 8px; padding: 0.75rem; margin-bottom: 1rem;">
+                            <div style="font-size: 0.8rem; font-weight: 700; color: var(--primary-charcoal);">💬 Client Feedback (Fest Lead):</div>
+                            <div style="font-size: 0.8rem; color: var(--neutral-text-muted); font-style: italic;">"Divya delivered everything 2 days before deadline. Our fest registration exploded!"</div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.85rem; font-weight: 600;">By 👤 Divya Sharma</span>
+                            <a href="services.html?cat=Design%20%26%20Creative" class="btn btn-outline btn-sm">Hire for Design</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Showcase 2 -->
+                <div class="card showcase-card" data-category="tech" style="overflow: hidden; display: flex; flex-direction: column;">
+                    <div style="height: 200px; background: linear-gradient(135deg, #24C6DC, #514A9D); display: flex; align-items: center; justify-content: center; font-size: 3.5rem; color: white;">
+                        🐧
+                    </div>
+                    <div style="padding: 1.5rem; flex: 1; display: flex; flex-direction: column;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                            <span class="badge-tag" style="background: #EBF2FF; color: #3B5CCC;">Tech Support</span>
+                            <span style="font-size: 0.8rem; color: var(--neutral-text-muted);">15+ Laptops</span>
+                        </div>
+                        <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">Ubuntu Dual-Boot & Dev Setup for CSE Batch</h3>
+                        <p style="font-size: 0.85rem; color: var(--neutral-text-muted); line-height: 1.6; margin-bottom: 1rem; flex: 1;">
+                            Installed Linux Ubuntu with safe partition management, VS Code, GCC compilers, Git keys, and Python environments for 15+ engineering students.
+                        </p>
+                        <div style="background: #F8FAFC; border: 1px solid var(--neutral-border); border-radius: 8px; padding: 0.75rem; margin-bottom: 1rem;">
+                            <div style="font-size: 0.8rem; font-weight: 700; color: var(--primary-charcoal);">💬 Client Feedback (Rahul Sharma):</div>
+                            <div style="font-size: 0.8rem; color: var(--neutral-text-muted); font-style: italic;">"Karan fixed my grub boot loader in 20 minutes without any data loss!"</div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.85rem; font-weight: 600;">By 👤 Karan Sharma</span>
+                            <a href="services.html?cat=Hardware%20%2F%20Technical%20Help" class="btn btn-outline btn-sm">Hire for Tech</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Showcase 3 -->
+                <div class="card showcase-card" data-category="hardware" style="overflow: hidden; display: flex; flex-direction: column;">
+                    <div style="height: 200px; background: linear-gradient(135deg, #11998E, #38EF7D); display: flex; align-items: center; justify-content: center; font-size: 3.5rem; color: white;">
+                        ⚙️
+                    </div>
+                    <div style="padding: 1.5rem; flex: 1; display: flex; flex-direction: column;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                            <span class="badge-tag" style="background: #DCFCE7; color: #166534;">Hardware / 3D CAD</span>
+                            <span style="font-size: 0.8rem; color: var(--neutral-text-muted);">1st Prize Winner</span>
+                        </div>
+                        <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">SolidWorks 3D Drone Chassis for Campus Hackathon</h3>
+                        <p style="font-size: 0.85rem; color: var(--neutral-text-muted); line-height: 1.6; margin-bottom: 1rem; flex: 1;">
+                            Modeled high-strength lightweight carbon fiber arms and payload delivery housing. Prototyped using university lab 3D printers.
+                        </p>
+                        <div style="background: #F8FAFC; border: 1px solid var(--neutral-border); border-radius: 8px; padding: 0.75rem; margin-bottom: 1rem;">
+                            <div style="font-size: 0.8rem; font-weight: 700; color: var(--primary-charcoal);">💬 Client Feedback (Robotics Team):</div>
+                            <div style="font-size: 0.8rem; color: var(--neutral-text-muted); font-style: italic;">"Priya's CAD dimensions were accurate to 0.1mm. Fitted motors flawlessly."</div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.85rem; font-weight: 600;">By 👤 Priya Patel</span>
+                            <a href="services.html?cat=Hardware%20%2F%20Technical%20Help" class="btn btn-outline btn-sm">Hire for CAD</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Showcase 4 -->
+                <div class="card showcase-card" data-category="media" style="overflow: hidden; display: flex; flex-direction: column;">
+                    <div style="height: 200px; background: linear-gradient(135deg, #FC466B, #3F5EFB); display: flex; align-items: center; justify-content: center; font-size: 3.5rem; color: white;">
+                        🎬
+                    </div>
+                    <div style="padding: 1.5rem; flex: 1; display: flex; flex-direction: column;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                            <span class="badge-tag" style="background: #FEE2E2; color: #991B1B;">Video Editing</span>
+                            <span style="font-size: 0.8rem; color: var(--neutral-text-muted);">45K+ Views</span>
+                        </div>
+                        <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">Hostel Cultural Night Aftermovie & Reel Edits</h3>
+                        <p style="font-size: 0.85rem; color: var(--neutral-text-muted); line-height: 1.6; margin-bottom: 1rem; flex: 1;">
+                            Cinematic color grading, sound synchronization, and fast-paced 4K vertical cuts produced for campus societies with high engagement.
+                        </p>
+                        <div style="background: #F8FAFC; border: 1px solid var(--neutral-border); border-radius: 8px; padding: 0.75rem; margin-bottom: 1rem;">
+                            <div style="font-size: 0.8rem; font-weight: 700; color: var(--primary-charcoal);">💬 Client Feedback (Cultural Sec):</div>
+                            <div style="font-size: 0.8rem; color: var(--neutral-text-muted); font-style: italic;">"Best event reel in our college history. Sound design was phenomenal."</div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.85rem; font-weight: 600;">By 👤 Rohan Gupta</span>
+                            <a href="services.html?cat=Design%20%26%20Creative" class="btn btn-outline btn-sm">Hire for Video</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Showcase 5 -->
+                <div class="card showcase-card" data-category="design" style="overflow: hidden; display: flex; flex-direction: column;">
+                    <div style="height: 200px; background: linear-gradient(135deg, #F857A6, #FF5858); display: flex; align-items: center; justify-content: center; font-size: 3.5rem; color: white;">
+                        👕
+                    </div>
+                    <div style="padding: 1.5rem; flex: 1; display: flex; flex-direction: column;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                            <span class="badge-tag" style="background: #FFF1EB; color: #F97316;">Merchandise Design</span>
+                            <span style="font-size: 0.8rem; color: var(--neutral-text-muted);">300+ Hoodies</span>
+                        </div>
+                        <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">Batch 2026 Official Customized Hoodie Print</h3>
+                        <p style="font-size: 0.85rem; color: var(--neutral-text-muted); line-height: 1.6; margin-bottom: 1rem; flex: 1;">
+                            Typography design, vector graphics, and screen print preparation for departmental varsity jackets with personalized sleeve embroidery.
+                        </p>
+                        <div style="background: #F8FAFC; border: 1px solid var(--neutral-border); border-radius: 8px; padding: 0.75rem; margin-bottom: 1rem;">
+                            <div style="font-size: 0.8rem; font-weight: 700; color: var(--primary-charcoal);">💬 Client Feedback (ECE Rep):</div>
+                            <div style="font-size: 0.8rem; color: var(--neutral-text-muted); font-style: italic;">"Quality was top-tier. Entire batch loved the minimalist back print!"</div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.85rem; font-weight: 600;">By 👤 Aman Verma</span>
+                            <a href="services.html?cat=Clothing%20%26%20Fashion" class="btn btn-outline btn-sm">Hire for Merch</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Showcase 6 -->
+                <div class="card showcase-card" data-category="tech" style="overflow: hidden; display: flex; flex-direction: column;">
+                    <div style="height: 200px; background: linear-gradient(135deg, #4A00E0, #8E2DE2); display: flex; align-items: center; justify-content: center; font-size: 3.5rem; color: white;">
+                        💬
+                    </div>
+                    <div style="padding: 1.5rem; flex: 1; display: flex; flex-direction: column;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                            <span class="badge-tag" style="background: #EDE9FE; color: #8B5CF6;">Web Automation</span>
+                            <span style="font-size: 0.8rem; color: var(--neutral-text-muted);">Campus Project</span>
+                        </div>
+                        <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">Direct WhatsApp Product Ordering Integration</h3>
+                        <p style="font-size: 0.85rem; color: var(--neutral-text-muted); line-height: 1.6; margin-bottom: 1rem; flex: 1;">
+                            Engineered URL-encoded pre-filled WhatsApp message payload generator allowing frictionless hostel stationeries ordering in 1 click.
+                        </p>
+                        <div style="background: #F8FAFC; border: 1px solid var(--neutral-border); border-radius: 8px; padding: 0.75rem; margin-bottom: 1rem;">
+                            <div style="font-size: 0.8rem; font-weight: 700; color: var(--primary-charcoal);">💬 Client Feedback (Tuck Shop Manager):</div>
+                            <div style="font-size: 0.8rem; color: var(--neutral-text-muted); font-style: italic;">"Streamlined our practical notebook orders drastically during exam month."</div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.85rem; font-weight: 600;">By 👤 CampusMart Team</span>
+                            <a href="tuck-shop.html" class="btn btn-outline btn-sm">Try Tuck Shop</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Call to Action Card -->
+            <div class="card" style="padding: 2.5rem; text-align: center; background: linear-gradient(135deg, #172554, #1E2332); color: white;">
+                <h2 style="font-size: 1.8rem; color: white; margin-bottom: 0.75rem;">Are you a skilled student creator, developer, or tutor?</h2>
+                <p style="color: #94A3B8; max-width: 600px; margin: 0 auto 1.5rem auto; font-size: 0.95rem;">
+                    Monetize your talents right inside campus. Register as a service provider on CampusMart to showcase your portfolio and receive direct orders.
+                </p>
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <a href="services.html" class="btn btn-accent btn-lg">🌟 Explore Campus Services</a>
+                    <a href="contact.html" class="btn btn-outline btn-lg" style="color: white; border-color: rgba(255,255,255,0.2);">Contact Student Leads</a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+                    <!-- WHY CAMPUSMART FEATURE BLOCKS -->
+    <section class="section" style="background-color: #171B26; color: var(--neutral-white);">
+        <div class="container">
+            <div class="section-title-wrap" style="text-align: center; margin-bottom: 2.5rem;">
+                <span class="section-subtitle" style="color: var(--accent-orange); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Built For Students</span>
+                <h2 class="section-title" style="color: var(--neutral-white); margin-top: 0.5rem; font-size: 2rem;">Why Choose CampusMart?</h2>
+            </div>
+
+            <div class="grid grid-cols-4" style="gap: 1.5rem;">
+                <div style="padding: 1.5rem; background: #1E2332; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                    <div style="font-size: 1.5rem; margin-bottom: 0.75rem;">🎓</div>
+                    <h3 style="font-size: 1.1rem; color: var(--neutral-white); margin-bottom: 0.5rem;">Campus Focused</h3>
+                    <p style="font-size: 0.85rem; color: #94A3B8; line-height: 1.6;">Built specifically for university students with verified college credentials and hostel delivery.</p>
+                </div>
+
+                <div style="padding: 1.5rem; background: #1E2332; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                    <div style="font-size: 1.5rem; margin-bottom: 0.75rem;">⚡</div>
+                    <h3 style="font-size: 1.1rem; color: var(--neutral-white); margin-bottom: 0.5rem;">Easy Buying & Selling</h3>
+                    <p style="font-size: 0.85rem; color: #94A3B8; line-height: 1.6;">List your items in 60 seconds with fixed pricing or real-time campus bidding system.</p>
+                </div>
+
+                <div style="padding: 1.5rem; background: #1E2332; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                    <div style="font-size: 1.5rem; margin-bottom: 0.75rem;">💬</div>
+                    <h3 style="font-size: 1.1rem; color: var(--neutral-white); margin-bottom: 0.5rem;">Direct Communication</h3>
+                    <p style="font-size: 0.85rem; color: #94A3B8; line-height: 1.6;">Instantly connect with student sellers on WhatsApp with pre-filled product order messages.</p>
+                </div>
+
+                <div style="padding: 1.5rem; background: #1E2332; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                    <div style="font-size: 1.5rem; margin-bottom: 0.75rem;">🌟</div>
+                    <h3 style="font-size: 1.1rem; color: var(--neutral-white); margin-bottom: 0.5rem;">Student Services</h3>
+                    <p style="font-size: 0.85rem; color: #94A3B8; line-height: 1.6;">Hire peer experts for project assistance, design, technical troubleshooting, and tutoring.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer" style="background-color: #171B26; border-top: none; padding-top: 4rem; padding-bottom: 2rem;">
+        <div class="container">
+            <div class="footer-grid" style="grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 2rem; margin-bottom: 3rem; text-align: left;">
+                <div class="footer-brand">
+                    <h3 style="color: #FFFFFF; font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem;"><a href="../index.html" style="color: #FFFFFF; text-decoration: none;">CampusMart</a></h3>
+                    <p class="footer-desc" style="color: #94A3B8; font-size: 0.9rem; line-height: 1.6; max-width: 250px;">
+                        Your ultimate student-to-student marketplace. Buy, sell, and connect with your campus community instantly.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="footer-title" style="color: #FFFFFF; font-size: 1rem; margin-bottom: 1.25rem;">Quick Links</h4>
+                    <ul class="footer-links" style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.75rem;">
+                        <li><a href="../index.html" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem;">Home</a></li>
+                        <li><a href="marketplace.html" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem;">Marketplace</a></li>
+                        <li><a href="services.html" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem;">Services</a></li>
+                        <li><a href="offers.html" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem;">Offers</a></li>
+                        <li><a href="contact.html" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem;">Contact</a></li>
+                        <li><a href="services.html?cat=Design%20%26%20Creative" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem;">Design</a></li>
+                        <li><a href="showcase.html" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem; text-transform: uppercase;">CLIENT SHOW CASE</a></li>
+                        <li><a href="reviews.html" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem; text-transform: uppercase;">REVIEWS</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="footer-title" style="color: #FFFFFF; font-size: 1rem; margin-bottom: 1.25rem;">Contact Us</h4>
+                    <ul class="footer-links" style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 1rem;">
+                        <li style="display: flex; gap: 0.5rem; color: #94A3B8; font-size: 0.9rem; align-items: flex-start;">
+                            <span style="color: #EF4444;">📍</span> <a href="contact.html" style="color: #94A3B8; text-decoration: none;">CampusMart, Sec-82, SAS Nagar, Punjab</a>
+                        </li>
+                        <li style="display: flex; gap: 0.5rem; color: #94A3B8; font-size: 0.9rem; align-items: center;">
+                            <span>📞</span> <a href="tel:+919876543210" style="color: #94A3B8; text-decoration: none;">(+91) 98765-XXXXX</a>
+                        </li>
+                        <li style="display: flex; gap: 0.5rem; color: #94A3B8; font-size: 0.9rem; align-items: center;">
+                            <span>✉️</span> <a href="mailto:contact@campusmart.com" style="color: #94A3B8; text-decoration: none;">contact@campusmart.com</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="footer-title" style="color: #FFFFFF; font-size: 1rem; margin-bottom: 1.25rem;">Follow Us</h4>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" title="Facebook" style="width: 32px; height: 32px; background: #334155; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 0.85rem;">f</a>
+                        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" title="Instagram" style="width: 32px; height: 32px; background: #334155; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 0.85rem;">ig</a>
+                        <a href="https://pinterest.com" target="_blank" rel="noopener noreferrer" title="Pinterest" style="width: 32px; height: 32px; background: #334155; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 0.85rem;">p</a>
+                        <a href="https://github.com/Disha287/Mart" target="_blank" rel="noopener noreferrer" title="GitHub" style="width: 32px; height: 32px; background: #334155; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 0.85rem;">h</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom" style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 1.5rem; text-align: left;">
+                <p style="color: #64748B; font-size: 0.85rem; margin: 0;">© 2025 CampusMart. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../js/data.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/app.js"></script>
+
+    <script>
+        function filterShowcase(category, btn) {
+            document.querySelectorAll('.showcase-filter-btn').forEach(b => {
+                b.classList.remove('btn-primary');
+                b.classList.add('btn-outline');
+            });
+            if (btn) {
+                btn.classList.remove('btn-outline');
+                btn.classList.add('btn-primary');
+            }
+
+            const cards = document.querySelectorAll('.showcase-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
