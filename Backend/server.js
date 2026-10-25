@@ -1,12 +1,15 @@
 // ============================================================
-// CAMPUSMART BACKEND — Express API Server
-// Port: 5000
-// Database: NOT CONNECTED YET (using in-memory seed data)
-// Test with: Thunder Client / Postman at http://localhost:5000
+// CAMPUSMART BACKEND — Express API Server (MVC Architecture)
+// Port: 5000 (Configured via config/config.js)
+// Architecture: Model - View (FrontEnd) - Controller (Backend)
 // ============================================================
 
 const express = require('express');
 const cors = require('cors');
+
+// Configuration & Database
+const config = require('./config/config');
+const { connectDB } = require('./config/db');
 
 // Route imports
 const userRoutes = require('./routes/userRoutes');
@@ -17,12 +20,15 @@ const orderRoutes = require('./routes/orderRoutes');
 const { errorHandler, notFound } = require('./middleware/errorHandler');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = config.PORT;
+
+// Initialize Database connection (graceful fallback to in-memory)
+connectDB();
 
 // ============================================================
 // GLOBAL MIDDLEWARE
 // ============================================================
-app.use(cors()); // Allow all origins (restrict in production)
+app.use(cors()); // Allow cross-origin requests
 app.use(express.json()); // Parse JSON request bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
 
@@ -38,16 +44,15 @@ app.use((req, res, next) => {
 app.get('/', (req, res) => {
     res.json({
         success: true,
-        message: '🎓 CampusMart API is running!',
+        message: '🎓 CampusMart API is running (MVC Architecture)!',
         version: '1.0.0',
-        status: 'Development Mode (In-Memory Data)',
-        database: 'Not connected yet — using seed data',
+        architecture: 'MVC (Models, Views/FrontEnd, Controllers)',
         endpoints: {
-            users:    'http://localhost:5000/api/users',
-            products: 'http://localhost:5000/api/products',
-            orders:   'http://localhost:5000/api/orders',
-            offers:   'http://localhost:5000/api/products/:id/offers',
-            bids:     'http://localhost:5000/api/products/:id/bids'
+            users:    `http://localhost:${PORT}/api/users`,
+            products: `http://localhost:${PORT}/api/products`,
+            orders:   `http://localhost:${PORT}/api/orders`,
+            offers:   `http://localhost:${PORT}/api/products/:id/offers`,
+            bids:     `http://localhost:${PORT}/api/products/:id/bids`
         }
     });
 });
@@ -56,6 +61,7 @@ app.get('/api', (req, res) => {
     res.json({
         success: true,
         message: 'CampusMart REST API v1.0',
+        architecture: 'Model-View-Controller (MVC)',
         availableRoutes: [
             // Users
             { method: 'GET',    path: '/api/users',                          desc: 'Get all users' },
@@ -108,8 +114,8 @@ app.listen(PORT, () => {
     console.log('╔══════════════════════════════════════════╗');
     console.log('║   🎓  CampusMart API Server Started!     ║');
     console.log(`║   🚀  Running at http://localhost:${PORT}   ║`);
-    console.log('║   📦  Mode: In-Memory (No DB yet)        ║');
-    console.log('║   📋  Docs: http://localhost:5000/api    ║');
+    console.log('║   🏛️   Architecture: MVC Pattern          ║');
+    console.log(`║   📋  Docs: http://localhost:${PORT}/api    ║`);
     console.log('╚══════════════════════════════════════════╝');
     console.log('');
 });

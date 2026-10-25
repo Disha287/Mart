@@ -1,7 +1,6 @@
 // ============================================================
-// CAMPUSMART — In-Memory Seed Data (No DB Connection Yet)
-// This mirrors the frontend localStorage data structure.
-// Replace these arrays with real DB calls when you add MongoDB.
+// CAMPUSMART — Initial Seed Data
+// Used to initialize Models in in-memory mode
 // ============================================================
 
 const users = [

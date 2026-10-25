@@ -4,9 +4,9 @@
   "description": "> **Your Campus. Your Marketplace.**",
   "scripts": {
     "dev": "vite",
-    "dev:backend": "cd backend && node server.js",
-    "start:backend": "cd backend && node server.js",
-    "update:footers": "node frontend/scripts/update_footers.js"
+    "dev:backend": "cd Backend && node server.js",
+    "start:backend": "cd Backend && node server.js",
+    "update:footers": "node FrontEnd/scripts/update_footers.js"
   },
   "repository": {
     "type": "git",
