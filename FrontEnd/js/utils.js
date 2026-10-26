@@ -45,6 +45,27 @@ function logoutUser() {
     }, 1000);
 }
 
+// Page Guard: Ensure user is logged in on protected pages
+function checkAuthGuard() {
+    const protectedPages = ['buyer-dashboard.html', 'seller-dashboard.html', 'create-listing.html', 'my-listings.html', 'profile.html'];
+    const currentPath = window.location.pathname;
+    const isProtected = protectedPages.some(page => currentPath.endsWith(page));
+
+    if (isProtected) {
+        const user = getCurrentUser();
+        const isSubPage = currentPath.includes('/pages/');
+        const prefix = isSubPage ? '' : 'pages/';
+
+        if (!user) {
+            window.location.href = `${prefix}login.html`;
+            return false;
+        }
+    }
+    return true;
+}
+
+document.addEventListener('DOMContentLoaded', checkAuthGuard);
+
 // Currency Formatter
 function formatCurrency(amount) {
     return '₹' + Number(amount).toLocaleString('en-IN');

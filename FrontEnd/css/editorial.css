@@ -1,0 +1,1565 @@
+/* ==========================================================================
+   CAMPUS MART — WARM PRINT EDITORIAL DESIGN SYSTEM & CHOREOGRAPHY
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&family=Martian+Mono:wght@400;500;700&display=swap');
+
+/* --- 1. DESIGN TOKENS (WARM PRINT REGISTER) --- */
+:root {
+    /* Palette */
+    --bg-cream: #e7e2d8;
+    --ink-primary: #171717;
+    --accent-red: #ef493c;
+    --deep-red: #b92725;
+    --paper-white: #fffdf8;
+    --dark-loam: #241a12;
+    --dark-loam-surface: #2e2218;
+
+    /* Hairlines & Muted Text */
+    --ink-hairline: rgba(23, 23, 23, 0.16);
+    --ink-hairline-subtle: rgba(23, 23, 23, 0.08);
+    --ink-muted: rgba(23, 23, 23, 0.56);
+    --dark-loam-hairline: rgba(255, 253, 248, 0.16);
+    --dark-loam-hairline-subtle: rgba(255, 253, 248, 0.08);
+    --paper-muted: rgba(255, 253, 248, 0.65);
+
+    /* Typography */
+    --font-display: 'Anton', sans-serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono: 'Martian Mono', monospace;
+
+    /* Easing */
+    --ease-general: cubic-bezier(.22, 1, .36, 1);
+    --ease-cinematic: cubic-bezier(.65, 0, .35, 1);
+
+    /* Stage 1: Poster Hero Variables */
+    --hero-type-y: 0px;
+    --hero-type-scale: 1;
+    --hero-type-alpha: 1;
+
+    /* Stage 2: Manifesto Variables */
+    --manifesto-wipe: 0%;
+    --manifesto-scale: 1;
+
+    /* Stage 3: Horizontal Card Rail Variables */
+    --rail-x: 0px;
+    --rail-progress: 0%;
+
+    /* Stage 4: Printed Artifact Variables */
+    --packet-alpha: 0;
+    --packet-enter: 38px;
+    --packet-scale: 0.78;
+    --packet-cut: 0;
+    --packet-meter: 0%;
+    --packet-copy-x: 0px;
+
+    /* Stage 5: Parallax Season Band Variables */
+    --season-y: -4%;
+    --season-scale: 1.10;
+}
+
+/* --- 2. GLOBAL RESET & ZERO RADII MANDATE --- */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border-radius: 0 !important; /* Strict design mandate: zero radii everywhere */
+}
+
+html {
+    background-color: var(--bg-cream);
+    color: var(--ink-primary);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.5;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+}
+
+body {
+    background-color: var(--bg-cream);
+    color: var(--ink-primary);
+    overflow-x: hidden;
+    position: relative;
+    width: 100%;
+}
+
+img, svg, canvas {
+    display: block;
+    max-width: 100%;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+    transition: opacity 0.2s var(--ease-general), color 0.2s var(--ease-general);
+}
+
+button {
+    font-family: inherit;
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+
+/* --- 3. TYPOGRAPHY SYSTEM --- */
+.font-display {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    letter-spacing: -0.025em;
+    line-height: 0.86;
+}
+
+.font-mono {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 400;
+}
+
+.tag-label {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent-red);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+}
+
+.tag-label::before {
+    content: '';
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    background-color: var(--accent-red);
+}
+
+.tag-label-dark {
+    color: var(--accent-red);
+}
+
+/* --- 4. PER-ATOM MOTION BUDGET (STAGGERED PER-WORD & PER-ROW REVEALS) --- */
+.word-span {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(0.42em);
+    transition: opacity 0.4s var(--ease-general), transform 0.4s var(--ease-general);
+    transition-delay: calc(var(--w-idx, 0) * 38ms);
+    will-change: opacity, transform;
+}
+
+.revealed .word-span,
+[data-rev].revealed .word-span,
+.hero-viewport.revealed .word-span {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+[data-rev] {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.5s var(--ease-general), transform 0.5s var(--ease-general);
+    transition-delay: var(--d, 0ms);
+    will-change: opacity, transform;
+}
+
+[data-rev].revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* --- 5. EDITORIAL NAVIGATION --- */
+.editorial-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 3rem;
+    background: rgba(36, 26, 18, 0.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--dark-loam-hairline);
+    transition: background 0.3s var(--ease-general), border-color 0.3s var(--ease-general), color 0.3s var(--ease-general);
+}
+
+.editorial-nav.nav-scrolled-light {
+    background: rgba(231, 226, 216, 0.95);
+    border-bottom: 1.5px solid var(--ink-primary);
+    color: var(--ink-primary);
+}
+
+.editorial-nav.nav-scrolled-light .nav-brand,
+.editorial-nav.nav-scrolled-light .nav-link {
+    color: var(--ink-primary);
+}
+
+.editorial-nav.nav-scrolled-light .btn-editorial-outline {
+    color: var(--ink-primary);
+    border-color: var(--ink-primary);
+}
+
+.nav-brand {
+    font-family: var(--font-display);
+    font-size: 1.7rem;
+    color: var(--paper-white);
+    letter-spacing: -0.02em;
+    display: flex;
+    align-items: baseline;
+    gap: 0.2rem;
+}
+
+.nav-brand .brand-red {
+    color: var(--accent-red);
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 2.2rem;
+    list-style: none;
+}
+
+.nav-link {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--paper-white);
+    position: relative;
+    padding-bottom: 3px;
+    transition: color 0.2s var(--ease-general);
+}
+
+.nav-link:hover {
+    color: var(--accent-red);
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0%;
+    height: 1.5px;
+    background-color: var(--accent-red);
+    transition: width 0.25s var(--ease-general);
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.btn-editorial {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 500;
+    padding: 0.65rem 1.4rem;
+    border: 1.5px solid currentColor;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: background 0.2s var(--ease-general), color 0.2s var(--ease-general), border-color 0.2s var(--ease-general);
+}
+
+.btn-editorial-primary {
+    background: var(--accent-red);
+    color: var(--paper-white);
+    border-color: var(--accent-red);
+}
+
+.btn-editorial-primary:hover {
+    background: var(--deep-red);
+    border-color: var(--deep-red);
+}
+
+.btn-editorial-outline {
+    background: transparent;
+    color: var(--paper-white);
+    border-color: rgba(255, 253, 248, 0.4);
+}
+
+.btn-editorial-outline:hover {
+    border-color: var(--accent-red);
+    color: var(--accent-red);
+}
+
+.btn-editorial-ink {
+    background: var(--ink-primary);
+    color: var(--paper-white);
+    border-color: var(--ink-primary);
+}
+
+.btn-editorial-ink:hover {
+    background: var(--accent-red);
+    border-color: var(--accent-red);
+}
+
+/* User Account Badge & Logout (High Visibility on Dark & Light Nav) */
+#nav-user-btn {
+    display: inline-flex;
+    align-items: center;
+}
+
+.nav-account-badge {
+    background: rgba(255, 253, 248, 0.15) !important;
+    border: 1.5px solid var(--accent-red) !important;
+    color: #ffffff !important;
+    font-family: var(--font-mono) !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.15em !important;
+    text-transform: uppercase !important;
+}
+
+.nav-account-badge .nav-account-name,
+.nav-account-badge span {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+}
+
+.nav-account-badge:hover {
+    background: rgba(239, 73, 60, 0.22) !important;
+    border-color: var(--accent-red) !important;
+}
+
+.nav-account-logout {
+    background: var(--ink-primary) !important;
+    border: 1.5px solid rgba(255, 253, 248, 0.35) !important;
+    color: #ffffff !important;
+    font-family: var(--font-mono) !important;
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.15em !important;
+    text-transform: uppercase !important;
+}
+
+.nav-account-logout:hover {
+    background: var(--accent-red) !important;
+    border-color: var(--accent-red) !important;
+    color: #ffffff !important;
+}
+
+.editorial-nav.nav-scrolled-light .nav-account-badge {
+    background: rgba(23, 23, 23, 0.08) !important;
+    border-color: var(--ink-primary) !important;
+    color: var(--ink-primary) !important;
+}
+
+.editorial-nav.nav-scrolled-light .nav-account-badge .nav-account-name,
+.editorial-nav.nav-scrolled-light .nav-account-badge span {
+    color: var(--ink-primary) !important;
+}
+
+.editorial-nav.nav-scrolled-light .nav-account-badge span:first-child {
+    color: var(--accent-red) !important;
+}
+
+.editorial-nav.nav-scrolled-light .nav-account-logout {
+    background: var(--ink-primary) !important;
+    color: #ffffff !important;
+}
+
+/* Toast container */
+#toast-container {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.toast {
+    background: var(--paper-white);
+    color: var(--ink-primary);
+    border: 1.5px solid var(--ink-primary);
+    padding: 0.9rem 1.4rem;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.toast.error {
+    border-color: var(--accent-red);
+    color: var(--accent-red);
+}
+
+/* ==========================================================================
+   PINNED STAGE ARCHITECTURE (260svh to 420svh)
+   ========================================================================== */
+.scroll-stage {
+    position: relative;
+    width: 100%;
+}
+
+.sticky-viewport {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100svh;
+    overflow: hidden;
+}
+
+/* ==========================================================================
+   STAGE 1 — POSTER HERO (280svh, Dark Loam #241a12)
+   Driven by: --hero-type-y, --hero-type-scale, --hero-type-alpha
+   ========================================================================== */
+.stage-hero {
+    height: 280svh;
+    background-color: var(--dark-loam);
+    color: var(--paper-white);
+}
+
+.hero-viewport {
+    background-color: var(--dark-loam);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 6.5rem 3.5rem 2.5rem 3.5rem;
+    position: relative;
+}
+
+#hero-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.hero-center-box {
+    position: relative;
+    z-index: 2;
+    margin: auto 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.poster-lockup {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform: translateY(var(--hero-type-y)) scale(var(--hero-type-scale));
+    opacity: var(--hero-type-alpha);
+    transform-origin: center center;
+    will-change: transform, opacity;
+    margin-bottom: 2rem;
+}
+
+.poster-line {
+    white-space: nowrap;
+    text-transform: uppercase;
+    font-family: var(--font-display);
+    line-height: 0.86;
+    letter-spacing: -0.035em;
+    display: block;
+    width: 100%;
+    text-align: center;
+}
+
+.poster-line-sub {
+    font-size: min(4.4vw, calc(92vw / (var(--chars, 23) * 0.44)));
+    color: var(--paper-white);
+    margin-bottom: 0.5rem;
+}
+
+.poster-line-main {
+    font-size: min(14.5vw, calc(92vw / (var(--chars, 11) * 0.44)));
+    color: var(--accent-red);
+}
+
+.poster-line-main .dot {
+    color: var(--paper-white);
+}
+
+.hero-subrow {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 3rem;
+    max-width: 980px;
+    width: 100%;
+    margin-top: 1rem;
+    text-align: left;
+}
+
+.hero-copy {
+    font-size: 1.15rem;
+    line-height: 1.55;
+    color: var(--paper-muted);
+    max-width: 520px;
+}
+
+.hero-ctas {
+    display: flex;
+    gap: 1.25rem;
+    flex-shrink: 0;
+}
+
+.hero-footer-meta {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--dark-loam-hairline);
+    padding-top: 1.25rem;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--paper-muted);
+    opacity: calc(1 - var(--hero-type-alpha) * -0.5);
+}
+
+/* ==========================================================================
+   STAGE 2 — CLIP-WIPE MANIFESTO (260svh, Cream #e7e2d8)
+   Driven by: --manifesto-wipe, --manifesto-scale
+   ========================================================================== */
+.stage-manifesto {
+    height: 260svh;
+    background-color: var(--bg-cream);
+    color: var(--ink-primary);
+}
+
+.manifesto-viewport {
+    background-color: var(--bg-cream);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 6rem 3.5rem;
+    position: relative;
+}
+
+.manifesto-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.manifesto-quote-wrapper {
+    position: relative;
+    max-width: 16ch;
+    margin-bottom: 2.5rem;
+    transform: scale(var(--manifesto-scale));
+    transform-origin: left center;
+    will-change: transform;
+}
+
+.manifesto-sentence {
+    font-family: var(--font-display);
+    font-size: clamp(34px, 5.6vw, 78px);
+    line-height: 0.86;
+    letter-spacing: -0.035em;
+    text-transform: uppercase;
+    width: 100%;
+}
+
+.manifesto-sentence-base {
+    color: rgba(23, 23, 23, 0.34);
+}
+
+.manifesto-sentence-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    color: var(--ink-primary);
+    clip-path: inset(calc(100% - var(--manifesto-wipe)) 0 0 0);
+    will-change: clip-path;
+    pointer-events: none;
+}
+
+.manifesto-sentence-fill .accent-mark {
+    color: var(--accent-red);
+}
+
+.manifesto-subtext {
+    font-size: 1.25rem;
+    line-height: 1.6;
+    color: var(--ink-primary);
+    max-width: 640px;
+    margin-bottom: 3.5rem;
+    border-left: 2px solid var(--accent-red);
+    padding-left: 1.5rem;
+}
+
+.manifesto-principles {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem;
+    border-top: 1.5px solid var(--ink-primary);
+    padding-top: 2rem;
+}
+
+.principle-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.principle-num {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    color: var(--accent-red);
+    font-weight: 500;
+}
+
+.principle-title {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    letter-spacing: -0.02em;
+    line-height: 0.95;
+}
+
+.principle-desc {
+    font-size: 0.92rem;
+    color: var(--ink-muted);
+    line-height: 1.5;
+}
+
+/* ==========================================================================
+   STAGE 3 — HORIZONTAL CARD RAIL (340svh, Cream #e7e2d8)
+   Driven by: --rail-x, --rail-progress
+   ========================================================================== */
+.stage-rail {
+    height: 340svh;
+    background-color: var(--bg-cream);
+    color: var(--ink-primary);
+}
+
+.rail-viewport {
+    background-color: var(--bg-cream);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 6rem 0 2.5rem 0;
+    overflow: hidden;
+}
+
+.rail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 0 3.5rem 1.5rem 3.5rem;
+    border-bottom: 1.5px solid var(--ink-primary);
+}
+
+.rail-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.4rem, 5vw, 4.8rem);
+    line-height: 0.86;
+    letter-spacing: -0.025em;
+    margin-top: 0.5rem;
+}
+
+.rail-track-container {
+    width: 100%;
+    overflow: hidden;
+    margin: auto 0;
+    position: relative;
+}
+
+.rail-track {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 2rem;
+    padding: 1.5rem 3.5rem;
+    width: max-content;
+    transform: translateX(calc(-1 * var(--rail-x)));
+    will-change: transform;
+}
+
+/* 6 Editorial Product Cards (1.5px ink border, paper fill, 3/4 aspect plate) */
+.catalog-card {
+    flex: 0 0 clamp(230px, 26vw, 330px);
+    background: var(--paper-white);
+    border: 1.5px solid var(--ink-primary);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1.25rem;
+    position: relative;
+    transition: transform 0.25s var(--ease-general), border-color 0.25s var(--ease-general);
+}
+
+.catalog-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent-red);
+}
+
+.card-top-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--ink-hairline);
+    padding-bottom: 0.75rem;
+    margin-bottom: 1rem;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+}
+
+.card-cat-badge {
+    color: var(--ink-muted);
+}
+
+.card-condition-badge {
+    color: var(--accent-red);
+    font-weight: 700;
+}
+
+.card-plate {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    background: #efe9dc;
+    border: 1px solid var(--ink-hairline);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    position: relative;
+}
+
+.card-plate img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.card-plate-canvas {
+    width: 100%;
+    height: 100%;
+}
+
+.card-title {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+    color: var(--ink-primary);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.card-desc {
+    font-size: 0.85rem;
+    color: var(--ink-muted);
+    line-height: 1.45;
+    margin-bottom: 1.25rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-top: 1px solid var(--ink-hairline);
+    padding-top: 0.9rem;
+}
+
+.card-price-block {
+    display: flex;
+    flex-direction: column;
+}
+
+.card-price-label {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    color: var(--ink-muted);
+}
+
+.card-price-value {
+    font-family: var(--font-mono);
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--accent-red);
+}
+
+.card-action-btn {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    font-weight: 500;
+    padding: 0.5rem 0.9rem;
+    background: var(--ink-primary);
+    color: var(--paper-white);
+    border: 1.5px solid var(--ink-primary);
+    transition: background 0.2s var(--ease-general), border-color 0.2s var(--ease-general);
+}
+
+.catalog-card:hover .card-action-btn {
+    background: var(--accent-red);
+    border-color: var(--accent-red);
+}
+
+.rail-footer {
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+    padding: 1.5rem 3.5rem 0 3.5rem;
+    border-top: 1px solid var(--ink-hairline-subtle);
+}
+
+.rail-progress-bar {
+    flex: 1;
+    height: 2px;
+    background: var(--ink-hairline);
+    position: relative;
+    overflow: hidden;
+}
+
+.rail-progress-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: var(--rail-progress);
+    background-color: var(--accent-red);
+    will-change: width;
+}
+
+/* ==========================================================================
+   STAGE 4 — THE PRINTED ARTIFACT (420svh, Dark Loam #241a12)
+   Driven by 6 properties: --packet-alpha, --packet-enter, --packet-scale,
+   --packet-cut, --packet-meter, --packet-copy-x
+   ========================================================================== */
+.stage-artifact {
+    height: 420svh;
+    background-color: var(--dark-loam);
+    color: var(--paper-white);
+}
+
+.artifact-viewport {
+    background-color: var(--dark-loam);
+    display: flex;
+    align-items: center;
+    padding: 6rem 3.5rem;
+    position: relative;
+}
+
+.artifact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    align-items: center;
+}
+
+.artifact-left {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+    transform: translateX(var(--packet-copy-x));
+    will-change: transform;
+}
+
+.artifact-headline {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 6.5vw, 6.8rem);
+    line-height: 0.86;
+    letter-spacing: -0.025em;
+}
+
+.artifact-headline .accent-dot {
+    color: var(--accent-red);
+}
+
+.artifact-copy {
+    font-size: 1.15rem;
+    line-height: 1.6;
+    color: var(--paper-muted);
+    max-width: 480px;
+}
+
+/* The Paper Ticket Artifact (3/4 aspect, 1.5px ink border, off-white fill) */
+.listing-ticket {
+    background: var(--paper-white);
+    color: var(--ink-primary);
+    border: 1.5px solid var(--ink-primary);
+    aspect-ratio: 3 / 4;
+    max-width: 440px;
+    width: 100%;
+    margin-left: auto;
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    opacity: var(--packet-alpha);
+    transform: translateY(var(--packet-enter)) scale(var(--packet-scale));
+    will-change: transform, opacity;
+    position: relative;
+}
+
+.ticket-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1.5px solid var(--ink-primary);
+    padding-bottom: 0.85rem;
+}
+
+.ticket-brand {
+    font-family: var(--font-display);
+    font-size: 1.7rem;
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    margin-top: 0.25rem;
+}
+
+.ticket-serial {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    color: var(--accent-red);
+    font-weight: 700;
+}
+
+.ticket-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    flex: 1;
+    justify-content: space-between;
+    margin: 1rem 0;
+}
+
+.ticket-plate {
+    width: 100%;
+    height: 140px;
+    background: #efe9dc;
+    border: 1px solid var(--ink-hairline);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+#ticket-canvas {
+    width: 100%;
+    height: 100%;
+}
+
+.ticket-cues-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+.cue-item {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    color: var(--ink-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    transition: color 0.3s var(--ease-general);
+}
+
+.cue-dot {
+    width: 6px;
+    height: 6px;
+    border: 1.5px solid var(--ink-muted);
+    transition: background 0.3s var(--ease-general), border-color 0.3s var(--ease-general);
+}
+
+.cue-item.cue-active {
+    color: var(--accent-red);
+}
+
+.cue-item.cue-active .cue-dot {
+    background: var(--accent-red);
+    border-color: var(--accent-red);
+}
+
+/* Progress Meter Bar */
+.ticket-meter-track {
+    width: 100%;
+    height: 3px;
+    background: var(--ink-hairline);
+    position: relative;
+    overflow: hidden;
+    margin: 0.25rem 0;
+}
+
+.ticket-meter-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: var(--packet-meter);
+    background-color: var(--accent-red);
+    will-change: width;
+}
+
+/* Dashed 2px Perforation Opening */
+.ticket-perforation {
+    border-top: 2px dashed var(--ink-primary);
+    margin: 0.5rem 0;
+    position: relative;
+    transform: translateY(calc(var(--packet-cut) * 14px));
+    opacity: calc(0.35 + var(--packet-cut) * 0.65);
+    will-change: transform, opacity;
+}
+
+/* Three Mono Rows at the Foot */
+.ticket-foot-rows {
+    border-top: 1px solid var(--ink-hairline);
+    padding-top: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.ticket-foot-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+}
+
+.ticket-foot-row label {
+    color: var(--ink-muted);
+}
+
+.ticket-foot-row span {
+    font-weight: 700;
+    color: var(--ink-primary);
+}
+
+.ticket-foot-row span.val-red {
+    color: var(--accent-red);
+}
+
+.ticket-footer-status {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--ink-hairline);
+    padding-top: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+}
+
+.ticket-status-pill {
+    padding: 0.25rem 0.6rem;
+    background: var(--ink-primary);
+    color: var(--paper-white);
+    font-weight: 700;
+    letter-spacing: 0.18em;
+}
+
+/* ==========================================================================
+   STAGE 5 — PARALLAX SEASON BAND (300svh, Cream #e7e2d8)
+   Driven by: --season-y, --season-scale
+   ========================================================================== */
+.stage-seasons {
+    height: 300svh;
+    background-color: var(--bg-cream);
+    color: var(--ink-primary);
+}
+
+.seasons-viewport {
+    background-color: var(--bg-cream);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 6rem 3.5rem 3.5rem 3.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+#seasons-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.75;
+    transform: translateY(var(--season-y)) scale(var(--season-scale));
+    will-change: transform;
+}
+
+.seasons-content {
+    position: relative;
+    z-index: 2;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    padding-bottom: 2rem;
+}
+
+.seasons-headline {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 7.5vw, 8rem);
+    line-height: 0.86;
+    letter-spacing: -0.025em;
+    margin-bottom: 3.5rem;
+}
+
+.seasons-headline .accent-mark {
+    color: var(--accent-red);
+}
+
+.seasons-chapters-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
+    border-top: 1.5px solid var(--ink-primary);
+    padding-top: 2.5rem;
+}
+
+.season-chapter {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    opacity: 0.3;
+    transition: opacity 0.35s var(--ease-general), border-color 0.35s var(--ease-general);
+    border-left: 2px solid transparent;
+    padding-left: 1.25rem;
+}
+
+.season-chapter.chapter-active {
+    opacity: 1;
+    border-left-color: var(--accent-red);
+}
+
+.chapter-number {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    font-weight: 700;
+    color: var(--accent-red);
+}
+
+.chapter-title {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+}
+
+.chapter-desc {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--ink-muted);
+}
+
+/* ==========================================================================
+   BELOW-THE-FOLD CONTENT (NORMAL FLOW SECTIONS)
+   ========================================================================== */
+.normal-flow-section {
+    position: relative;
+    padding: 6rem 3.5rem;
+    background: var(--bg-cream);
+    border-top: 1.5px solid var(--ink-primary);
+}
+
+.section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 3rem;
+    border-bottom: 1.5px solid var(--ink-primary);
+    padding-bottom: 1.25rem;
+}
+
+.section-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    line-height: 0.86;
+    letter-spacing: -0.025em;
+    text-transform: uppercase;
+}
+
+/* Category Directory Grid */
+.category-tiles-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+.category-tile {
+    background: var(--paper-white);
+    border: 1.5px solid var(--ink-primary);
+    padding: 2.2rem 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 220px;
+    position: relative;
+    transition: transform 0.25s var(--ease-general), background 0.25s var(--ease-general), color 0.25s var(--ease-general);
+}
+
+.category-tile:hover {
+    background: var(--ink-primary);
+    color: var(--paper-white);
+    transform: translateY(-5px);
+}
+
+.category-tile:hover .tile-cat-count {
+    color: var(--accent-red);
+}
+
+.tile-number {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    color: var(--accent-red);
+    font-weight: 700;
+}
+
+.tile-name {
+    font-family: var(--font-display);
+    font-size: 2.4rem;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+}
+
+.tile-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-top: 1px solid var(--ink-hairline);
+    padding-top: 1rem;
+}
+
+.tile-cat-count {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    color: var(--ink-muted);
+}
+
+.tile-arrow {
+    font-family: var(--font-mono);
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+/* Ruled Price Table: Fresh on Campus */
+.editorial-table-container {
+    width: 100%;
+    overflow-x: auto;
+    border: 1.5px solid var(--ink-primary);
+    background: var(--paper-white);
+}
+
+.editorial-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.editorial-table th {
+    background: #efe9dc;
+    border-bottom: 1.5px solid var(--ink-primary);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 1.25rem 1.5rem;
+    text-align: left;
+    color: var(--ink-primary);
+}
+
+.editorial-table td {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--ink-hairline);
+    color: var(--ink-primary);
+    vertical-align: middle;
+}
+
+.editorial-table tr:last-child td {
+    border-bottom: none;
+}
+
+.editorial-table tr {
+    cursor: pointer;
+    transition: background 0.15s var(--ease-general);
+}
+
+.editorial-table tbody tr:hover {
+    background: #f4efe6;
+}
+
+.td-product-name {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    letter-spacing: -0.01em;
+}
+
+.td-price {
+    font-family: var(--font-mono);
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--accent-red);
+}
+
+.status-badge-inline {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    font-weight: 700;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid currentColor;
+    display: inline-block;
+}
+
+.status-badge-available {
+    color: #15803d;
+    border-color: #15803d;
+}
+
+.status-badge-bidding {
+    color: var(--accent-red);
+    border-color: var(--accent-red);
+}
+
+/* Native Details FAQ */
+.faq-accordion {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    max-width: 980px;
+}
+
+.faq-item {
+    border: 1.5px solid var(--ink-primary);
+    background: var(--paper-white);
+}
+
+.faq-summary {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    padding: 1.5rem 2rem;
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    user-select: none;
+}
+
+.faq-summary::-webkit-details-marker {
+    display: none;
+}
+
+.faq-summary::after {
+    content: '+';
+    font-family: var(--font-mono);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent-red);
+    transition: transform 0.2s var(--ease-general);
+}
+
+.faq-item[open] .faq-summary::after {
+    content: '−';
+    transform: rotate(180deg);
+}
+
+.faq-content {
+    padding: 0 2rem 1.75rem 2rem;
+    font-size: 1.05rem;
+    line-height: 1.65;
+    color: var(--ink-muted);
+    border-top: 1px solid var(--ink-hairline);
+    margin-top: 0.5rem;
+    padding-top: 1.25rem;
+}
+
+/* Editorial Dark Footer (Dark Loam #241a12) */
+.editorial-footer {
+    background-color: var(--dark-loam);
+    color: var(--paper-white);
+    padding: 6rem 3.5rem 3rem 3.5rem;
+    border-top: 2px solid var(--accent-red);
+}
+
+.footer-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 4rem;
+    padding-bottom: 4rem;
+    border-bottom: 1px solid var(--dark-loam-hairline);
+}
+
+.footer-brand {
+    font-family: var(--font-display);
+    font-size: 2.8rem;
+    line-height: 0.86;
+    letter-spacing: -0.025em;
+    margin-bottom: 1rem;
+}
+
+.footer-brand span {
+    color: var(--accent-red);
+}
+
+.footer-desc {
+    color: var(--paper-muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    max-width: 360px;
+}
+
+.footer-col-title {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    font-weight: 700;
+    color: var(--accent-red);
+    margin-bottom: 1.25rem;
+}
+
+.footer-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.footer-link {
+    color: var(--paper-muted);
+    font-size: 0.92rem;
+    transition: color 0.2s var(--ease-general);
+}
+
+.footer-link:hover {
+    color: var(--paper-white);
+}
+
+.footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 2rem;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    color: var(--paper-muted);
+}
+
+/* ==========================================================================
+   RESPONSIVENESS & REDUCED MOTION SPECIFICATION
+   ========================================================================= */
+@media (max-width: 1024px) {
+    .editorial-nav { padding: 1rem 2rem; }
+    .hero-viewport, .manifesto-viewport, .artifact-viewport, .seasons-viewport { padding: 5rem 2rem 2.5rem 2rem; }
+    .rail-header, .rail-footer { padding-left: 2rem; padding-right: 2rem; }
+    .artifact-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .category-tiles-grid, .seasons-chapters-grid { grid-template-columns: 1fr 1fr; }
+    .footer-top { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+}
+
+@media (max-width: 768px) {
+    .editorial-nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero-viewport, .manifesto-viewport, .artifact-viewport, .seasons-viewport { padding: 5rem 1.5rem 2rem 1.5rem; }
+    .hero-subrow { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
+    .manifesto-principles, .category-tiles-grid, .seasons-chapters-grid { grid-template-columns: 1fr; }
+    .footer-top { grid-template-columns: 1fr; gap: 2rem; }
+}
+
+/* Strict prefers-reduced-motion:
+   Flatten .scroll-stage heights to auto, make pins static, force all word spans
+   and data-rev elements visible, remove every clip-path, wrap horizontal rail,
+   and fill the progress meters. */
+@media (prefers-reduced-motion: reduce) {
+    .scroll-stage {
+        height: auto !important;
+    }
+    .sticky-viewport {
+        position: relative !important;
+        height: auto !important;
+        overflow: visible !important;
+    }
+    .poster-lockup, .manifesto-quote-wrapper, .artifact-left, .listing-ticket {
+        transform: none !important;
+        opacity: 1 !important;
+    }
+    .word-span {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+    [data-rev] {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+    .manifesto-sentence-fill {
+        clip-path: none !important;
+    }
+    .rail-track {
+        transform: none !important;
+        display: flex !important;
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+    }
+    .rail-progress-fill, .ticket-meter-fill {
+        width: 100% !important;
+    }
+    .ticket-perforation {
+        transform: none !important;
+        opacity: 1 !important;
+    }
+    .season-chapter {
+        opacity: 1 !important;
+    }
+}

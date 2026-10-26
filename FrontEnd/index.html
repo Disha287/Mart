@@ -1,649 +1,698 @@
-
-KI<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CampusMart | Your Campus. Your Marketplace.</title>
+    <title>Campus Mart — The Student Marketplace & Catalogue</title>
     <meta name="description"
-        content="CampusMart is the ultimate digital student marketplace for buying, selling, discovering services, and getting academic assistance.">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/responsive.css">
-    <link rel="stylesheet" href="css/animations.css">
-    <style>
-        @keyframes activeFloat {
-            0% {
-                transform: translateY(0px);
-                box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
-            }
-            50% {
-                transform: translateY(-12px);
-                box-shadow: 0 20px 32px rgba(15, 23, 42, 0.13);
-            }
-            100% {
-                transform: translateY(0px);
-                box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
-            }
-        }
-        .floating-card-item {
-            background: #FFFFFF !important;
-            border: 1.5px solid #E2E8F0 !important;
-            border-radius: 16px !important;
-            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06) !important;
-            display: flex !important;
-            flex-direction: column !important;
-            align-items: center !important;
-            justify-content: center !important;
-            text-align: center !important;
-            text-decoration: none !important;
-            padding: 1.85rem 1.4rem !important;
-            will-change: transform, box-shadow;
-            transition: border-color 0.3s ease !important;
-        }
-        .floating-card-item:hover {
-            border-color: #3B5CCC !important;
-        }
-    </style>
+        content="A curated university marketplace where students discover, buy, sell, and circulate essentials for campus life.">
+
+    <!-- Google Fonts Preconnect & Font Families -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&family=Martian+Mono:wght@400;500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Master Editorial Stylesheet -->
+    <link rel="stylesheet" href="css/editorial.css">
 </head>
 
 <body>
 
-    <!-- Header / Sticky Navbar -->
-    <header class="header">
-        <div class="container navbar">
-            <a href="index.html" class="logo"><img src="assets/images/logo.png" alt="CampusMart Logo"></a>
+    <!-- =======================================================================
+         EDITORIAL NAVIGATION (STICKY & MINIMAL)
+         ======================================================================= -->
+    <header class="editorial-nav" id="main-nav" role="banner">
+        <a href="index.html" class="nav-brand" aria-label="Campus Mart Home" data-rev style="--d: 30ms;">
+            CAMPUS MART<span class="brand-red">.</span>
+        </a>
 
-            <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle navigation">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
+        <nav aria-label="Main Navigation">
+            <ul class="nav-links">
+                <li data-rev style="--d: 60ms;"><a href="#stage-rail" class="nav-link">EXPLORE</a></li>
+                <li data-rev style="--d: 90ms;"><a href="#category-directory" class="nav-link">CATEGORIES</a></li>
+                <li data-rev style="--d: 120ms;"><a href="pages/create-listing.html" class="nav-link">SELL AN ITEM</a></li>
+                <li data-rev style="--d: 150ms;"><a href="pages/my-listings.html" class="nav-link">MY LISTINGS</a></li>
+                <li data-rev style="--d: 180ms;"><a href="pages/marketplace.html" class="nav-link">CATALOGUE</a></li>
+            </ul>
+        </nav>
 
-            <nav class="nav-menu" id="nav-menu">
-                <a href="index.html" class="nav-link active">Home</a>
-
-                <!-- Marketplace Dropdown (Contains Category by Category selling items & services) -->
-                <div class="dropdown">
-                    <a href="pages/marketplace.html" class="nav-link">Marketplace ▼</a>
-                    <div class="dropdown-menu">
-                        <a href="pages/marketplace.html?cat=Academic" class="dropdown-item">📚 Academic & Books</a>
-                        <a href="pages/marketplace.html?cat=Electronics" class="dropdown-item">💻 Electronics & Tech</a>
-                        <a href="pages/marketplace.html?cat=Fashion" class="dropdown-item">👕 Clothing & Fashion</a>
-                        <a href="pages/marketplace.html?cat=Food" class="dropdown-item">🍔 Food & Snacks</a>
-                        <a href="pages/marketplace.html?cat=Birthday%20%26%20Events" class="dropdown-item">🎂 Birthday &
-                            Celebrations</a>
-                        <a href="pages/marketplace.html?cat=Lifestyle" class="dropdown-item">🏠 Lifestyle & Hostel</a>
-                        <a href="pages/marketplace.html?cat=Gaming" class="dropdown-item">🎮 Gaming & Sports</a>
-                        <a href="pages/marketplace.html?cat=Design%20%26%20Creative" class="dropdown-item">🎨 Design &
-                            Creative</a>
-                        <a href="pages/marketplace.html?cat=Hardware%20%2F%20Technical%20Help" class="dropdown-item">🔧
-                            Hardware / Tech Support</a>
-                    </div>
-                </div>
-
-                <a href="pages/tuck-shop.html" class="nav-link">Tuck Shop</a>
-                <a href="pages/assignments.html" class="nav-link">Academic Help</a>
-                <a href="pages/donations.html" class="nav-link">Donations</a>
-                <a href="pages/orders.html" class="nav-link">Orders</a>
-                <a href="pages/create-listing.html" class="nav-link">Sell</a>
-
-                <div class="nav-actions">
-                    <a href="pages/wishlist.html" class="nav-icon-btn" title="Wishlist">
-                        ❤️ <span class="badge-count" id="nav-wishlist-badge" style="display:none;">0</span>
-                    </a>
-                    <a href="pages/cart.html" class="nav-icon-btn" title="Cart">
-                        🛒 <span class="badge-count" id="nav-cart-badge" style="display:none;">0</span>
-                    </a>
-                    <div id="nav-user-btn">
-                        <!-- Populated by auth.js -->
-                    </div>
-                </div>
-            </nav>
+        <div class="nav-actions">
+            <a href="pages/cart.html" class="btn-editorial btn-editorial-outline" aria-label="Cart" data-rev style="--d: 210ms;">
+                CART <span id="nav-cart-badge" style="display:none; color: var(--accent-red); margin-left: 4px;">(0)</span>
+            </a>
+            <a href="pages/create-listing.html" class="btn-editorial btn-editorial-primary" data-rev style="--d: 240ms;">
+                LIST ITEM // +
+            </a>
+            <div id="nav-user-btn" data-rev style="--d: 270ms;">
+                <!-- Managed by auth.js -->
+                <a href="pages/login.html" class="btn-editorial btn-editorial-outline">LOGIN</a>
+            </div>
         </div>
     </header>
 
-    <!-- HERO SECTION WITH MIDNIGHT BLUE + PEACH THEME -->
-    <section class="hero-section"
-        style="position: relative; width: 100%; min-height: 88vh; display: flex; align-items: center; justify-content: center; overflow: hidden; background: linear-gradient(135deg, #172554 0%, #3B5CCC 100%);">
-        <!-- Muted Looping Background Drone Video - Chitkara University, Rajpura, Punjab -->
-        <video autoplay loop muted playsinline id="hero-video"
-            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;">
-            <source src="assets/video/chitkara-drone.mp4" type="video/mp4">
-            <source src="assets/video/campus-drone.mp4" type="video/mp4">
-        </video>
+    <!-- =======================================================================
+         STAGE 1 — POSTER HERO (Height ~280svh, Dark Loam #241A12)
+         Driven by: --hero-type-y (0 to -90px), --hero-type-scale (1 to 0.74), --hero-type-alpha (1 to 0)
+         ======================================================================= -->
+    <section class="scroll-stage stage-hero" id="stage-hero" aria-label="Campus Mart Hero Stage">
+        <div class="sticky-viewport hero-viewport">
+            <!-- Full bleed canvas drawing drifting tilled bed strokes (5-19% alpha) -->
+            <canvas id="hero-canvas" aria-hidden="true"></canvas>
 
-        <!-- Midnight Blue Translucent Overlay (#172554 -> #0F172A) -->
-        <div
-            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(180deg, rgba(23, 37, 84, 0.72) 0%, rgba(15, 23, 42, 0.86) 100%); z-index: 2; backdrop-filter: blur(1px);">
-        </div>
-
-        <div class="container"
-            style="position: relative; z-index: 3; text-align: center; color: var(--surface); max-width: 880px; padding: 5rem 1.5rem;">
-            <span
-                style="background: rgba(255, 155, 113, 0.2); border: 1px solid var(--accent); color: var(--accent); font-size: 0.85rem; font-weight: 700; padding: 6px 16px; border-radius: var(--radius-full); text-transform: uppercase; letter-spacing: 1.2px; display: inline-block; margin-bottom: 1.25rem;"
-                class="fade-in">
-                📍 Chitkara University, Rajpura (Punjab) • Official Marketplace
-            </span>
-            <h1 style="font-size: 3.75rem; font-weight: 800; line-height: 1.1; margin-bottom: 1rem; color: #FFFFFF; text-shadow: 0 4px 25px rgba(0,0,0,0.5);"
-                class="fade-in">
-                CampusMart
-            </h1>
-            <p style="font-size: 1.5rem; font-weight: 600; color: var(--accent); margin-bottom: 1rem; text-shadow: 0 2px 10px rgba(0,0,0,0.4);"
-                class="fade-in">
-                "Your Campus. Your Marketplace."
-            </p>
-            <p style="font-size: 1.15rem; color: #F1F5F9; margin-bottom: 2.5rem; line-height: 1.6; max-width: 720px; margin-left: auto; margin-right: auto;"
-                class="fade-in">
-                Buy, sell, discover services, and connect with your campus community—all in one place. Built exclusively
-                for students.
-            </p>
-
-            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;" class="fade-in">
-                <a href="pages/marketplace.html" class="btn btn-primary btn-lg">
-                    🛍️ Explore Marketplace
-                </a>
-                <a href="pages/services.html" class="btn btn-accent btn-lg">
-                    🛠️ Explore Services
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <script>
-        // Muted video autoplay force handler
-        document.addEventListener('DOMContentLoaded', function () {
-            var vid = document.getElementById('hero-video');
-            if (vid) {
-                vid.muted = true;
-                vid.play().catch(function (e) {
-                    console.log('Video autoplay initiated:', e);
-                });
-            }
-        });
-    </script>
-
-    <!-- QUICK ACCESS SECTION -->
-    <section class="section" style="background-color: var(--neutral-white);">
-        <div class="container">
-            <div class="section-title-wrap">
-                <span class="section-subtitle">Quick Navigation</span>
-                <h2 class="section-title">What would you like to explore?</h2>
-                <p class="section-desc">Access student product listings, tuck shop supplies, campus services, and
-                    academic assistance instantly.</p>
-            </div>
-
-            <div class="grid grid-cols-4">
-                <a href="pages/marketplace.html" class="card"
-                    style="padding: 2rem 1.5rem; text-align: center; border-left: 4px solid var(--secondary-blue);">
-                    <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">🛍️</div>
-                    <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">Marketplace</h3>
-                    <p style="font-size: 0.9rem; color: var(--neutral-text-muted);">Buy & sell verified student
-                        products, gadgets, books, and gear.</p>
-                </a>
-
-                <a href="pages/tuck-shop.html" class="card"
-                    style="padding: 2rem 1.5rem; text-align: center; border-left: 4px solid var(--accent-orange); position: relative;">
-                    <span
-                        style="position: absolute; top: 12px; right: 12px; background: #DCFCE7; color: #166534; font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 999px;">💬
-                        WhatsApp Direct</span>
-                    <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">✏️</div>
-                    <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">Tuck Shop</h3>
-                    <p style="font-size: 0.9rem; color: var(--neutral-text-muted);">Stationery, practical sheets,
-                        notebooks & direct WhatsApp ordering.</p>
-                </a>
-
-                <a href="pages/services.html" class="card"
-                    style="padding: 2rem 1.5rem; text-align: center; border-left: 4px solid var(--success-green);">
-                    <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">🛠️</div>
-                    <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">Services</h3>
-                    <p style="font-size: 0.9rem; color: var(--neutral-text-muted);">Discover student services from tech
-                        support to creative design.</p>
-                </a>
-
-                <a href="pages/assignments.html" class="card"
-                    style="padding: 2rem 1.5rem; text-align: center; border-left: 4px solid #8B5CF6;">
-                    <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">📚</div>
-                    <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">Academic Assistance</h3>
-                    <p style="font-size: 0.9rem; color: var(--neutral-text-muted);">Find qualified campus peers for
-                        project guidance and help.</p>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- TRENDING PRODUCTS SECTION -->
-    <section class="section">
-        <div class="container">
-            <div
-                style="display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem;">
-                <div>
-                    <span class="section-subtitle">Hot Listings</span>
-                    <h2 class="section-title" style="margin-bottom: 0;">Trending Products</h2>
-                </div>
-                <a href="pages/marketplace.html" class="btn btn-outline">View All Listings →</a>
-            </div>
-
-            <div style="position: relative; width: 100%;">
-                <button class="carousel-control prev" id="trending-prev" aria-label="Previous Products">‹</button>
-                <div class="trending-carousel-wrapper" id="home-trending-grid">
-                    <!-- Dynamically populated by JS -->
-                </div>
-                <button class="carousel-control next" id="trending-next" aria-label="Next Products">›</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- POPULAR CATEGORIES SECTION -->
-    <section class="section" style="background-color: var(--neutral-white);">
-        <div class="container">
-            <div class="section-title-wrap">
-                <span class="section-subtitle">Browse by Category</span>
-                <h2 class="section-title">Popular Campus Categories</h2>
-            </div>
-
-            <div class="grid grid-cols-3">
-                <a href="pages/marketplace.html?cat=Academic" class="card"
-                    style="padding: 1.5rem; display: flex; align-items: center; gap: 1rem;">
-                    <span
-                        style="font-size: 2rem; background: var(--secondary-blue-light); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-md);">📖</span>
-                    <div>
-                        <h4 style="font-size: 1.1rem;">Academic</h4>
-                        <span style="font-size: 0.85rem; color: var(--neutral-text-muted);">Calculators, textbooks,
-                            kits</span>
-                    </div>
-                </a>
-
-                <a href="pages/marketplace.html?cat=Electronics" class="card"
-                    style="padding: 1.5rem; display: flex; align-items: center; gap: 1rem;">
-                    <span
-                        style="font-size: 2rem; background: var(--secondary-blue-light); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-md);">💻</span>
-                    <div>
-                        <h4 style="font-size: 1.1rem;">Electronics</h4>
-                        <span style="font-size: 0.85rem; color: var(--neutral-text-muted);">Laptops, headphones,
-                            gadgets</span>
-                    </div>
-                </a>
-
-                <a href="pages/marketplace.html?cat=Fashion" class="card"
-                    style="padding: 1.5rem; display: flex; align-items: center; gap: 1rem;">
-                    <span
-                        style="font-size: 2rem; background: var(--secondary-blue-light); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-md);">👕</span>
-                    <div>
-                        <h4 style="font-size: 1.1rem;">Fashion</h4>
-                        <span style="font-size: 0.85rem; color: var(--neutral-text-muted);">Hoodies, apparel,
-                            accessories</span>
-                    </div>
-                </a>
-
-                <a href="pages/marketplace.html?cat=Lifestyle" class="card"
-                    style="padding: 1.5rem; display: flex; align-items: center; gap: 1rem;">
-                    <span
-                        style="font-size: 2rem; background: var(--secondary-blue-light); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-md);">💡</span>
-                    <div>
-                        <h4 style="font-size: 1.1rem;">Lifestyle</h4>
-                        <span style="font-size: 0.85rem; color: var(--neutral-text-muted);">Desk lamps, hostel
-                            essentials</span>
-                    </div>
-                </a>
-
-                <a href="pages/marketplace.html?cat=Gaming" class="card"
-                    style="padding: 1.5rem; display: flex; align-items: center; gap: 1rem;">
-                    <span
-                        style="font-size: 2rem; background: var(--secondary-blue-light); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-md);">🎮</span>
-                    <div>
-                        <h4 style="font-size: 1.1rem;">Gaming</h4>
-                        <span style="font-size: 0.85rem; color: var(--neutral-text-muted);">Keyboards, controllers,
-                            gear</span>
-                    </div>
-                </a>
-
-                <a href="pages/tuck-shop.html" class="card"
-                    style="padding: 1.5rem; display: flex; align-items: center; gap: 1rem;">
-                    <span
-                        style="font-size: 2rem; background: var(--accent-orange-light); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-md);">✏️</span>
-                    <div>
-                        <h4 style="font-size: 1.1rem;">Stationery</h4>
-                        <span style="font-size: 0.85rem; color: var(--neutral-text-muted);">Notebooks, pens, practical
-                            sheets</span>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- SERVICES PREVIEW SECTION (9 ALIGNED CATEGORIES) -->
-    <section class="section">
-        <div class="container">
-            <div class="section-title-wrap">
-                <span class="section-subtitle">Student Services</span>
-                <h2 class="section-title">Explore Student Skill Marketplace</h2>
-                <p class="section-desc">Connect directly with skilled students across campus categories.</p>
-            </div>
-
-            <div class="grid grid-cols-3" id="home-services-grid">
-                <!-- Populated dynamically with floating cards -->
-            </div>
-        </div>
-    </section>
-
-                        <!-- WHY CAMPUSMART FEATURE BLOCKS -->
-    <section class="section" style="background-color: #171B26; color: var(--neutral-white);">
-        <div class="container">
-            <div class="section-title-wrap" style="text-align: center; margin-bottom: 2.5rem;">
-                <span class="section-subtitle" style="color: var(--accent-orange); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Built For Students</span>
-                <h2 class="section-title" style="color: var(--neutral-white); margin-top: 0.5rem; font-size: 2rem;">Why Choose CampusMart?</h2>
-            </div>
-
-            <div class="grid grid-cols-4" style="gap: 1.5rem;">
-                <div style="padding: 1.5rem; background: #1E2332; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
-                    <div style="font-size: 1.5rem; margin-bottom: 0.75rem;">🎓</div>
-                    <h3 style="font-size: 1.1rem; color: var(--neutral-white); margin-bottom: 0.5rem;">Campus Focused</h3>
-                    <p style="font-size: 0.85rem; color: #94A3B8; line-height: 1.6;">Built specifically for university students with verified college credentials and hostel delivery.</p>
+            <div class="hero-center-box">
+                <!-- Two-line poster lockup sized from character counts -->
+                <div class="poster-lockup" id="poster-lockup">
+                    <span class="poster-line poster-line-sub font-display split-words" data-chars="23" style="--chars: 23;">
+                        THE STUDENT MARKETPLACE
+                    </span>
+                    <h1 class="poster-line poster-line-main font-display split-words" data-chars="11" style="--chars: 11;">
+                        CAMPUS MART<span class="dot">.</span>
+                    </h1>
                 </div>
 
-                <div style="padding: 1.5rem; background: #1E2332; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
-                    <div style="font-size: 1.5rem; margin-bottom: 0.75rem;">⚡</div>
-                    <h3 style="font-size: 1.1rem; color: var(--neutral-white); margin-bottom: 0.5rem;">Easy Buying & Selling</h3>
-                    <p style="font-size: 0.85rem; color: #94A3B8; line-height: 1.6;">List your items in 60 seconds with fixed pricing or real-time campus bidding system.</p>
-                </div>
-
-                <div style="padding: 1.5rem; background: #1E2332; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
-                    <div style="font-size: 1.5rem; margin-bottom: 0.75rem;">💬</div>
-                    <h3 style="font-size: 1.1rem; color: var(--neutral-white); margin-bottom: 0.5rem;">Direct Communication</h3>
-                    <p style="font-size: 0.85rem; color: #94A3B8; line-height: 1.6;">Instantly connect with student sellers on WhatsApp with pre-filled product order messages.</p>
-                </div>
-
-                <div style="padding: 1.5rem; background: #1E2332; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
-                    <div style="font-size: 1.5rem; margin-bottom: 0.75rem;">🌟</div>
-                    <h3 style="font-size: 1.1rem; color: var(--neutral-white); margin-bottom: 0.5rem;">Student Services</h3>
-                    <p style="font-size: 0.85rem; color: #94A3B8; line-height: 1.6;">Hire peer experts for project assistance, design, technical troubleshooting, and tutoring.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer class="footer" style="background-color: #171B26; border-top: none; padding-top: 4rem; padding-bottom: 2rem;">
-        <div class="container">
-            <div class="footer-grid" style="grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 2rem; margin-bottom: 3rem; text-align: left;">
-                <div class="footer-brand">
-                    <h3 style="color: #FFFFFF; font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem;"><a href="index.html" style="color: #FFFFFF; text-decoration: none;">CampusMart</a></h3>
-                    <p class="footer-desc" style="color: #94A3B8; font-size: 0.9rem; line-height: 1.6; max-width: 250px;">
-                        Your ultimate student-to-student marketplace. Buy, sell, and connect with your campus community instantly.
+                <div class="hero-subrow">
+                    <p class="hero-copy split-words" data-rev style="--d: 100ms;">
+                        A university catalogue and peer exchange. Discover study essentials, tools, and dorm gear circulated across campus.
                     </p>
-                </div>
-
-                <div>
-                    <h4 class="footer-title" style="color: #FFFFFF; font-size: 1rem; margin-bottom: 1.25rem;">Quick Links</h4>
-                    <ul class="footer-links" style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.75rem;">
-                        <li><a href="index.html" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem;">Home</a></li>
-                        <li><a href="pages/marketplace.html" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem;">Marketplace</a></li>
-                        <li><a href="pages/services.html" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem;">Services</a></li>
-                        <li><a href="pages/offers.html" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem;">Offers</a></li>
-                        <li><a href="pages/contact.html" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem;">Contact</a></li>
-                        <li><a href="pages/services.html?cat=Design%20%26%20Creative" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem;">Design</a></li>
-                        <li><a href="pages/showcase.html" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem; text-transform: uppercase;">CLIENT SHOW CASE</a></li>
-                        <li><a href="pages/reviews.html" style="color: #94A3B8; text-decoration: none; font-size: 0.9rem; text-transform: uppercase;">REVIEWS</a></li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h4 class="footer-title" style="color: #FFFFFF; font-size: 1rem; margin-bottom: 1.25rem;">Contact Us</h4>
-                    <ul class="footer-links" style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 1rem;">
-                        <li style="display: flex; gap: 0.5rem; color: #94A3B8; font-size: 0.9rem; align-items: flex-start;">
-                            <span style="color: #EF4444;">📍</span> <a href="pages/contact.html" style="color: #94A3B8; text-decoration: none;">CampusMart, Sec-82, SAS Nagar, Punjab</a>
-                        </li>
-                        <li style="display: flex; gap: 0.5rem; color: #94A3B8; font-size: 0.9rem; align-items: center;">
-                            <span>📞</span> <a href="tel:+919876543210" style="color: #94A3B8; text-decoration: none;">(+91) 98765-XXXXX</a>
-                        </li>
-                        <li style="display: flex; gap: 0.5rem; color: #94A3B8; font-size: 0.9rem; align-items: center;">
-                            <span>✉️</span> <a href="mailto:contact@campusmart.com" style="color: #94A3B8; text-decoration: none;">contact@campusmart.com</a>
-                        </li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h4 class="footer-title" style="color: #FFFFFF; font-size: 1rem; margin-bottom: 1.25rem;">Follow Us</h4>
-                    <div style="display: flex; gap: 0.5rem;">
-                        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" title="Facebook" style="width: 32px; height: 32px; background: #334155; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 0.85rem;">f</a>
-                        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" title="Instagram" style="width: 32px; height: 32px; background: #334155; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 0.85rem;">ig</a>
-                        <a href="https://pinterest.com" target="_blank" rel="noopener noreferrer" title="Pinterest" style="width: 32px; height: 32px; background: #334155; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 0.85rem;">p</a>
-                        <a href="https://github.com/Disha287/Mart" target="_blank" rel="noopener noreferrer" title="GitHub" style="width: 32px; height: 32px; background: #334155; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 0.85rem;">h</a>
+                    <div class="hero-ctas">
+                        <a href="#stage-rail" class="btn-editorial btn-editorial-primary" data-rev style="--d: 150ms;">
+                            EXPLORE THE MARKET // ↓
+                        </a>
+                        <a href="pages/create-listing.html" class="btn-editorial btn-editorial-outline" data-rev style="--d: 200ms;">
+                            LIST AN ITEM
+                        </a>
                     </div>
                 </div>
             </div>
 
-            <div class="footer-bottom" style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 1.5rem; text-align: left;">
-                <p style="color: #64748B; font-size: 0.85rem; margin: 0;">© 2025 CampusMart. All rights reserved.</p>
+            <footer class="hero-footer-meta">
+                <span data-rev style="--d: 60ms;">STUDENT-POWERED</span>
+                <span data-rev style="--d: 120ms;">BUY · SELL · REUSE</span>
+                <span data-rev style="--d: 180ms;">CAMPUS EDITION / 001</span>
+            </footer>
+        </div>
+    </section>
+
+    <!-- =======================================================================
+         STAGE 2 — CLIP-WIPE MANIFESTO (Height ~260svh, Cream #E7E2D8)
+         Driven by: --manifesto-wipe (0% to 100%), --manifesto-scale (1 to 1.05)
+         ======================================================================= -->
+    <section class="scroll-stage stage-manifesto" id="stage-manifesto" aria-label="Campus Mart Manifesto">
+        <div class="sticky-viewport manifesto-viewport">
+            <div class="manifesto-container">
+                <span class="tag-label font-mono" style="margin-bottom: 2rem;" data-rev style="--d: 40ms;">
+                    MANIFESTO // VOL. 01
+                </span>
+
+                <div class="manifesto-quote-wrapper" id="manifesto-box">
+                    <!-- Base Sentence: 34-percent ink -->
+                    <div class="manifesto-sentence manifesto-sentence-base font-display" id="manifesto-base" aria-hidden="true">
+                        GOOD FINDS SHOULD TRAVEL ACROSS CAMPUS<span class="accent-mark" style="color:var(--accent-red)">.</span>
+                    </div>
+                    <!-- Duplicate Sentence: Full ink filled bottom-up via clip-path -->
+                    <div class="manifesto-sentence manifesto-sentence-fill font-display" id="manifesto-fill">
+                        GOOD FINDS SHOULD TRAVEL ACROSS CAMPUS<span class="accent-mark">.</span>
+                    </div>
+                </div>
+
+                <p class="manifesto-subtext split-words" data-rev style="--d: 80ms;">
+                    From semester textbooks to dorm appliances, Campus Mart gives useful things a second life within the student community.
+                </p>
+
+                <div class="manifesto-principles">
+                    <div class="principle-item" data-rev style="--d: 120ms;">
+                        <span class="principle-num font-mono">01 — DISCOVER MORE</span>
+                        <h3 class="principle-title font-display">LOCAL CIRCULATION</h3>
+                        <p class="principle-desc">
+                            Find textbooks, dorm electronics, and lab equipment without leaving your university grounds.
+                        </p>
+                    </div>
+                    <div class="principle-item" data-rev style="--d: 160ms;">
+                        <span class="principle-num font-mono">02 — SPEND SMARTER</span>
+                        <h3 class="principle-title font-display">FAIR PEER PRICING</h3>
+                        <p class="principle-desc">
+                            Cut retail markup by buying directly from peers who finished the coursework before you.
+                        </p>
+                    </div>
+                    <div class="principle-item" data-rev style="--d: 200ms;">
+                        <span class="principle-num font-mono">03 — REUSE BETTER</span>
+                        <h3 class="principle-title font-display">ZERO WASTE LIVING</h3>
+                        <p class="principle-desc">
+                            Pass durable tools forward to the incoming batch instead of sending them to landfill.
+                        </p>
+                    </div>
+                </div>
             </div>
+        </div>
+    </section>
+
+    <!-- =======================================================================
+         STAGE 3 — HORIZONTAL PRODUCT RAIL (Height ~340svh, Cream #E7E2D8)
+         Driven by: --rail-x (progress * overflowWidth), --rail-progress (0% to 100%)
+         ======================================================================= -->
+    <section class="scroll-stage stage-rail" id="stage-rail" aria-label="The Campus Edit Horizontal Catalogue">
+        <div class="sticky-viewport rail-viewport">
+            <header class="rail-header">
+                <div>
+                    <span class="tag-label font-mono" data-rev style="--d: 40ms;">CURATED INVENTORY</span>
+                    <h2 class="rail-title font-display split-words" data-rev style="--d: 80ms;">THE CAMPUS EDIT</h2>
+                </div>
+                <div class="font-mono" style="font-size: 10.5px; letter-spacing: 0.18em; color: var(--ink-muted); text-align: right;" data-rev style="--d: 120ms;">
+                    OBJECTS FOR EVERYDAY STUDENT LIFE<br>
+                    <a href="pages/marketplace.html" style="color: var(--accent-red); font-weight: 700; text-decoration: underline;">
+                        VIEW ALL PRODUCTS // →
+                    </a>
+                </div>
+            </header>
+
+            <div class="rail-track-container">
+                <div class="rail-track" id="rail-track">
+                    <!-- Card 1: Casio FX-991EX Scientific Calculator -->
+                    <article class="catalog-card" data-id="prod_101" data-rev style="--d: 60ms;">
+                        <div class="card-top-meta">
+                            <span class="card-cat-badge font-mono">01 // ACADEMIC TOOLS</span>
+                            <span class="card-condition-badge font-mono">LIKE NEW</span>
+                        </div>
+                        <div class="card-plate">
+                            <img src="assets/images/products/unsplash_calculator.jpg" alt="Casio FX-991EX Scientific Calculator" loading="lazy">
+                        </div>
+                        <div>
+                            <h3 class="card-title">Casio FX-991EX ClassWiz</h3>
+                            <p class="card-desc">High-resolution scientific calculator with dual power solar battery. Perfect for Engineering Mathematics and Physics.</p>
+                        </div>
+                        <div class="card-footer">
+                            <div class="card-price-block">
+                                <span class="card-price-label">LISTING PRICE</span>
+                                <span class="card-price-value">₹850</span>
+                            </div>
+                            <a href="pages/product.html?id=prod_101" class="card-action-btn font-mono" aria-label="Inspect Casio FX-991EX">
+                                INSPECT // →
+                            </a>
+                        </div>
+                    </article>
+
+                    <!-- Card 2: Engineering Graphics Drafter & Tool Kit -->
+                    <article class="catalog-card" data-id="prod_102" data-rev style="--d: 110ms;">
+                        <div class="card-top-meta">
+                            <span class="card-cat-badge font-mono">02 // ACADEMIC TOOLS</span>
+                            <span class="card-condition-badge font-mono">GOOD</span>
+                        </div>
+                        <div class="card-plate">
+                            <img src="assets/images/products/unsplash_1e0102cf079e37ca2e76ba09b47428d6.jpg" alt="Engineering Graphics Drafting Tool Kit" loading="lazy">
+                        </div>
+                        <div>
+                            <h3 class="card-title">Engineering Drafter Kit</h3>
+                            <p class="card-desc">Complete first-year engineering kit with mini-drafter, set squares, precision compass, and sheet holder.</p>
+                        </div>
+                        <div class="card-footer">
+                            <div class="card-price-block">
+                                <span class="card-price-label">LISTING PRICE</span>
+                                <span class="card-price-value">₹450</span>
+                            </div>
+                            <a href="pages/product.html?id=prod_102" class="card-action-btn font-mono" aria-label="Inspect Engineering Drafter Kit">
+                                INSPECT // →
+                            </a>
+                        </div>
+                    </article>
+
+                    <!-- Card 3: Dell Latitude Core i5 Laptop -->
+                    <article class="catalog-card" data-id="prod_103" data-rev style="--d: 160ms;">
+                        <div class="card-top-meta">
+                            <span class="card-cat-badge font-mono">03 // ELECTRONICS</span>
+                            <span class="card-condition-badge font-mono">EXCELLENT</span>
+                        </div>
+                        <div class="card-plate">
+                            <img src="assets/images/products/unsplash_a26afdbeb7d3d73a8bd6d237b34ae67f.jpg" alt="Dell Latitude Core i5 Laptop" loading="lazy">
+                        </div>
+                        <div>
+                            <h3 class="card-title">Dell Latitude Core i5</h3>
+                            <p class="card-desc">8GB RAM, 256GB SSD, robust battery life. Ready for programming, VS Code, and coursework simulation.</p>
+                        </div>
+                        <div class="card-footer">
+                            <div class="card-price-block">
+                                <span class="card-price-label">STARTING BID</span>
+                                <span class="card-price-value">₹14,500</span>
+                            </div>
+                            <a href="pages/product.html?id=prod_103" class="card-action-btn font-mono" aria-label="Inspect Dell Latitude Laptop">
+                                INSPECT // →
+                            </a>
+                        </div>
+                    </article>
+
+                    <!-- Card 4: Boat Rockerz 450 Over-Ear Wireless Headphones -->
+                    <article class="catalog-card" data-id="prod_104" data-rev style="--d: 210ms;">
+                        <div class="card-top-meta">
+                            <span class="card-cat-badge font-mono">04 // AUDIO & SOUND</span>
+                            <span class="card-condition-badge font-mono">LIKE NEW</span>
+                        </div>
+                        <div class="card-plate">
+                            <img src="assets/images/products/unsplash_2149c8d4f35a9b1eda9cc4dd288ffac9.jpg" alt="Boat Rockerz 450 Wireless Headphones" loading="lazy">
+                        </div>
+                        <div>
+                            <h3 class="card-title">Boat Rockerz 450</h3>
+                            <p class="card-desc">Matte black over-ear bluetooth headphones with HD sound and 15-hour battery life. Used 2 months only.</p>
+                        </div>
+                        <div class="card-footer">
+                            <div class="card-price-block">
+                                <span class="card-price-label">LISTING PRICE</span>
+                                <span class="card-price-value">₹750</span>
+                            </div>
+                            <a href="pages/product.html?id=prod_104" class="card-action-btn font-mono" aria-label="Inspect Boat Rockerz Headphones">
+                                INSPECT // →
+                            </a>
+                        </div>
+                    </article>
+
+                    <!-- Card 5: Campus Fleece Oversized Winter Hoodie -->
+                    <article class="catalog-card" data-id="prod_105" data-rev style="--d: 260ms;">
+                        <div class="card-top-meta">
+                            <span class="card-cat-badge font-mono">05 // CAMPUS APPAREL</span>
+                            <span class="card-condition-badge font-mono">NEW</span>
+                        </div>
+                        <div class="card-plate">
+                            <img src="assets/images/products/unsplash_d4be6a5d4fb91c2253b74298ab0e99aa.jpg" alt="Campus Fleece Winter Hoodie" loading="lazy">
+                        </div>
+                        <div>
+                            <h3 class="card-title">Campus Fleece Hoodie</h3>
+                            <p class="card-desc">Navy blue heavyweight fleece hoodie. Super cozy for college library sessions and cold dorm mornings.</p>
+                        </div>
+                        <div class="card-footer">
+                            <div class="card-price-block">
+                                <span class="card-price-label">LISTING PRICE</span>
+                                <span class="card-price-value">₹550</span>
+                            </div>
+                            <a href="pages/product.html?id=prod_105" class="card-action-btn font-mono" aria-label="Inspect Campus Fleece Hoodie">
+                                INSPECT // →
+                            </a>
+                        </div>
+                    </article>
+
+                    <!-- Card 6: Introduction to Algorithms (CLRS 3rd Edition) -->
+                    <article class="catalog-card" data-id="prod_106" data-rev style="--d: 310ms;">
+                        <div class="card-top-meta">
+                            <span class="card-cat-badge font-mono">06 // TEXTBOOKS</span>
+                            <span class="card-condition-badge font-mono">GOOD</span>
+                        </div>
+                        <div class="card-plate">
+                            <img src="assets/images/products/unsplash_99314150f350391035b8f0eb96fc95e3.jpg" alt="CLRS Introduction to Algorithms Textbook" loading="lazy">
+                        </div>
+                        <div>
+                            <h3 class="card-title">CLRS Algorithms 3rd Ed.</h3>
+                            <p class="card-desc">Standard algorithms textbook for Computer Science coursework, GATE exams, and technical coding interviews.</p>
+                        </div>
+                        <div class="card-footer">
+                            <div class="card-price-block">
+                                <span class="card-price-label">LISTING PRICE</span>
+                                <span class="card-price-value">₹600</span>
+                            </div>
+                            <a href="pages/product.html?id=prod_106" class="card-action-btn font-mono" aria-label="Inspect CLRS Textbook">
+                                INSPECT // →
+                            </a>
+                        </div>
+                    </article>
+                </div>
+            </div>
+
+            <footer class="rail-footer">
+                <span class="font-mono" style="font-size: 10.5px; letter-spacing: 0.18em; color: var(--ink-muted);">SCROLL TO TRANSLATE</span>
+                <div class="rail-progress-bar">
+                    <div class="rail-progress-fill"></div>
+                </div>
+                <span class="font-mono" style="font-size: 10.5px; letter-spacing: 0.18em; color: var(--accent-red); font-weight: 700;">6 VERIFIED EDITS</span>
+            </footer>
+        </div>
+    </section>
+
+    <!-- =======================================================================
+         STAGE 4 — THE PRINTED ARTIFACT (Height ~420svh, Dark Loam #241A12)
+         Driven by: --packet-alpha, --packet-enter, --packet-scale, --packet-cut, --packet-meter, --packet-copy-x
+         ======================================================================= -->
+    <section class="scroll-stage stage-artifact" id="stage-artifact" aria-label="Marketplace Listing Artifact">
+        <div class="sticky-viewport artifact-viewport">
+            <div class="artifact-grid">
+                <!-- Left Column (Copy sliding slightly opposite) -->
+                <div class="artifact-left">
+                    <span class="tag-label tag-label-dark font-mono" data-rev style="--d: 40ms;">
+                        FROM STUDENT TO STUDENT
+                    </span>
+                    <h2 class="artifact-headline font-display split-words" data-rev style="--d: 80ms;">
+                        GIVE GOOD<br>
+                        THINGS<br>
+                        A NEXT LIFE<span class="accent-dot">.</span>
+                    </h2>
+                    <p class="artifact-copy split-words" data-rev style="--d: 120ms;">
+                        Your unused essentials could be someone else's perfect find. Circulate your items with verified student provenance and direct dorm handoff.
+                    </p>
+                    <div>
+                        <a href="pages/create-listing.html" class="btn-editorial btn-editorial-primary" data-rev style="--d: 160ms;">
+                            SELL SOMETHING // +
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right Column (The Physical Paper Listing Ticket) -->
+                <div class="artifact-right">
+                    <div class="listing-ticket" id="listing-ticket">
+                        <header class="ticket-header">
+                            <div>
+                                <span class="tag-label font-mono" style="display:block; margin-bottom: 2px;">AUTHENTIC RECORD</span>
+                                <h3 class="ticket-brand">CAMPUS MART / ISSUE SPEC</h3>
+                            </div>
+                            <span class="ticket-serial font-mono" id="ticket-serial">REF #CM-2026-X88</span>
+                        </header>
+
+                        <div class="ticket-body">
+                            <!-- Geometric plate canvas -->
+                            <div class="ticket-plate">
+                                <canvas id="ticket-canvas"></canvas>
+                            </div>
+
+                            <!-- 4 Cumulative Progress Cues -->
+                            <div class="ticket-cues-list">
+                                <div class="cue-item" id="cue-1">
+                                    <span class="cue-dot"></span>
+                                    <span>01 // DORM ORIGIN VERIFIED</span>
+                                </div>
+                                <div class="cue-item" id="cue-2">
+                                    <span class="cue-dot"></span>
+                                    <span>02 // COURSE SYLLABUS MATCHED</span>
+                                </div>
+                                <div class="cue-item" id="cue-3">
+                                    <span class="cue-dot"></span>
+                                    <span>03 // STUDENT PRICE PROTECTED</span>
+                                </div>
+                                <div class="cue-item" id="cue-4">
+                                    <span class="cue-dot"></span>
+                                    <span>04 // CAMPUS HANDOFF PROTOCOL READY</span>
+                                </div>
+                            </div>
+
+                            <!-- Progress Meter Bar -->
+                            <div class="ticket-meter-track">
+                                <div class="ticket-meter-fill"></div>
+                            </div>
+
+                            <!-- Dashed 2px Perforation Opening -->
+                            <div class="ticket-perforation"></div>
+
+                            <!-- Three Mono Rows at Foot -->
+                            <div class="ticket-foot-rows">
+                                <div class="ticket-foot-row">
+                                    <label>LOT NUMBER</label>
+                                    <span id="ticket-lot-val">#CM-2026-X88</span>
+                                </div>
+                                <div class="ticket-foot-row">
+                                    <label>TEST RESULT</label>
+                                    <span class="val-red" id="ticket-result-val">PENDING</span>
+                                </div>
+                                <div class="ticket-foot-row">
+                                    <label>SOWING WINDOW</label>
+                                    <span id="ticket-window-val">SEMESTER 01 · ACTIVE</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <footer class="ticket-footer-status">
+                            <span class="font-mono" style="color: var(--ink-muted);">CAMPUS AUTHENTIC</span>
+                            <span class="ticket-status-pill font-mono" id="ticket-status-pill">DRAFT // SPEC 001</span>
+                        </footer>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =======================================================================
+         STAGE 5 — PARALLAX SEASON BAND (Height ~300svh, Cream #E7E2D8)
+         Driven by: --season-y (-4% to 4%), --season-scale (1.10 to 1.055)
+         ======================================================================= -->
+    <section class="scroll-stage stage-seasons" id="stage-seasons" aria-label="Campus Seasons Cycle">
+        <div class="sticky-viewport seasons-viewport">
+            <!-- 22 stacked contour lines (every 5th red) -->
+            <canvas id="seasons-canvas" aria-hidden="true"></canvas>
+
+            <div class="seasons-content">
+                <span class="tag-label font-mono" style="margin-bottom: 1.5rem;" data-rev style="--d: 40ms;">
+                    CYCLE OF COMMERCE
+                </span>
+
+                <h2 class="seasons-headline font-display split-words" data-rev style="--d: 80ms;">
+                    EVERY SEMESTER.<br>
+                    NEW DISCOVERIES<span class="accent-mark">.</span>
+                </h2>
+
+                <div class="seasons-chapters-grid">
+                    <article class="season-chapter chapter-active" id="season-chapter-1" data-rev style="--d: 120ms;">
+                        <span class="chapter-number">CHAPTER 01</span>
+                        <h3 class="chapter-title">FIND YOUR ESSENTIALS</h3>
+                        <p class="chapter-desc">
+                            Discover textbooks, lab tools, and everyday items that make student life easier and more affordable.
+                        </p>
+                    </article>
+
+                    <article class="season-chapter" id="season-chapter-2" data-rev style="--d: 160ms;">
+                        <span class="chapter-number">CHAPTER 02</span>
+                        <h3 class="chapter-title">MAKE ROOM FOR MORE</h3>
+                        <p class="chapter-desc">
+                            Sell useful tools you no longer need and give another classmate a great find before the break.
+                        </p>
+                    </article>
+
+                    <article class="season-chapter" id="season-chapter-3" data-rev style="--d: 200ms;">
+                        <span class="chapter-number">CHAPTER 03</span>
+                        <h3 class="chapter-title">KEEP THE CIRCLE MOVING</h3>
+                        <p class="chapter-desc">
+                            Make smarter purchases, reduce university waste, and keep good things circulating every academic term.
+                        </p>
+                    </article>
+                </div>
+            </div>
+
+            <footer style="position: relative; z-index: 2; display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-muted); border-top: 1px solid var(--ink-hairline); padding-top: 1rem;">
+                <span>SEMESTER TRANSITION ENGINE</span>
+                <span>CAMPUS NETWORK // EST. 2026</span>
+            </footer>
+        </div>
+    </section>
+
+    <!-- =======================================================================
+         BELOW-THE-FOLD CONTENT (NORMAL DOCUMENT FLOW)
+         ======================================================================= -->
+
+    <!-- A. CATEGORY DIRECTORY -->
+    <section class="normal-flow-section category-directory-section" id="category-directory">
+        <div class="section-head">
+            <div>
+                <span class="tag-label font-mono" data-rev style="--d: 40ms;">EXPLORE INVENTORY</span>
+                <h2 class="section-title split-words" data-rev style="--d: 80ms;">SHOP BY CATEGORY</h2>
+            </div>
+            <a href="pages/marketplace.html" class="font-mono" style="font-size: 10.5px; letter-spacing: 0.18em; font-weight: 700; color: var(--accent-red);" data-rev style="--d: 120ms;">
+                ALL CATEGORIES // →
+            </a>
+        </div>
+
+        <div class="category-tiles-grid">
+            <a href="pages/marketplace.html?cat=Academic" class="category-tile" aria-label="Books and Study Materials" data-rev style="--d: 60ms;">
+                <span class="tile-number">01</span>
+                <h3 class="tile-name">BOOKS &<br>STUDY</h3>
+                <div class="tile-bottom">
+                    <span class="tile-cat-count">TEXTBOOKS · LAB NOTES · GUIDES</span>
+                    <span class="tile-arrow">→</span>
+                </div>
+            </a>
+
+            <a href="pages/marketplace.html?cat=Electronics" class="category-tile" aria-label="Electronics and Gadgets" data-rev style="--d: 100ms;">
+                <span class="tile-number">02</span>
+                <h3 class="tile-name">ELECTRONICS &<br>TECH</h3>
+                <div class="tile-bottom">
+                    <span class="tile-cat-count">CALCULATORS · MONITORS · CORDS</span>
+                    <span class="tile-arrow">→</span>
+                </div>
+            </a>
+
+            <a href="pages/marketplace.html?cat=Lifestyle" class="category-tile" aria-label="Hostel and Room Essentials" data-rev style="--d: 140ms;">
+                <span class="tile-number">03</span>
+                <h3 class="tile-name">HOSTEL<br>ESSENTIALS</h3>
+                <div class="tile-bottom">
+                    <span class="tile-cat-count">LAMPS · KETTLES · STORAGE</span>
+                    <span class="tile-arrow">→</span>
+                </div>
+            </a>
+
+            <a href="pages/marketplace.html?cat=Fashion" class="category-tile" aria-label="Fashion and Apparel" data-rev style="--d: 180ms;">
+                <span class="tile-number">04</span>
+                <h3 class="tile-name">CAMPUS<br>FASHION</h3>
+                <div class="tile-bottom">
+                    <span class="tile-cat-count">HOODIES · BAGS · ACCESSORIES</span>
+                    <span class="tile-arrow">→</span>
+                </div>
+            </a>
+
+            <a href="pages/marketplace.html?cat=Stationery" class="category-tile" aria-label="Stationery and Supplies" data-rev style="--d: 220ms;">
+                <span class="tile-number">05</span>
+                <h3 class="tile-name">DESK &<br>STATIONERY</h3>
+                <div class="tile-bottom">
+                    <span class="tile-cat-count">NOTEBOOKS · PENS · ART TOOLS</span>
+                    <span class="tile-arrow">→</span>
+                </div>
+            </a>
+
+            <a href="pages/marketplace.html?cat=Gaming" class="category-tile" aria-label="Sports and Lifestyle" data-rev style="--d: 260ms;">
+                <span class="tile-number">06</span>
+                <h3 class="tile-name">SPORTS &<br>LIFESTYLE</h3>
+                <div class="tile-bottom">
+                    <span class="tile-cat-count">RACKETS · CYCLES · GEAR</span>
+                    <span class="tile-arrow">→</span>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- B. RULED PRICE TABLE: FRESH ON CAMPUS -->
+    <section class="normal-flow-section recent-listings-section" id="fresh-on-campus">
+        <div class="section-head">
+            <div>
+                <span class="tag-label font-mono" data-rev style="--d: 40ms;">REAL-TIME FEED</span>
+                <h2 class="section-title split-words" data-rev style="--d: 80ms;">FRESH ON CAMPUS</h2>
+            </div>
+            <div class="font-mono" style="font-size: 10.5px; letter-spacing: 0.18em; color: var(--ink-muted);" data-rev style="--d: 120ms;">
+                PEER EXCHANGE LISTINGS
+            </div>
+        </div>
+
+        <div class="editorial-table-container" data-rev style="--d: 140ms;">
+            <table class="editorial-table" aria-label="Fresh Listings Table">
+                <thead>
+                    <tr>
+                        <th style="width: 38%;">ITEM</th>
+                        <th style="width: 22%;">CATEGORY</th>
+                        <th style="width: 15%;">CONDITION</th>
+                        <th style="width: 15%;">PRICE</th>
+                        <th style="width: 10%;">STATUS</th>
+                    </tr>
+                </thead>
+                <tbody id="fresh-campus-table-body">
+                    <!-- Loaded dynamically from database or product catalogue -->
+                    <tr>
+                        <td colspan="5" style="text-align:center; padding: 2.5rem;" class="font-mono">
+                            LOADING RECENT CAMPUS INVENTORY...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- C. FAQ (NATIVE DETAILS & SUMMARY) -->
+    <section class="normal-flow-section faq-section" id="faq">
+        <div class="section-head">
+            <div>
+                <span class="tag-label font-mono" data-rev style="--d: 40ms;">CAMPUS GUIDE</span>
+                <h2 class="section-title split-words" data-rev style="--d: 80ms;">FREQUENTLY ASKED</h2>
+            </div>
+            <div class="font-mono" style="font-size: 10.5px; letter-spacing: 0.18em; color: var(--ink-muted);" data-rev style="--d: 120ms;">
+                ANSWERS TO COMMON QUESTIONS
+            </div>
+        </div>
+
+        <div class="faq-accordion">
+            <details class="faq-item" data-rev style="--d: 60ms;">
+                <summary class="faq-summary">Who can use Campus Mart?</summary>
+                <div class="faq-content">
+                    Campus Mart is designed specifically for university students, faculty, and campus residents. Any student with an institutional email can register, discover items, purchase, negotiate offers, and list products for sale.
+                </div>
+            </details>
+
+            <details class="faq-item" data-rev style="--d: 100ms;">
+                <summary class="faq-summary">How do I list an item for sale?</summary>
+                <div class="faq-content">
+                    Log into your student account and click "List Item" in the navigation bar. Provide product details, select a category, enter price in Indian Rupees (₹), specify condition, and upload photos. Your item goes live immediately on the catalogue.
+                </div>
+            </details>
+
+            <details class="faq-item" data-rev style="--d: 140ms;">
+                <summary class="faq-summary">How do price offers and auctions work?</summary>
+                <div class="faq-content">
+                    For fixed price items, you can submit an offer directly on the product detail page, which the seller can accept or decline in their dashboard. For auction listings, you can enter competitive bids before the timer expires.
+                </div>
+            </details>
+
+            <details class="faq-item" data-rev style="--d: 180ms;">
+                <summary class="faq-summary">How do student pickups work safely?</summary>
+                <div class="faq-content">
+                    Campus Mart listings include seller hostel block locations. Once an order or offer is confirmed, both parties can coordinate handoffs in designated campus zones like library lobbies, cafeteria commons, or hostel gates.
+                </div>
+            </details>
+
+            <details class="faq-item" data-rev style="--d: 220ms;">
+                <summary class="faq-summary">Can I edit or deactivate my listing later?</summary>
+                <div class="faq-content">
+                    Yes. Navigate to "My Listings" from your account menu to edit prices, update condition notes, or remove items once they have been purchased by a classmate.
+                </div>
+            </details>
+        </div>
+    </section>
+
+    <!-- =======================================================================
+         D. EDITORIAL FOOTER (DARK LOAM #241A12)
+         ======================================================================= -->
+    <footer class="editorial-footer" role="contentinfo">
+        <div class="footer-top">
+            <div>
+                <h2 class="footer-brand font-display" data-rev style="--d: 40ms;">CAMPUS MART<span>.</span></h2>
+                <p class="footer-desc" data-rev style="--d: 80ms;">
+                    The university marketplace built for students. Discover curated items, sell what you've outgrown, and keep quality objects circulating across campus.
+                </p>
+            </div>
+
+            <div>
+                <h3 class="footer-col-title font-mono" data-rev style="--d: 100ms;">EXPLORE</h3>
+                <ul class="footer-links font-mono">
+                    <li data-rev style="--d: 120ms;"><a href="#stage-rail" class="footer-link">The Campus Edit</a></li>
+                    <li data-rev style="--d: 140ms;"><a href="pages/marketplace.html" class="footer-link">Full Catalogue</a></li>
+                    <li data-rev style="--d: 160ms;"><a href="#fresh-on-campus" class="footer-link">Recent Listings</a></li>
+                    <li data-rev style="--d: 180ms;"><a href="#category-directory" class="footer-link">Categories</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h3 class="footer-col-title font-mono" data-rev style="--d: 120ms;">STUDENT ACTIONS</h3>
+                <ul class="footer-links font-mono">
+                    <li data-rev style="--d: 140ms;"><a href="pages/create-listing.html" class="footer-link">List an Item</a></li>
+                    <li data-rev style="--d: 160ms;"><a href="pages/my-listings.html" class="footer-link">My Listings</a></li>
+                    <li data-rev style="--d: 180ms;"><a href="pages/cart.html" class="footer-link">Cart & Checkout</a></li>
+                    <li data-rev style="--d: 200ms;"><a href="pages/orders.html" class="footer-link">Orders</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h3 class="footer-col-title font-mono" data-rev style="--d: 140ms;">ACCOUNT</h3>
+                <ul class="footer-links font-mono">
+                    <li data-rev style="--d: 160ms;"><a href="pages/login.html" class="footer-link">Sign In</a></li>
+                    <li data-rev style="--d: 180ms;"><a href="pages/signup.html" class="footer-link">Create Account</a></li>
+                    <li data-rev style="--d: 200ms;"><a href="pages/contact.html" class="footer-link">Support & Desk</a></li>
+                    <li data-rev style="--d: 220ms;"><a href="pages/reviews.html" class="footer-link">Community Reviews</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <span>© 2026 CAMPUS MART // ALL RIGHTS RESERVED</span>
+            <span>BUILT FOR UNIVERSITY LIFE · ZERO PLASTIC · LOCAL CIRCULATION</span>
         </div>
     </footer>
 
-    <!-- Scripts -->
+    <!-- =======================================================================
+         APPLICATION & EDITORIAL SCRIPTS
+         ======================================================================= -->
     <script src="js/data.js"></script>
     <script src="js/utils.js"></script>
     <script src="js/auth.js"></script>
-    <script src="js/app.js"></script>
+    <script src="js/editorial-scroll.js"></script>
 
-    <!-- Page Specific Script for Home Rendering -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Disable browser's automatic scroll position restoration to prevent carousel offset bugs
-            if ('scrollRestoration' in history) {
-                history.scrollRestoration = 'manual';
-            }
-            renderHomeTrendingProducts();
-            renderHomeServicesPreview();
-            initTrendingCarousel();
-        });
-
-        function renderHomeTrendingProducts() {
-            let products = dbGet('products').filter(p => p.stock === undefined || p.stock > 0).slice(0, 12);
-            const container = document.getElementById('home-trending-grid');
-            if (!container) return;
-
-            // Double the products array to enable seamless visual looping
-            const carouselProducts = [...products, ...products];
-            let html = '';
-            carouselProducts.forEach(p => {
-                const isWishlist = dbGet('wishlist').includes(p.id);
-                html += `
-                    <div class="card product-card">
-                        <div class="product-img-wrap">
-                            <span class="badge-tag ${p.listingType === 'bidding' ? 'badge-bidding' : 'badge-fixed'}">
-                                ${p.listingType === 'bidding' ? '🔨 Auction' : '🏷️ Fixed'}
-                            </span>
-                            <button class="wishlist-btn-toggle ${isWishlist ? 'active' : ''}" onclick="toggleWishlist('${p.id}', this)">
-                                ${isWishlist ? '❤️' : '🤍'}
-                            </button>
-                            <img src="${resolveImagePath(p.image)}" alt="${p.name}" loading="lazy" onerror="this.src='assets/images/campus-fallback.jpg'">
-                        </div>
-                        <div class="product-content">
-                            <span class="product-category">${p.category}</span>
-                            <h3 class="product-title">${p.name}</h3>
-                            <div class="product-meta">
-                                <span>Condition: <strong>${p.condition}</strong></span>
-                                <span>${renderStars(p.rating)}</span>
-                            </div>
-                            <div class="product-price-wrap">
-                                <div class="product-price">${formatCurrency(p.price)}</div>
-                                <div style="text-align: right;">
-                                    <span style="font-size:0.8rem; color:var(--neutral-text-muted); display:block;">By ${p.sellerName}</span>
-                                    <span style="font-size:0.75rem; color:var(--accent-dark); font-weight:700;">${p.stock !== undefined ? p.stock : 1} Left</span>
-                                </div>
-                            </div>
-                            <div class="product-actions">
-                                <a href="pages/product.html?id=${p.id}" class="btn btn-outline btn-sm btn-block">View Details</a>
-                                <button onclick="quickAddToCart('${p.id}')" class="btn btn-accent btn-sm">Add to Cart</button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-            container.innerHTML = html;
-        }
-
-        // Initialize Carousel Navigation & Auto Scroll
-        function initTrendingCarousel() {
-            const container = document.getElementById('home-trending-grid');
-            const prevBtn = document.getElementById('trending-prev');
-            const nextBtn = document.getElementById('trending-next');
-            if (!container) return;
-
-            let scrollSpeed = 1.2; // Pixels per frame (1.2px @ 60fps = ~72px/sec)
-            let currentScroll = 0;
-            let isHovered = false;
-            let isNavigating = false;
-            let isProgrammaticScroll = false;
-            let animationFrameId = null;
-            let navigationPauseTimeout = null;
-
-            // Sync continuous scroll pointer with any manual/external scroll actions
-            container.addEventListener('scroll', () => {
-                if (!isProgrammaticScroll) {
-                    currentScroll = container.scrollLeft;
-                }
-            });
-
-            // Smooth continuous scroll animation loop
-            function scrollLoop() {
-                if (!isHovered && !isNavigating) {
-                    // Increment the float position accumulator
-                    currentScroll += scrollSpeed;
-                    
-                    // Halfway mark represents the end of the original list of 12 items
-                    const midPoint = container.scrollWidth / 2;
-                    if (midPoint > 0 && currentScroll >= midPoint) {
-                        // Reset scroll position back to beginning seamlessly
-                        currentScroll = 0;
-                    }
-                    
-                    isProgrammaticScroll = true;
-                    container.scrollLeft = Math.round(currentScroll);
-                    
-                    // Reset programmatic flag after scroll event dispatch queue executes
-                    setTimeout(() => {
-                        isProgrammaticScroll = false;
-                    }, 0);
-                }
-                animationFrameId = requestAnimationFrame(scrollLoop);
-            }
-
-            // Start continuous scroll after layout settles
-            setTimeout(() => {
-                currentScroll = container.scrollLeft;
-                animationFrameId = requestAnimationFrame(scrollLoop);
-            }, 250);
-
-            // Temporary pause during manual button navigation to prevent animation fights
-            function pauseForNavigation() {
-                isNavigating = true;
-                if (navigationPauseTimeout) {
-                    clearTimeout(navigationPauseTimeout);
-                }
-                navigationPauseTimeout = setTimeout(() => {
-                    isNavigating = false;
-                    currentScroll = container.scrollLeft;
-                }, 600);
-            }
-
-            // Manual controls
-            if (prevBtn) {
-                prevBtn.addEventListener('click', () => {
-                    pauseForNavigation();
-                    container.scrollBy({ left: -320, behavior: 'smooth' });
-                    setTimeout(() => {
-                        if (container.scrollLeft <= 2) {
-                            container.scrollLeft = container.scrollWidth / 2;
-                        }
-                        currentScroll = container.scrollLeft;
-                    }, 450);
-                });
-            }
-            if (nextBtn) {
-                nextBtn.addEventListener('click', () => {
-                    pauseForNavigation();
-                    container.scrollBy({ left: 320, behavior: 'smooth' });
-                    setTimeout(() => {
-                        if (container.scrollLeft >= container.scrollWidth / 2 - 2) {
-                            container.scrollLeft = 0;
-                        }
-                        currentScroll = container.scrollLeft;
-                    }, 450);
-                });
-            }
-
-            // Pause scrolling on mouse hover (so user can interact easily)
-            container.addEventListener('mouseenter', () => {
-                isHovered = true;
-            });
-            container.addEventListener('mouseleave', () => {
-                isHovered = false;
-                currentScroll = container.scrollLeft; // Sync scroll pos immediately
-            });
-
-            // Clean up animation frames
-            window.addEventListener('beforeunload', () => {
-                if (animationFrameId) {
-                    cancelAnimationFrame(animationFrameId);
-                }
-            });
-        }
-
-        function renderHomeServicesPreview() {
-            const categories = dbGet('service_categories');
-            const container = document.getElementById('home-services-grid');
-            if (!container) return;
-
-            // Undulating staggered delay pattern for 3x3 layout
-            const delays = [0, 0.5, 1.0, 0.7, 0.2, 0.9, 0.4, 1.1, 0.6];
-
-            let html = '';
-            categories.forEach((c, index) => {
-                const delay = delays[index % delays.length];
-                html += `
-                    <a href="pages/services.html?cat=${encodeURIComponent(c.title)}" class="floating-card-item" style="animation: activeFloat 3.2s ease-in-out infinite ${delay}s !important;">
-                        <div style="font-size: 2.6rem; margin-bottom: 0.75rem; display: inline-block;">${c.icon}</div>
-                        <h4 style="font-size: 1.1rem; margin-bottom: 0.4rem; font-weight: 700; color: var(--text);">${c.title}</h4>
-                        <p style="font-size: 0.85rem; color: var(--neutral-text-muted); font-weight: normal; line-height: 1.5; margin: 0;">${c.desc}</p>
-                    </a>
-                `;
-            });
-            container.innerHTML = html;
-        }
-
-        function toggleWishlist(prodId, btn) {
-            let wishlist = dbGet('wishlist');
-            if (wishlist.includes(prodId)) {
-                wishlist = wishlist.filter(id => id !== prodId);
-                btn.classList.remove('active');
-                btn.innerHTML = '🤍';
-                showToast('Removed from Wishlist', 'info');
-            } else {
-                wishlist.push(prodId);
-                btn.classList.add('active');
-                btn.classList.add('heart-pulse');
-                btn.innerHTML = '❤️';
-                showToast('Added to Wishlist', 'success');
-            }
-            dbSet('wishlist', wishlist);
-            updateNavBadges();
-        }
-
-        function quickAddToCart(prodId) {
-            let cart = dbGet('cart');
-            const existing = cart.find(item => item.productId === prodId);
-            if (existing) {
-                existing.quantity += 1;
-            } else {
-                cart.push({ productId: prodId, quantity: 1 });
-            }
-            dbSet('cart', cart);
-            updateNavBadges();
-            showToast('Item added to Shopping Cart!', 'success');
-        }
-    </script>
 </body>
 
 </html>

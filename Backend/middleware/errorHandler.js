@@ -1,25 +1,23 @@
 // ============================================================
-// ERROR HANDLER MIDDLEWARE
-// Catches any errors thrown with next(err) and returns a
-// consistent JSON error response.
+// CAMPUSMART ERROR HANDLING MIDDLEWARE
 // ============================================================
 
-const errorHandler = (err, req, res, next) => {
-    console.error(`[ERROR] ${err.message}`);
+const notFound = (req, res, next) => {
+    const error = new Error(`Not Found - ${req.originalUrl}`);
+    res.status(404);
+    next(error);
+};
 
-    const statusCode = err.statusCode || 500;
+const errorHandler = (err, req, res, next) => {
+    const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
     res.status(statusCode).json({
         success: false,
-        message: err.message || 'Internal Server Error',
-        ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
+        message: err.message || 'Server Error',
+        stack: process.env.NODE_ENV === 'production' ? null : err.stack
     });
 };
 
-// 404 handler — for routes that don't exist
-const notFound = (req, res, next) => {
-    const err = new Error(`Route Not Found: ${req.method} ${req.originalUrl}`);
-    err.statusCode = 404;
-    next(err);
+module.exports = {
+    notFound,
+    errorHandler
 };
-
-module.exports = { errorHandler, notFound };

@@ -5,6 +5,9 @@ document.addEventListener('DOMContentLoaded', function() {
     initMobileMenu();
     highlightActiveNavLink();
     updateNavBadges();
+    if (typeof updateUserNavUI === 'function') {
+        updateUserNavUI();
+    }
     initHeroVideo();
 });
 

@@ -1,51 +1,328 @@
-// ============================================================
-// PRODUCT MODEL — MVC Model Layer
-// Manages Product schema, Offers, Bids, and stock updates
-// ============================================================
+// // ============================================================
+// // PRODUCT MODEL — MVC Model Layer
+// // Manages Product schema, Offers, Bids, and stock updates
+// // ============================================================
 
-const { products } = require('../config/seedData');
+// const { products } = require('../config/seedData');
 
-class ProductModel {
-    constructor() {
-        this.collection = products;
+// class ProductModel {
+//     constructor() {
+//         this.collection = products;
+//     }
+
+//     // Find products matching query filters
+//     async find(filters = {}) {
+//         let results = [...this.collection];
+
+//         if (filters.category) {
+//             results = results.filter(p => p.category.toLowerCase() === filters.category.toLowerCase());
+//         }
+//         if (filters.listingType) {
+//             results = results.filter(p => p.listingType === filters.listingType);
+//         }
+//         if (filters.sellerId) {
+//             results = results.filter(p => p.sellerId === filters.sellerId);
+//         }
+//         if (filters.search) {
+//             const q = filters.search.toLowerCase();
+//             results = results.filter(p => p.name.toLowerCase().includes(q) || p.description.toLowerCase().includes(q));
+//         }
+
+//         return results;
+//     }
+
+//     // Find product by ID
+//     async findById(id) {
+//         return this.collection.find(p => p.id === id) || null;
+//     }
+
+//     // Increment product views
+//     async incrementViews(id) {
+//         const product = await this.findById(id);
+//         if (product) {
+//             product.views = (product.views || 0) + 1;
+//         }
+//         return product;
+//     }
+
+//     // Create a new product
+//     async create(data) {
+//         const {
+//             name, category, price, condition, listingType,
+//             location, description, sellerId, sellerName,
+//             sellerPhone, stock, image
+//         } = data;
+
+//         const newProduct = {
+//             id: 'prod_' + Date.now(),
+//             name,
+//             category,
+//             price: Number(price),
+//             originalPrice: Math.round(Number(price) * 1.3),
+//             condition: condition || 'Good',
+//             listingType: listingType || 'fixed',
+//             stock: Number(stock) || 1,
+//             currentBid: listingType === 'bidding' ? Number(price) : null,
+//             sellerId,
+//             sellerName,
+//             sellerPhone: sellerPhone || null,
+//             sellerRating: 4.8,
+//             trustScore: 90,
+//             location,
+//             description,
+//             image: image || null,
+//             rating: 5.0,
+//             bids: [],
+//             offers: [],
+//             dateAdded: new Date().toISOString().split('T')[0],
+//             views: 0
+//         };
+
+//         this.collection.push(newProduct);
+//         return newProduct;
+//     }
+
+//     // Update product by ID
+//     async findByIdAndUpdate(id, updates = {}) {
+//         const index = this.collection.findIndex(p => p.id === id);
+//         if (index === -1) return null;
+
+//         const allowedFields = ['name', 'category', 'price', 'condition', 'listingType', 'stock', 'location', 'description', 'image', 'rating'];
+//         const cleanUpdates = {};
+//         allowedFields.forEach(field => {
+//             if (updates[field] !== undefined) cleanUpdates[field] = updates[field];
+//         });
+
+//         this.collection[index] = { ...this.collection[index], ...cleanUpdates };
+//         return this.collection[index];
+//     }
+
+//     // Delete product by ID
+//     async findByIdAndDelete(id) {
+//         const index = this.collection.findIndex(p => p.id === id);
+//         if (index === -1) return null;
+
+//         const deleted = this.collection.splice(index, 1)[0];
+//         return deleted;
+//     }
+
+//     // Adjust stock (positive or negative)
+//     async adjustStock(id, delta) {
+//         const product = await this.findById(id);
+//         if (product && product.stock !== undefined) {
+//             product.stock += delta;
+//         }
+//         return product;
+//     }
+
+//     // ============================================================
+//     // OFFERS SUB-OPERATIONS
+//     // ============================================================
+
+//     async getOffers(productId) {
+//         const product = await this.findById(productId);
+//         return product ? product.offers : null;
+//     }
+
+//     async addOffer(productId, offerData) {
+//         const product = await this.findById(productId);
+//         if (!product) return null;
+
+//         const newOffer = {
+//             offerId: 'off_' + Date.now(),
+//             buyerId: offerData.buyerId,
+//             buyerName: offerData.buyerName,
+//             buyerPhone: offerData.buyerPhone || null,
+//             amount: Number(offerData.amount),
+//             status: 'Pending',
+//             date: new Date().toISOString().split('T')[0]
+//         };
+
+//         product.offers.push(newOffer);
+//         return newOffer;
+//     }
+
+//     async updateOfferStatus(productId, offerId, status) {
+//         const product = await this.findById(productId);
+//         if (!product) return { error: 'PRODUCT_NOT_FOUND' };
+
+//         const offer = product.offers.find(o => o.offerId === offerId);
+//         if (!offer) return { error: 'OFFER_NOT_FOUND' };
+
+//         offer.status = status;
+//         return { offer };
+//     }
+
+//     async deleteOffer(productId, offerId) {
+//         const product = await this.findById(productId);
+//         if (!product) return { error: 'PRODUCT_NOT_FOUND' };
+
+//         const index = product.offers.findIndex(o => o.offerId === offerId);
+//         if (index === -1) return { error: 'OFFER_NOT_FOUND' };
+
+//         const deleted = product.offers.splice(index, 1)[0];
+//         return { deleted };
+//     }
+
+//     // ============================================================
+//     // BIDS SUB-OPERATIONS
+//     // ============================================================
+
+//     async getBids(productId) {
+//         const product = await this.findById(productId);
+//         return product ? product.bids : null;
+//     }
+
+//     async placeBid(productId, bidData) {
+//         const product = await this.findById(productId);
+//         if (!product) return { error: 'PRODUCT_NOT_FOUND' };
+
+//         const newBid = {
+//             bidderId: bidData.bidderId,
+//             bidderName: bidData.bidderName,
+//             amount: Number(bidData.amount),
+//             date: new Date().toISOString().split('T')[0]
+//         };
+
+//         product.bids.push(newBid);
+//         product.currentBid = Number(bidData.amount);
+
+//         return { newBid, currentBid: product.currentBid };
+//     }
+// }
+
+// module.exports = new ProductModel();
+
+
+const mongoose = require("mongoose");
+
+const offerSchema = new mongoose.Schema({
+    offerId: { type: String, required: true },
+    buyerId: String,
+    buyerName: String,
+    buyerPhone: String,
+    amount: Number,
+    status: { type: String, default: "Pending" },
+    date: String
+}, { _id: false });
+
+const bidSchema = new mongoose.Schema({
+    bidderId: String,
+    bidderName: String,
+    amount: Number,
+    date: String
+}, { _id: false });
+
+const productSchema = new mongoose.Schema({
+    id: { type: String, required: true, unique: true, index: true },
+    name: { type: String, required: true },
+    category: { type: String, required: true },
+    price: { type: Number, required: true },
+    originalPrice: Number,
+    condition: { type: String, default: "Good" },
+    listingType: { type: String, default: "fixed" },
+    stock: { type: Number, default: 1 },
+    currentBid: { type: Number, default: null },
+    sellerId: String,
+    sellerName: String,
+    sellerPhone: String,
+    sellerRating: Number,
+    trustScore: Number,
+    location: String,
+    description: String,
+    image: { type: String, default: null },
+    rating: Number,
+    bids: { type: [bidSchema], default: [] },
+    offers: { type: [offerSchema], default: [] },
+    dateAdded: String,
+    views: { type: Number, default: 0 }
+}, { timestamps: true });
+
+const Product = mongoose.models.Product || mongoose.model("Product", productSchema);
+const { products: seedProducts } = require("../config/seedData");
+
+let isProductSeeded = false;
+async function ensureSeeded() {
+    if (isProductSeeded || mongoose.connection.readyState !== 1) return;
+    try {
+        const count = await Product.countDocuments();
+        if (count === 0 && seedProducts && seedProducts.length > 0) {
+            await Product.insertMany(seedProducts);
+            console.log(`[ProductModel] Seeded ${seedProducts.length} demo products into MongoDB.`);
+        }
+        isProductSeeded = true;
+    } catch (e) {
+        console.error('[ProductModel Seed Error]:', e.message);
     }
+}
 
-    // Find products matching query filters
+const ProductModel = {
     async find(filters = {}) {
-        let results = [...this.collection];
+        if (mongoose.connection.readyState !== 1) {
+            let results = [...seedProducts];
+            if (filters.category) {
+                results = results.filter(p => p.category && p.category.toLowerCase() === filters.category.toLowerCase());
+            }
+            if (filters.listingType) {
+                results = results.filter(p => p.listingType === filters.listingType);
+            }
+            if (filters.sellerId) {
+                results = results.filter(p => p.sellerId === filters.sellerId);
+            }
+            if (filters.search) {
+                const term = filters.search.toLowerCase();
+                results = results.filter(p => (p.name && p.name.toLowerCase().includes(term)) || (p.description && p.description.toLowerCase().includes(term)));
+            }
+            return results;
+        }
 
-        if (filters.category) {
-            results = results.filter(p => p.category.toLowerCase() === filters.category.toLowerCase());
-        }
-        if (filters.listingType) {
-            results = results.filter(p => p.listingType === filters.listingType);
-        }
-        if (filters.sellerId) {
-            results = results.filter(p => p.sellerId === filters.sellerId);
-        }
-        if (filters.search) {
-            const q = filters.search.toLowerCase();
-            results = results.filter(p => p.name.toLowerCase().includes(q) || p.description.toLowerCase().includes(q));
-        }
+        try {
+            await ensureSeeded();
+            const query = {};
 
-        return results;
-    }
+            if (filters.category) {
+                query.category = new RegExp(
+                    "^" + escapeRegex(filters.category) + "$", "i"
+                );
+            }
+            if (filters.listingType) query.listingType = filters.listingType;
+            if (filters.sellerId) query.sellerId = filters.sellerId;
 
-    // Find product by ID
+            if (filters.search) {
+                const term = escapeRegex(filters.search);
+                query.$or = [
+                    { name: { $regex: term, $options: "i" } },
+                    { description: { $regex: term, $options: "i" } }
+                ];
+            }
+
+            return await Product.find(query).sort({ createdAt: -1 }).lean();
+        } catch (err) {
+            console.warn('[ProductModel.find] DB query error, falling back to seed products:', err.message);
+            return seedProducts;
+        }
+    },
+
     async findById(id) {
-        return this.collection.find(p => p.id === id) || null;
-    }
-
-    // Increment product views
-    async incrementViews(id) {
-        const product = await this.findById(id);
-        if (product) {
-            product.views = (product.views || 0) + 1;
+        if (mongoose.connection.readyState !== 1) {
+            return seedProducts.find(p => p.id === id) || null;
         }
-        return product;
-    }
+        try {
+            await ensureSeeded();
+            return await Product.findOne({ id }).lean();
+        } catch (err) {
+            return seedProducts.find(p => p.id === id) || null;
+        }
+    },
 
-    // Create a new product
+    async incrementViews(id) {
+        return Product.findOneAndUpdate(
+            { id },
+            { $inc: { views: 1 } },
+            { new: true }
+        ).lean();
+    },
+
     async create(data) {
         const {
             name, category, price, condition, listingType,
@@ -53,16 +330,16 @@ class ProductModel {
             sellerPhone, stock, image
         } = data;
 
-        const newProduct = {
-            id: 'prod_' + Date.now(),
+        return Product.create({
+            id: "prod_" + Date.now(),
             name,
             category,
             price: Number(price),
             originalPrice: Math.round(Number(price) * 1.3),
-            condition: condition || 'Good',
-            listingType: listingType || 'fixed',
+            condition: condition || "Good",
+            listingType: listingType || "fixed",
             stock: Number(stock) || 1,
-            currentBid: listingType === 'bidding' ? Number(price) : null,
+            currentBid: listingType === "bidding" ? Number(price) : null,
             sellerId,
             sellerName,
             sellerPhone: sellerPhone || null,
@@ -71,124 +348,132 @@ class ProductModel {
             location,
             description,
             image: image || null,
-            rating: 5.0,
+            rating: 5,
             bids: [],
             offers: [],
-            dateAdded: new Date().toISOString().split('T')[0],
+            dateAdded: new Date().toISOString().split("T")[0],
             views: 0
-        };
-
-        this.collection.push(newProduct);
-        return newProduct;
-    }
-
-    // Update product by ID
-    async findByIdAndUpdate(id, updates = {}) {
-        const index = this.collection.findIndex(p => p.id === id);
-        if (index === -1) return null;
-
-        const allowedFields = ['name', 'category', 'price', 'condition', 'listingType', 'stock', 'location', 'description', 'image', 'rating'];
-        const cleanUpdates = {};
-        allowedFields.forEach(field => {
-            if (updates[field] !== undefined) cleanUpdates[field] = updates[field];
         });
+    },
 
-        this.collection[index] = { ...this.collection[index], ...cleanUpdates };
-        return this.collection[index];
-    }
+    async findByIdAndUpdate(id, updates = {}) {
+        const allowed = [
+            "name", "category", "price", "condition", "listingType",
+            "stock", "location", "description", "image", "rating"
+        ];
+        const clean = {};
 
-    // Delete product by ID
-    async findByIdAndDelete(id) {
-        const index = this.collection.findIndex(p => p.id === id);
-        if (index === -1) return null;
-
-        const deleted = this.collection.splice(index, 1)[0];
-        return deleted;
-    }
-
-    // Adjust stock (positive or negative)
-    async adjustStock(id, delta) {
-        const product = await this.findById(id);
-        if (product && product.stock !== undefined) {
-            product.stock += delta;
+        for (const field of allowed) {
+            if (updates[field] !== undefined) clean[field] = updates[field];
         }
-        return product;
-    }
 
-    // ============================================================
-    // OFFERS SUB-OPERATIONS
-    // ============================================================
+        return Product.findOneAndUpdate(
+            { id },
+            { $set: clean },
+            { new: true, runValidators: true }
+        ).lean();
+    },
+
+    async findByIdAndDelete(id) {
+        return Product.findOneAndDelete({ id }).lean();
+    },
+
+    async adjustStock(id, delta) {
+        return Product.findOneAndUpdate(
+            { id },
+            { $inc: { stock: delta } },
+            { new: true }
+        ).lean();
+    },
 
     async getOffers(productId) {
-        const product = await this.findById(productId);
+        const product = await Product.findOne({ id: productId }).select("offers").lean();
         return product ? product.offers : null;
-    }
+    },
 
-    async addOffer(productId, offerData) {
-        const product = await this.findById(productId);
-        if (!product) return null;
-
-        const newOffer = {
-            offerId: 'off_' + Date.now(),
-            buyerId: offerData.buyerId,
-            buyerName: offerData.buyerName,
-            buyerPhone: offerData.buyerPhone || null,
-            amount: Number(offerData.amount),
-            status: 'Pending',
-            date: new Date().toISOString().split('T')[0]
+    async addOffer(productId, data) {
+        const offer = {
+            offerId: "off_" + Date.now(),
+            buyerId: data.buyerId,
+            buyerName: data.buyerName,
+            buyerPhone: data.buyerPhone || null,
+            amount: Number(data.amount),
+            status: "Pending",
+            date: new Date().toISOString().split("T")[0]
         };
 
-        product.offers.push(newOffer);
-        return newOffer;
-    }
+        const product = await Product.findOneAndUpdate(
+            { id: productId },
+            { $push: { offers: offer } },
+            { new: true, runValidators: true }
+        );
+
+        if (!product) return null;
+        return product.offers.find(o => o.offerId === offer.offerId);
+    },
 
     async updateOfferStatus(productId, offerId, status) {
-        const product = await this.findById(productId);
-        if (!product) return { error: 'PRODUCT_NOT_FOUND' };
+        const product = await Product.findOne({ id: productId });
+
+        if (!product) return { error: "PRODUCT_NOT_FOUND" };
 
         const offer = product.offers.find(o => o.offerId === offerId);
-        if (!offer) return { error: 'OFFER_NOT_FOUND' };
+        if (!offer) return { error: "OFFER_NOT_FOUND" };
 
         offer.status = status;
-        return { offer };
-    }
+        await product.save();
+
+        return { offer: offer.toObject() };
+    },
 
     async deleteOffer(productId, offerId) {
-        const product = await this.findById(productId);
-        if (!product) return { error: 'PRODUCT_NOT_FOUND' };
+        const product = await Product.findOne({ id: productId });
+
+        if (!product) return { error: "PRODUCT_NOT_FOUND" };
 
         const index = product.offers.findIndex(o => o.offerId === offerId);
-        if (index === -1) return { error: 'OFFER_NOT_FOUND' };
+        if (index === -1) return { error: "OFFER_NOT_FOUND" };
 
-        const deleted = product.offers.splice(index, 1)[0];
+        const deleted = product.offers[index].toObject();
+        product.offers.splice(index, 1);
+        await product.save();
+
         return { deleted };
-    }
-
-    // ============================================================
-    // BIDS SUB-OPERATIONS
-    // ============================================================
+    },
 
     async getBids(productId) {
-        const product = await this.findById(productId);
+        const product = await Product.findOne({ id: productId }).select("bids").lean();
         return product ? product.bids : null;
-    }
+    },
 
-    async placeBid(productId, bidData) {
-        const product = await this.findById(productId);
-        if (!product) return { error: 'PRODUCT_NOT_FOUND' };
-
-        const newBid = {
-            bidderId: bidData.bidderId,
-            bidderName: bidData.bidderName,
-            amount: Number(bidData.amount),
-            date: new Date().toISOString().split('T')[0]
+    async placeBid(productId, data) {
+        const bid = {
+            bidderId: data.bidderId,
+            bidderName: data.bidderName,
+            amount: Number(data.amount),
+            date: new Date().toISOString().split("T")[0]
         };
 
-        product.bids.push(newBid);
-        product.currentBid = Number(bidData.amount);
+        const product = await Product.findOneAndUpdate(
+            { id: productId },
+            {
+                $push: { bids: bid },
+                $set: { currentBid: Number(data.amount) }
+            },
+            { new: true, runValidators: true }
+        );
 
-        return { newBid, currentBid: product.currentBid };
+        if (!product) return { error: "PRODUCT_NOT_FOUND" };
+
+        return {
+            newBid: product.bids[product.bids.length - 1].toObject(),
+            currentBid: product.currentBid
+        };
     }
+};
+
+function escapeRegex(value) {
+    return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-module.exports = new ProductModel();
+module.exports = ProductModel;

@@ -1,35 +1,43 @@
 /* ==========================================================================
-   CAMPUSMART - Pure Client-Side JavaScript Authentication & OTP Engine
-   (No Node.js or backend server required - runs 100% in the browser)
+   CAMPUSMART - Authentication Engine (Production Email OTP & 2FA)
    ========================================================================== */
 
-let currentLoginMethod = 'pwd'; // 'pwd' (Password + OTP) or 'otp' (Quick OTP)
-let pendingOtpState = {
-    identifier: null,
-    code: null,
-    user: null,
-    role: null,
-    expiresAt: 0
-};
-let otpTimerInterval = null;
+const AUTH_API_BASE = (window.location.origin.includes('localhost'))
+    ? (window.location.port === '5000' ? '/api/auth' : 'http://localhost:5000/api/auth')
+    : '/api/auth';
+
+// In-memory verification challenge state (NEVER stored in localStorage)
+let activeRegChallenge = null;
+let activeLoginChallenge = null;
+let regCooldownTimer = null;
+let loginCooldownTimer = null;
 
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
     initAuthForms();
-    initOTPInputs();
     updateUserNavUI();
 });
 
 // ---------------------------------------------------------------------------
-// 1. Core Form Handlers (Signup & Login)
+// 1. Core Form Handlers (Signup & Login with OTP Verification)
 // ---------------------------------------------------------------------------
 function initAuthForms() {
-    // Signup Form Handler (Pure LocalStorage)
+    // -----------------------------------------------------------------------
+    // A. Signup Form & Registration OTP Verification
+    // -----------------------------------------------------------------------
     const signupForm = document.getElementById('signup-form');
+    const signupFormSection = document.getElementById('signup-form-section');
+    const signupOtpSection = document.getElementById('signup-otp-section');
+    const signupOtpForm = document.getElementById('signup-otp-form');
+    const signupResendBtn = document.getElementById('signup-resend-btn');
+    const signupBackBtn = document.getElementById('signup-back-btn');
+    const signupTargetEmail = document.getElementById('signup-otp-target-email');
+    const signupOtpInput = document.getElementById('signup-otp-input');
+
     if (signupForm) {
-        signupForm.addEventListener('submit', function(e) {
+        signupForm.addEventListener('submit', async function(e) {
             e.preventDefault();
-            
+
             const fullName = document.getElementById('signup-fullname').value.trim();
             const email = document.getElementById('signup-email').value.trim();
             const password = document.getElementById('signup-password').value;
@@ -37,406 +45,493 @@ function initAuthForms() {
             const role = document.getElementById('signup-role').value;
             const college = document.getElementById('signup-college').value.trim();
             const phone = document.getElementById('signup-phone').value.trim();
+            const submitBtn = signupForm.querySelector('button[type="submit"]');
 
             if (!fullName || !email || !password || !confirmPassword || !college || !phone) {
-                showToast('Please fill in all required fields', 'warning');
+                showToast('Please fill in all required fields.', 'warning');
                 return;
             }
 
             if (password !== confirmPassword) {
-                showToast('Passwords do not match', 'error');
+                showToast('Passwords do not match.', 'error');
                 return;
             }
 
             if (password.length < 6) {
-                showToast('Password must be at least 6 characters long', 'warning');
+                showToast('Password must be at least 6 characters long.', 'warning');
                 return;
             }
 
-            const users = dbGet('users');
-            const existingUser = users.find(u => u.email.toLowerCase() === email.toLowerCase());
-
-            if (existingUser) {
-                showToast('An account with this email already exists', 'error');
-                return;
+            const originalBtnHtml = submitBtn ? submitBtn.innerHTML : '';
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span>Verifying & Sending Code... ⏳</span>';
             }
 
-            const newUser = {
-                id: 'usr_' + Date.now(),
-                name: fullName,
-                email: email,
-                password: password,
-                role: role,
-                college: college,
-                phone: phone,
-                rating: 5.0,
-                completedTx: 0,
-                trustScore: 85,
-                joined: new Date().toISOString().split('T')[0]
-            };
+            try {
+                const response = await fetch(`${AUTH_API_BASE}/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name: fullName,
+                        email: email,
+                        password: password,
+                        role: role,
+                        college: college,
+                        phone: phone
+                    })
+                });
 
-            users.push(newUser);
-            dbSet('users', users);
-            setCurrentUser(newUser);
+                const data = await response.json();
 
-            showToast('Account created successfully! Welcome to CampusMart.', 'success');
-            
-            setTimeout(() => {
-                const redirectPath = role === 'seller' ? 'seller-dashboard.html' : 'buyer-dashboard.html';
-                window.location.href = redirectPath;
-            }, 1200);
+                if (response.ok && data.success) {
+                    activeRegChallenge = {
+                        email: data.email || email,
+                        challengeId: data.challengeId
+                    };
+
+                    // Switch view to OTP verification
+                    if (signupFormSection && signupOtpSection) {
+                        signupFormSection.style.display = 'none';
+                        signupOtpSection.style.display = 'block';
+                    }
+                    if (signupTargetEmail) {
+                        signupTargetEmail.textContent = data.email || email;
+                    }
+                    if (signupOtpInput) {
+                        signupOtpInput.value = data.devOtp || '';
+                        signupOtpInput.focus();
+                    }
+
+                    const devBanner = document.getElementById('signup-dev-otp-banner');
+                    if (devBanner) {
+                        if (data.devOtp) {
+                            devBanner.style.display = 'block';
+                            devBanner.innerHTML = `
+                                <div style="background: #FFFDF8; border: 1.5px dashed var(--accent-red); padding: 0.85rem; margin-bottom: 1.25rem; text-align: center; font-family: var(--font-mono); font-size: 0.82rem; color: var(--ink-primary);">
+                                    <span style="color: var(--accent-red); font-weight: 900; letter-spacing: 0.1em;">🔑 VERIFICATION CODE:</span>
+                                    <div style="font-size: 1.8rem; font-weight: 900; letter-spacing: 0.25em; color: var(--accent-red); margin: 0.25rem 0;">${data.devOtp}</div>
+                                    <span style="font-size: 0.72rem; color: var(--ink-muted);">(Pre-filled automatically below • Click Verify below to activate)</span>
+                                </div>
+                            `;
+                        } else {
+                            devBanner.style.display = 'none';
+                        }
+                    }
+
+                    startResendCooldown('signup', data.cooldownSeconds || 60);
+                    showToast(data.message || 'Verification code sent to your campus email.', 'success');
+                } else {
+                    showToast(data.message || 'Registration failed. Please check your details.', 'error');
+                }
+            } catch (err) {
+                console.error('Registration API error:', err);
+                showToast('Could not reach Campus Mart authentication server. Please check your connection.', 'error');
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalBtnHtml;
+                }
+            }
         });
     }
 
-    // Login Form Handler (Pure Client-Side OTP Trigger)
+    // Submit Registration OTP
+    if (signupOtpForm) {
+        signupOtpForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            if (!activeRegChallenge || !activeRegChallenge.challengeId) {
+                showToast('Verification challenge expired. Please submit the registration form again.', 'error');
+                return;
+            }
+
+            const otpVal = signupOtpInput ? signupOtpInput.value.trim() : '';
+            if (!otpVal || otpVal.length !== 6) {
+                showToast('Please enter the full 6-digit verification code.', 'warning');
+                return;
+            }
+
+            const submitBtn = document.getElementById('signup-otp-submit-btn');
+            const originalBtnHtml = submitBtn ? submitBtn.innerHTML : '';
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span>Activating Account... ⏳</span>';
+            }
+
+            try {
+                const response = await fetch(`${AUTH_API_BASE}/verify-registration-otp`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: activeRegChallenge.email,
+                        challengeId: activeRegChallenge.challengeId,
+                        otp: otpVal
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    showToast('🎉 ' + data.message, 'success');
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 1200);
+                } else {
+                    showToast(data.message || 'Verification failed. Please check the code.', 'error');
+                    if (signupOtpInput) {
+                        signupOtpInput.select();
+                    }
+                }
+            } catch (err) {
+                console.error('OTP Verification error:', err);
+                showToast('Failed to connect to verification server.', 'error');
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalBtnHtml;
+                }
+            }
+        });
+    }
+
+    // Resend Registration OTP
+    if (signupResendBtn) {
+        signupResendBtn.addEventListener('click', async function() {
+            if (!activeRegChallenge) return;
+            signupResendBtn.disabled = true;
+            signupResendBtn.textContent = 'Sending...';
+
+            try {
+                const response = await fetch(`${AUTH_API_BASE}/resend-registration-otp`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: activeRegChallenge.email,
+                        challengeId: activeRegChallenge.challengeId
+                    })
+                });
+
+                const data = await response.json();
+                if (response.ok && data.success) {
+                    activeRegChallenge.challengeId = data.challengeId;
+                    if (signupOtpInput && data.devOtp) {
+                        signupOtpInput.value = data.devOtp;
+                    }
+                    const devBanner = document.getElementById('signup-dev-otp-banner');
+                    if (devBanner && data.devOtp) {
+                        devBanner.style.display = 'block';
+                        devBanner.innerHTML = `
+                            <div style="background: #FFFDF8; border: 1.5px dashed var(--accent-red); padding: 0.85rem; margin-bottom: 1.25rem; text-align: center; font-family: var(--font-mono); font-size: 0.82rem; color: var(--ink-primary);">
+                                <span style="color: var(--accent-red); font-weight: 900; letter-spacing: 0.1em;">🔑 VERIFICATION CODE:</span>
+                                <div style="font-size: 1.8rem; font-weight: 900; letter-spacing: 0.25em; color: var(--accent-red); margin: 0.25rem 0;">${data.devOtp}</div>
+                                <span style="font-size: 0.72rem; color: var(--ink-muted);">(Pre-filled automatically below • Click Verify below to activate)</span>
+                            </div>
+                        `;
+                    }
+                    startResendCooldown('signup', data.cooldownSeconds || 60);
+                    showToast('A fresh verification code has been dispatched.', 'success');
+                } else {
+                    showToast(data.message || 'Could not resend verification code.', 'error');
+                    signupResendBtn.disabled = false;
+                    signupResendBtn.textContent = 'Resend Code';
+                }
+            } catch (err) {
+                console.error('Resend OTP error:', err);
+                showToast('Network error while requesting code resend.', 'error');
+                signupResendBtn.disabled = false;
+                signupResendBtn.textContent = 'Resend Code';
+            }
+        });
+    }
+
+    // Back to Signup Form
+    if (signupBackBtn) {
+        signupBackBtn.addEventListener('click', function() {
+            if (signupFormSection && signupOtpSection) {
+                signupOtpSection.style.display = 'none';
+                signupFormSection.style.display = 'block';
+            }
+            if (regCooldownTimer) clearInterval(regCooldownTimer);
+        });
+    }
+
+    // -----------------------------------------------------------------------
+    // B. Login Form & Two-Factor OTP Verification
+    // -----------------------------------------------------------------------
     const loginForm = document.getElementById('login-form');
+    const loginFormSection = document.getElementById('login-form-section');
+    const loginOtpSection = document.getElementById('login-otp-section');
+    const loginOtpForm = document.getElementById('login-otp-form');
+    const loginResendBtn = document.getElementById('login-resend-btn');
+    const loginBackBtn = document.getElementById('login-back-btn');
+    const loginTargetEmail = document.getElementById('login-otp-target-email');
+    const loginOtpInput = document.getElementById('login-otp-input');
+
     if (loginForm) {
-        loginForm.addEventListener('submit', function(e) {
+        loginForm.addEventListener('submit', async function(e) {
             e.preventDefault();
 
             const identifier = document.getElementById('login-email').value.trim();
             const passwordInput = document.getElementById('login-password');
             const password = passwordInput ? passwordInput.value : '';
             const role = document.getElementById('login-role').value;
+            const submitBtn = loginForm.querySelector('button[type="submit"]');
 
             if (!identifier) {
-                showToast('Please enter your campus email or phone number', 'warning');
+                showToast('Please enter your campus email.', 'warning');
                 return;
             }
-
-            const users = dbGet('users');
-            let matchedUser = null;
 
             if (!password) {
-                showToast('Please enter your password', 'warning');
+                showToast('Please enter your password.', 'warning');
                 return;
             }
 
-            matchedUser = users.find(u => 
-                (u.email.toLowerCase() === identifier.toLowerCase() || (u.phone && u.phone === identifier)) && 
-                u.password === password
-            );
-
-            if (!matchedUser) {
-                showToast('Invalid credentials! Check your email/password.', 'error');
-                return;
+            const originalBtnHtml = submitBtn ? submitBtn.innerHTML : '';
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span>Verifying Credentials... ⏳</span>';
             }
 
-            // Login successful
-            matchedUser.role = role;
-            setCurrentUser(matchedUser);
-            
-            showToast('🎉 Login successful! Welcome back.', 'success');
-
-            setTimeout(() => {
-                const redirectPath = matchedUser.role === 'seller' ? 'seller-dashboard.html' : 'buyer-dashboard.html';
-                window.location.href = redirectPath;
-            }, 900);
-        });
-    }
-}
-
-// ---------------------------------------------------------------------------
-// 2. Pure JavaScript OTP Generator & Dispatcher
-// ---------------------------------------------------------------------------
-function generatePureJsOTP() {
-    // Generate secure 6-digit random number
-    return Math.floor(100000 + Math.random() * 900000).toString();
-}
-
-function triggerClientOTP(user, role) {
-    const code = generatePureJsOTP();
-    const expiryTime = Date.now() + (2 * 60 * 1000); // 2 minutes
-
-    pendingOtpState = {
-        identifier: user.email,
-        code: code,
-        user: user,
-        role: role,
-        expiresAt: expiryTime
-    };
-
-    // Update Modal Information
-    const targetEmailEl = document.getElementById('otp-target-email');
-    const displayCodeEl = document.getElementById('modal-otp-display');
-
-    if (targetEmailEl) {
-        targetEmailEl.textContent = `${user.email} (${user.phone || 'SMS'})`;
-    }
-    if (displayCodeEl) {
-        displayCodeEl.textContent = code;
-    }
-
-    // Clear inputs and start timer
-    clearOtpInputs();
-    startOtpCountdown(120);
-
-    // Open Modal
-    openModal('otp-modal');
-
-    // Optional: If EmailJS is loaded, send real email directly from browser!
-    if (window.emailjs && window.EMAILJS_SERVICE_ID) {
-        try {
-            emailjs.send(window.EMAILJS_SERVICE_ID, window.EMAILJS_TEMPLATE_ID, {
-                to_email: user.email,
-                to_name: user.name,
-                otp_code: code
-            });
-            console.log(`[EmailJS] Sent real OTP to ${user.email}`);
-        } catch (e) {
-            console.warn('[EmailJS] Browser dispatch error:', e);
-        }
-    }
-
-    // Display high-visibility notification toast with the OTP
-    showToast(`🔐 Verification OTP Code: ${code}`, 'success');
-
-    // Auto-focus first input box
-    setTimeout(() => {
-        const firstDigit = document.querySelector('.otp-digit[data-index="0"]');
-        if (firstDigit) firstDigit.focus();
-    }, 150);
-}
-
-// ---------------------------------------------------------------------------
-// 3. Segmented 6-Digit Inputs (Auto-focus, Backspace, Paste)
-// ---------------------------------------------------------------------------
-function initOTPInputs() {
-    const inputs = document.querySelectorAll('.otp-digit');
-    if (!inputs.length) return;
-
-    inputs.forEach((input, index) => {
-        // Auto-advance to next box on number typing
-        input.addEventListener('input', function() {
-            const val = this.value.replace(/\D/g, '');
-            this.value = val ? val.slice(-1) : '';
-
-            if (this.value) {
-                this.classList.add('filled');
-                this.classList.remove('error');
-                if (index < inputs.length - 1) {
-                    inputs[index + 1].focus();
-                } else {
-                    // All 6 digits filled -> Auto trigger verification
-                    setTimeout(() => verifyLoginOTP(), 200);
-                }
-            } else {
-                this.classList.remove('filled');
-            }
-        });
-
-        // Backspace to jump back and clear previous box
-        input.addEventListener('keydown', function(e) {
-            if (e.key === 'Backspace' && !this.value && index > 0) {
-                inputs[index - 1].focus();
-                inputs[index - 1].value = '';
-                inputs[index - 1].classList.remove('filled');
-            } else if (e.key === 'Enter') {
-                verifyLoginOTP();
-            }
-        });
-
-        // Paste support: paste complete 6-digit code at once
-        input.addEventListener('paste', function(e) {
-            e.preventDefault();
-            const pasteData = (e.clipboardData || window.clipboardData).getData('text').trim();
-            const digits = pasteData.replace(/\D/g, '').slice(0, 6);
-
-            if (digits.length > 0) {
-                inputs.forEach((inp, idx) => {
-                    if (digits[idx]) {
-                        inp.value = digits[idx];
-                        inp.classList.add('filled');
-                        inp.classList.remove('error');
-                    } else {
-                        inp.value = '';
-                        inp.classList.remove('filled');
-                    }
+            try {
+                const response = await fetch(`${AUTH_API_BASE}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: identifier,
+                        password: password,
+                        role: role
+                    })
                 });
 
-                const targetIdx = Math.min(digits.length, inputs.length - 1);
-                inputs[targetIdx].focus();
+                const data = await response.json();
 
-                if (digits.length === 6) {
-                    setTimeout(() => verifyLoginOTP(), 200);
+                if (response.ok && data.success && data.requireOtp) {
+                    // Credentials validated! Transition to 2FA OTP verification
+                    activeLoginChallenge = {
+                        email: data.email || identifier,
+                        challengeId: data.challengeId,
+                        role: role
+                    };
+
+                    if (loginFormSection && loginOtpSection) {
+                        loginFormSection.style.display = 'none';
+                        loginOtpSection.style.display = 'block';
+                    }
+                    if (loginTargetEmail) {
+                        loginTargetEmail.textContent = data.email || identifier;
+                    }
+                    if (loginOtpInput) {
+                        loginOtpInput.value = data.devOtp || '';
+                        loginOtpInput.focus();
+                    }
+
+                    const devBanner = document.getElementById('login-dev-otp-banner');
+                    if (devBanner) {
+                        if (data.devOtp) {
+                            devBanner.style.display = 'block';
+                            devBanner.innerHTML = `
+                                <div style="background: #FFFDF8; border: 1.5px dashed var(--accent-red); padding: 0.85rem; margin-bottom: 1.25rem; text-align: center; font-family: var(--font-mono); font-size: 0.82rem; color: var(--ink-primary);">
+                                    <span style="color: var(--accent-red); font-weight: 900; letter-spacing: 0.1em;">🔑 2FA VERIFICATION CODE:</span>
+                                    <div style="font-size: 1.8rem; font-weight: 900; letter-spacing: 0.25em; color: var(--accent-red); margin: 0.25rem 0;">${data.devOtp}</div>
+                                    <span style="font-size: 0.72rem; color: var(--ink-muted);">(Pre-filled automatically below • Click Verify below to enter)</span>
+                                </div>
+                            `;
+                        } else {
+                            devBanner.style.display = 'none';
+                        }
+                    }
+
+                    startResendCooldown('login', data.cooldownSeconds || 60);
+                    showToast(data.message || 'Login verification code sent to your email.', 'success');
+                } else if (response.status === 403 && data.unverified) {
+                    showToast('⚠️ ' + data.message, 'warning');
+                } else {
+                    showToast(data.message || 'Invalid email or password.', 'error');
+                }
+            } catch (err) {
+                console.error('Login error:', err);
+                // STRICT SECURITY: Do NOT fallback to local plaintext authentication
+                showToast('Could not reach Campus Mart authentication server. Please check your connection.', 'error');
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalBtnHtml;
                 }
             }
         });
-    });
-}
+    }
 
-function clearOtpInputs() {
-    const inputs = document.querySelectorAll('.otp-digit');
-    inputs.forEach(input => {
-        input.value = '';
-        input.classList.remove('filled', 'error');
-    });
-}
+    // Submit Login 2FA OTP
+    if (loginOtpForm) {
+        loginOtpForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
 
-// Auto-fill active OTP into inputs
-function autoFillCurrentOTP() {
-    if (!pendingOtpState || !pendingOtpState.code) return;
-    const digits = pendingOtpState.code.split('');
-    const inputs = document.querySelectorAll('.otp-digit');
+            if (!activeLoginChallenge || !activeLoginChallenge.challengeId) {
+                showToast('Verification challenge expired. Please enter your credentials again.', 'error');
+                return;
+            }
 
-    inputs.forEach((input, index) => {
-        if (digits[index]) {
-            input.value = digits[index];
-            input.classList.add('filled');
-            input.classList.remove('error');
-        }
-    });
+            const otpVal = loginOtpInput ? loginOtpInput.value.trim() : '';
+            if (!otpVal || otpVal.length !== 6) {
+                showToast('Please enter the 6-digit verification code.', 'warning');
+                return;
+            }
 
-    showToast('OTP auto-filled!', 'info');
-    setTimeout(() => verifyLoginOTP(), 250);
+            const submitBtn = document.getElementById('login-otp-submit-btn');
+            const originalBtnHtml = submitBtn ? submitBtn.innerHTML : '';
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span>Verifying Code... ⏳</span>';
+            }
+
+            try {
+                const response = await fetch(`${AUTH_API_BASE}/verify-login-otp`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: activeLoginChallenge.email,
+                        challengeId: activeLoginChallenge.challengeId,
+                        otp: otpVal,
+                        role: activeLoginChallenge.role
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success && data.user) {
+                    // Two-factor verified: Persist session and redirect
+                    setCurrentUser(data.user);
+                    showToast('🎉 Login successful! Welcome back.', 'success');
+
+                    setTimeout(() => {
+                        const redirectPath = data.user.role === 'seller' ? 'seller-dashboard.html' : 'buyer-dashboard.html';
+                        window.location.href = redirectPath;
+                    }, 800);
+                } else {
+                    showToast(data.message || 'Invalid verification code.', 'error');
+                    if (loginOtpInput) {
+                        loginOtpInput.select();
+                    }
+                }
+            } catch (err) {
+                console.error('Login OTP verification error:', err);
+                showToast('Failed to verify login code.', 'error');
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalBtnHtml;
+                }
+            }
+        });
+    }
+
+    // Resend Login OTP
+    if (loginResendBtn) {
+        loginResendBtn.addEventListener('click', async function() {
+            if (!activeLoginChallenge) return;
+            loginResendBtn.disabled = true;
+            loginResendBtn.textContent = 'Sending...';
+
+            try {
+                const response = await fetch(`${AUTH_API_BASE}/resend-login-otp`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: activeLoginChallenge.email,
+                        challengeId: activeLoginChallenge.challengeId
+                    })
+                });
+
+                const data = await response.json();
+                if (response.ok && data.success) {
+                    activeLoginChallenge.challengeId = data.challengeId;
+                    if (loginOtpInput && data.devOtp) {
+                        loginOtpInput.value = data.devOtp;
+                    }
+                    const devBanner = document.getElementById('login-dev-otp-banner');
+                    if (devBanner && data.devOtp) {
+                        devBanner.style.display = 'block';
+                        devBanner.innerHTML = `
+                            <div style="background: #FFFDF8; border: 1.5px dashed var(--accent-red); padding: 0.85rem; margin-bottom: 1.25rem; text-align: center; font-family: var(--font-mono); font-size: 0.82rem; color: var(--ink-primary);">
+                                <span style="color: var(--accent-red); font-weight: 900; letter-spacing: 0.1em;">🔑 2FA VERIFICATION CODE:</span>
+                                <div style="font-size: 1.8rem; font-weight: 900; letter-spacing: 0.25em; color: var(--accent-red); margin: 0.25rem 0;">${data.devOtp}</div>
+                                <span style="font-size: 0.72rem; color: var(--ink-muted);">(Pre-filled automatically below • Click Verify below to enter)</span>
+                            </div>
+                        `;
+                    }
+                    startResendCooldown('login', data.cooldownSeconds || 60);
+                    showToast('A fresh login code has been dispatched.', 'success');
+                } else {
+                    showToast(data.message || 'Could not resend code.', 'error');
+                    loginResendBtn.disabled = false;
+                    loginResendBtn.textContent = 'Resend Code';
+                }
+            } catch (err) {
+                console.error('Resend Login OTP error:', err);
+                showToast('Network error while requesting code resend.', 'error');
+                loginResendBtn.disabled = false;
+                loginResendBtn.textContent = 'Resend Code';
+            }
+        });
+    }
+
+    // Back to Login Credentials Form
+    if (loginBackBtn) {
+        loginBackBtn.addEventListener('click', function() {
+            if (loginFormSection && loginOtpSection) {
+                loginOtpSection.style.display = 'none';
+                loginFormSection.style.display = 'block';
+            }
+            if (loginCooldownTimer) clearInterval(loginCooldownTimer);
+        });
+    }
 }
 
 // ---------------------------------------------------------------------------
-// 4. Countdown Timer & Resend OTP
+// 2. Cooldown Timer Helper
 // ---------------------------------------------------------------------------
-function startOtpCountdown(seconds) {
-    if (otpTimerInterval) clearInterval(otpTimerInterval);
-
-    const timerCountEl = document.getElementById('otp-timer-count');
-    const timerStatusEl = document.getElementById('otp-timer-status');
-    const resendBtn = document.getElementById('btn-resend-otp');
-
-    if (resendBtn) resendBtn.disabled = true;
-
+function startResendCooldown(type, seconds) {
     let remaining = seconds;
-    updateTimerText();
+    const btn = type === 'signup' 
+        ? document.getElementById('signup-resend-btn') 
+        : document.getElementById('login-resend-btn');
 
-    otpTimerInterval = setInterval(() => {
-        remaining--;
-        updateTimerText();
+    if (!btn) return;
 
+    if (type === 'signup' && regCooldownTimer) clearInterval(regCooldownTimer);
+    if (type === 'login' && loginCooldownTimer) clearInterval(loginCooldownTimer);
+
+    btn.disabled = true;
+    btn.textContent = `Resend Code (${remaining}s)`;
+
+    const timer = setInterval(() => {
+        remaining -= 1;
         if (remaining <= 0) {
-            clearInterval(otpTimerInterval);
-            if (timerStatusEl) timerStatusEl.innerHTML = '<span style="color: var(--danger);">Code has expired!</span>';
-            if (resendBtn) resendBtn.disabled = false;
-            pendingOtpState.code = null;
+            clearInterval(timer);
+            btn.disabled = false;
+            btn.textContent = 'Resend Code';
+        } else {
+            btn.textContent = `Resend Code (${remaining}s)`;
         }
     }, 1000);
 
-    function updateTimerText() {
-        if (!timerCountEl) return;
-        const mins = String(Math.floor(remaining / 60)).padStart(2, '0');
-        const secs = String(remaining % 60).padStart(2, '0');
-        timerCountEl.textContent = `${mins}:${secs}`;
-    }
-}
-
-function resendLoginOTP() {
-    if (!pendingOtpState.user) {
-        showToast('Session expired. Please try signing in again.', 'warning');
-        closeOtpModal();
-        return;
-    }
-
-    const newCode = generatePureJsOTP();
-    pendingOtpState.code = newCode;
-    pendingOtpState.expiresAt = Date.now() + (2 * 60 * 1000);
-
-    const displayCodeEl = document.getElementById('modal-otp-display');
-    const timerStatusEl = document.getElementById('otp-timer-status');
-    if (displayCodeEl) displayCodeEl.textContent = newCode;
-    if (timerStatusEl) timerStatusEl.innerHTML = 'Code expires in <strong id="otp-timer-count">02:00</strong>';
-
-    clearOtpInputs();
-    startOtpCountdown(120);
-
-    showToast(`🔄 New OTP Generated: ${newCode}`, 'success');
-
-    const firstDigit = document.querySelector('.otp-digit[data-index="0"]');
-    if (firstDigit) firstDigit.focus();
+    if (type === 'signup') regCooldownTimer = timer;
+    if (type === 'login') loginCooldownTimer = timer;
 }
 
 // ---------------------------------------------------------------------------
-// 5. Verification & Session Persistence
+// 3. Navigation & User Helpers
 // ---------------------------------------------------------------------------
-function verifyLoginOTP() {
-    const inputs = document.querySelectorAll('.otp-digit');
-    let enteredCode = '';
-    inputs.forEach(i => enteredCode += i.value.trim());
-
-    if (enteredCode.length < 6) {
-        showToast('Please enter all 6 digits of the OTP', 'warning');
-        return;
-    }
-
-    if (!pendingOtpState.code || Date.now() > pendingOtpState.expiresAt) {
-        showToast('OTP code has expired! Please click Resend OTP.', 'error');
-        inputs.forEach(i => i.classList.add('error'));
-        return;
-    }
-
-    if (enteredCode !== pendingOtpState.code) {
-        showToast('Incorrect OTP code! Please try again.', 'error');
-        inputs.forEach(i => i.classList.add('error'));
-        return;
-    }
-
-    // OTP Verified Successfully!
-    if (otpTimerInterval) clearInterval(otpTimerInterval);
-
-    const user = pendingOtpState.user;
-    if (pendingOtpState.role) {
-        user.role = pendingOtpState.role;
-    }
-
-    // Save session in sessionStorage and update LocalStorage user
-    setCurrentUser(user);
-    closeOtpModal();
-
-    showToast(`🎉 OTP Verified! Welcome back, ${user.name}!`, 'success');
-
+function logoutUser() {
+    clearCurrentUser();
+    showToast('Logged out successfully.', 'info');
+    const isSubPage = window.location.pathname.includes('/pages/');
+    const prefix = isSubPage ? '' : 'pages/';
     setTimeout(() => {
-        const redirectPath = user.role === 'seller' ? 'seller-dashboard.html' : 'buyer-dashboard.html';
-        window.location.href = redirectPath;
-    }, 900);
-}
-
-function closeOtpModal() {
-    if (otpTimerInterval) clearInterval(otpTimerInterval);
-    closeModal('otp-modal');
-}
-
-// ---------------------------------------------------------------------------
-// 6. UI Helpers (Tab switcher, demo autofill, navbar)
-// ---------------------------------------------------------------------------
-function switchLoginMethod(method) {
-    currentLoginMethod = method;
-    const tabPwd = document.getElementById('tab-pwd-login');
-    const tabOtp = document.getElementById('tab-direct-otp');
-    const pwdGroup = document.getElementById('group-login-password');
-    const pwdInput = document.getElementById('login-password');
-    const submitBtn = document.getElementById('btn-login-submit');
-
-    if (method === 'pwd') {
-        if (tabPwd) tabPwd.classList.add('active');
-        if (tabOtp) tabOtp.classList.remove('active');
-        if (pwdGroup) pwdGroup.style.display = 'block';
-        if (pwdInput) pwdInput.required = true;
-        if (submitBtn) submitBtn.innerHTML = '<span>Continue to OTP Verification →</span>';
-    } else {
-        if (tabOtp) tabOtp.classList.add('active');
-        if (tabPwd) tabPwd.classList.remove('active');
-        if (pwdGroup) pwdGroup.style.display = 'none';
-        if (pwdInput) pwdInput.required = false;
-        if (submitBtn) submitBtn.innerHTML = '<span>Get Instant OTP Code ⚡</span>';
-    }
-}
-
-function fillDemoCredentials(email, password, role) {
-    const emailEl = document.getElementById('login-email');
-    const pwdEl = document.getElementById('login-password');
-    const roleEl = document.getElementById('login-role');
-
-    if (emailEl) emailEl.value = email;
-    if (pwdEl) pwdEl.value = password;
-    if (roleEl) roleEl.value = role;
-
-    showToast(`Loaded demo account (${role}): ${email}`, 'info');
+        window.location.href = `${prefix}login.html`;
+    }, 600);
 }
 
 function updateUserNavUI() {
@@ -448,21 +543,55 @@ function updateUserNavUI() {
         const dashboardUrl = user.role === 'seller' ? 'seller-dashboard.html' : 'buyer-dashboard.html';
         const isSubPage = window.location.pathname.includes('/pages/');
         const prefix = isSubPage ? '' : 'pages/';
+        const rawName = user.name || (user.email ? user.email.split('@')[0] : 'Student');
+        const firstName = rawName.split(' ')[0].toUpperCase();
 
         userNavBtn.innerHTML = `
-            <a href="${prefix}${dashboardUrl}" class="btn btn-outline btn-sm">
-                <span>👤 ${user.name.split(' ')[0]}</span>
-            </a>
-            <button onclick="logoutUser()" class="btn btn-dark btn-sm" title="Logout">
-                Logout
-            </button>
+            <div class="nav-account-lockup" style="display: inline-flex; align-items: center; gap: 0.5rem;">
+                <a href="${prefix}${dashboardUrl}" class="nav-account-badge" title="Go to ${user.role === 'seller' ? 'Seller' : 'Buyer'} Dashboard" style="
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    background: rgba(255, 253, 248, 0.15);
+                    border: 1.5px solid var(--accent-red, #ef493c);
+                    color: #ffffff !important;
+                    padding: 0.5rem 1rem;
+                    font-family: var(--font-mono, 'Martian Mono', monospace);
+                    font-size: 11px;
+                    letter-spacing: 0.15em;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    text-decoration: none;
+                    white-space: nowrap;
+                    transition: background 0.2s ease, border-color 0.2s ease;
+                ">
+                    <span style="color: var(--accent-red, #ef493c); font-size: 10px;">●</span>
+                    <span class="nav-account-name" style="color: #ffffff !important; font-weight: 700; text-shadow: 0 1px 2px rgba(0,0,0,0.4);">${firstName}</span>
+                </a>
+                <button onclick="logoutUser()" class="nav-account-logout" title="Logout" style="
+                    background: var(--ink-primary, #171717);
+                    border: 1.5px solid rgba(255, 253, 248, 0.35);
+                    color: #ffffff !important;
+                    padding: 0.5rem 0.8rem;
+                    font-family: var(--font-mono, 'Martian Mono', monospace);
+                    font-size: 10px;
+                    letter-spacing: 0.15em;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    cursor: pointer;
+                    white-space: nowrap;
+                    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+                ">
+                    LOGOUT
+                </button>
+            </div>
         `;
     } else {
         const isSubPage = window.location.pathname.includes('/pages/');
         const prefix = isSubPage ? '' : 'pages/';
         userNavBtn.innerHTML = `
-            <a href="${prefix}login.html" class="btn btn-primary btn-sm">
-                Login / Signup
+            <a href="${prefix}login.html" class="btn btn-editorial btn-editorial-primary btn-sm" style="font-family: var(--font-mono, monospace); font-size: 10.5px; letter-spacing: 0.18em; font-weight: 700; color: #ffffff !important;">
+                LOGIN // +
             </a>
         `;
     }

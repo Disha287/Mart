@@ -12,18 +12,20 @@ const config = require('./config/config');
 const { connectDB } = require('./config/db');
 
 // Route imports
+const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 
 // Middleware imports
 const { errorHandler, notFound } = require('./middleware/errorHandler');
+const { requireVerifiedUser } = require('./middleware/authMiddleware');
 
 const app = express();
 const PORT = config.PORT;
 
-// Initialize Database connection (graceful fallback to in-memory)
-connectDB();
+// // Initialize Database connection (graceful fallback to in-memory)
+// connectDB();
 
 // ============================================================
 // GLOBAL MIDDLEWARE
@@ -48,6 +50,7 @@ app.get('/', (req, res) => {
         version: '1.0.0',
         architecture: 'MVC (Models, Views/FrontEnd, Controllers)',
         endpoints: {
+            auth:     `http://localhost:${PORT}/api/auth`,
             users:    `http://localhost:${PORT}/api/users`,
             products: `http://localhost:${PORT}/api/products`,
             orders:   `http://localhost:${PORT}/api/orders`,
@@ -96,9 +99,10 @@ app.get('/api', (req, res) => {
 // ============================================================
 // API ROUTES
 // ============================================================
+app.use('/api/auth',     authRoutes);
 app.use('/api/users',    userRoutes);
-app.use('/api/products', productRoutes);
-app.use('/api/orders',   orderRoutes);
+app.use('/api/products', requireVerifiedUser, productRoutes);
+app.use('/api/orders',   requireVerifiedUser, orderRoutes);
 
 // ============================================================
 // ERROR HANDLING (must be last)
@@ -109,15 +113,36 @@ app.use(errorHandler);
 // ============================================================
 // START SERVER
 // ============================================================
-app.listen(PORT, () => {
-    console.log('');
-    console.log('╔══════════════════════════════════════════╗');
-    console.log('║   🎓  CampusMart API Server Started!     ║');
-    console.log(`║   🚀  Running at http://localhost:${PORT}   ║`);
-    console.log('║   🏛️   Architecture: MVC Pattern          ║');
-    console.log(`║   📋  Docs: http://localhost:${PORT}/api    ║`);
-    console.log('╚══════════════════════════════════════════╝');
-    console.log('');
-});
+
+
+async function startServer() {
+    try {
+        await connectDB();
+
+        const server = app.listen(PORT, () => {
+            console.log(`CampusMart API running at http://localhost:${PORT}`);
+            console.log(`API documentation: http://localhost:${PORT}/api`);
+        });
+
+        server.on('error', (error) => {
+            if (error.code === 'EADDRINUSE') {
+                console.error(`\n❌ [PORT ERROR] Port ${PORT} is already in use.`);
+                console.error(`   Another instance of CampusMart or another service is listening on port ${PORT}.`);
+                console.error(`   To free port ${PORT} on Windows:`);
+                console.error(`   1. netstat -ano | findstr :${PORT}`);
+                console.error(`   2. taskkill /PID <PID> /F\n`);
+                process.exit(1);
+            } else {
+                console.error(`❌ [SERVER ERROR] ${error.message}`);
+                process.exit(1);
+            }
+        });
+    } catch (error) {
+        console.error("Failed to start CampusMart:", error.message);
+        process.exit(1);
+    }
+}
+
+startServer();
 
 module.exports = app;

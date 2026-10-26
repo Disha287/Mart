@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function initMarketplace() {
     // Parse URL params for pre-selected category or search
     const urlParams = new URLSearchParams(window.location.search);
-    const catParam = urlParams.get('cat');
+    const catParam = urlParams.get('cat') || urlParams.get('category');
     const searchParam = urlParams.get('search');
 
     if (catParam) {

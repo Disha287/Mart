@@ -8,64 +8,70 @@
     <link rel="stylesheet" href="../css/responsive.css">
     <link rel="stylesheet" href="../css/animations.css">
     <style>
-        /* Specific Styles for Split Screen Login/Signup */
+        /* Editorial Split Screen Signup */
         body, html {
             margin: 0;
             padding: 0;
-            height: 100vh;
-            overflow: hidden; /* Prevent scrolling */
-            font-family: 'Inter', sans-serif;
-            background: #fff;
+            min-height: 100vh;
+            font-family: var(--font-body);
+            background: var(--dark-loam);
+            color: var(--paper-white);
         }
 
         .login-navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem 2rem;
-            background: #fff;
+            padding: 1.25rem 2.5rem;
+            background: var(--dark-loam);
+            border-bottom: 1.5px solid var(--dark-loam-hairline);
             position: relative;
             z-index: 10;
         }
 
         .login-navbar .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
+            font-family: var(--font-heading);
+            font-size: 1.6rem;
+            font-weight: 700;
             text-decoration: none;
-            color: #1a1a2e;
+            color: var(--paper-white);
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.3rem;
+            text-transform: uppercase;
         }
         
         .login-navbar .logo span {
-            color: #ff6b6b;
+            color: var(--accent-red);
         }
 
         .login-navbar .back-btn {
-            padding: 0.5rem 1rem;
-            border: 1px solid #e2e8f0;
-            border-radius: 6px;
-            color: #475569;
+            font-family: var(--font-mono);
+            padding: 0.5rem 1.15rem;
+            border: 1.5px solid var(--paper-white);
+            color: var(--paper-white);
             text-decoration: none;
-            font-size: 0.85rem;
-            font-weight: 500;
+            font-size: 0.76rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
             transition: all 0.2s;
+            border-radius: 0 !important;
         }
 
         .login-navbar .back-btn:hover {
-            background: #f8fafc;
+            background: var(--accent-red);
+            border-color: var(--accent-red);
+            color: var(--paper-white);
         }
 
         .login-container {
             display: flex;
-            height: calc(100vh - 70px);
-            background-image: linear-gradient(to right, rgba(15, 23, 42, 0.95) 0%, rgba(15, 23, 42, 0.4) 100%), url('../assets/images/signup-bg.jpg');
-            background-size: cover;
-            background-position: center;
+            min-height: calc(100vh - 75px);
+            background: var(--dark-loam);
             align-items: center;
             justify-content: center;
-            padding: 0 2rem;
+            padding: 2.5rem 2rem;
             box-sizing: border-box;
         }
 
@@ -80,110 +86,121 @@
 
         /* Left Side */
         .login-info h1 {
-            color: #fff;
-            font-size: 3rem;
-            font-weight: 800;
+            font-family: var(--font-heading);
+            color: var(--paper-white);
+            font-size: clamp(2.5rem, 5vw, 4.2rem);
+            font-weight: 700;
             margin-bottom: 0.5rem;
-            line-height: 1.1;
+            line-height: 0.95;
+            text-transform: uppercase;
         }
 
         .login-info h1 span {
-            color: #ff6b6b;
+            color: var(--accent-red);
         }
 
         .login-info p.subtitle {
-            color: #cbd5e1;
+            color: var(--paper-muted);
             font-size: 1.05rem;
             margin-bottom: 2.5rem;
-            max-width: 400px;
-            line-height: 1.5;
+            max-width: 440px;
+            line-height: 1.55;
         }
 
         .feature-list {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 1.25rem;
         }
 
         .feature-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 12px;
-            padding: 1.25rem;
+            background: #2E2218;
+            border: 1.5px solid var(--dark-loam-hairline);
+            border-radius: 0 !important;
+            padding: 1.25rem 1.5rem;
             display: flex;
             align-items: center;
             gap: 1.25rem;
-            color: #fff;
-            max-width: 450px;
+            color: var(--paper-white);
+            max-width: 460px;
         }
 
         .feature-icon {
-            width: 40px;
-            height: 40px;
-            background: #fff;
-            border-radius: 50%;
+            width: 42px;
+            height: 42px;
+            background: var(--paper-white);
+            border: 1.5px solid var(--ink-primary);
+            border-radius: 0 !important;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.25rem;
             flex-shrink: 0;
-            color: #0f172a;
+            color: var(--ink-primary);
         }
 
         .feature-text h4 {
+            font-family: var(--font-heading);
             margin: 0 0 0.25rem 0;
-            font-size: 1rem;
-            font-weight: 700;
-            color: #ffffff;
+            font-size: 1.2rem;
+            color: var(--paper-white);
+            text-transform: uppercase;
         }
 
         .feature-text p {
             margin: 0;
-            font-size: 0.85rem;
-            color: #cbd5e1;
+            font-size: 0.88rem;
+            color: var(--paper-muted);
+            line-height: 1.45;
         }
 
-        /* Right Side - Form */
+        /* Right Side - Form Card */
         .login-form-card {
-            background: #fff;
-            border-radius: 16px;
-            padding: 1.5rem 2rem;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            background: var(--paper-white);
+            border: 1.5px solid var(--paper-white);
+            border-radius: 0 !important;
+            padding: 2.2rem;
+            box-shadow: none !important;
             width: 100%;
-            max-width: 460px;
+            max-width: 480px;
             justify-self: end;
             margin: auto 0;
             max-height: calc(100vh - 100px);
             overflow-y: auto;
             box-sizing: border-box;
+            color: var(--ink-primary);
         }
 
         .login-form-card::-webkit-scrollbar {
-            width: 6px;
+            width: 4px;
         }
         .login-form-card::-webkit-scrollbar-thumb {
-            background-color: #cbd5e1;
-            border-radius: 10px;
+            background-color: var(--ink-primary);
         }
 
         .login-form-card h2 {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: #0f172a;
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            color: var(--ink-primary);
             margin-bottom: 0.25rem;
-            text-align: center;
+            text-align: left;
+            text-transform: uppercase;
         }
 
         .login-form-card .subtitle {
-            color: #64748b;
-            font-size: 0.9rem;
-            text-align: center;
-            margin-bottom: 1.25rem;
+            font-family: var(--font-mono);
+            color: var(--ink-muted);
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            text-align: left;
+            margin-bottom: 1.5rem;
+            display: block;
         }
 
         .input-group {
-            margin-bottom: 0.85rem;
+            margin-bottom: 0.95rem;
         }
         
         .input-group.grid-2 {
@@ -194,55 +211,43 @@
 
         .input-group label {
             display: block;
-            font-size: 0.8rem;
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
             font-weight: 700;
-            color: #334155;
-            margin-bottom: 0.25rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--ink-primary);
+            margin-bottom: 0.35rem;
         }
 
-        .input-wrapper {
-            position: relative;
-        }
-        
-        .input-wrapper input {
+        .input-wrapper input, .input-wrapper select {
             width: 100%;
-            padding: 0.55rem 0.75rem;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            color: #0f172a;
+            padding: 0.65rem 0.85rem;
+            border: 1.5px solid var(--ink-primary) !important;
+            border-radius: 0 !important;
+            font-size: 0.92rem;
+            color: var(--ink-primary);
+            background: var(--paper-white);
             outline: none;
-            transition: all 0.2s;
             box-sizing: border-box;
-        }
-        
-        .input-wrapper select {
-            width: 100%;
-            padding: 0.55rem 0.75rem;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            color: #0f172a;
-            outline: none;
-            transition: all 0.2s;
-            box-sizing: border-box;
-            appearance: auto;
         }
 
         .input-wrapper input:focus, .input-wrapper select:focus {
-            border-color: #ff6b6b;
-            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+            border-color: var(--accent-red) !important;
         }
 
         .btn-continue {
             width: 100%;
-            background: #ff6b6b;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            padding: 0.8rem;
-            font-size: 0.95rem;
+            background: var(--accent-red);
+            color: var(--paper-white);
+            border: 1.5px solid var(--accent-red);
+            border-radius: 0 !important;
+            padding: 0.85rem 1.4rem;
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
             font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
             cursor: pointer;
             transition: all 0.2s;
             display: flex;
@@ -250,25 +255,106 @@
             align-items: center;
             gap: 0.5rem;
             box-sizing: border-box;
-            margin-top: 0.5rem;
+            margin-top: 0.75rem;
         }
 
         .btn-continue:hover {
-            background: #fc5c5c;
-            transform: translateY(-1px);
+            background: var(--deep-red);
+            border-color: var(--deep-red);
+            transform: translateY(-2px);
         }
 
         .register-link {
             text-align: center;
             margin-top: 1rem;
-            font-size: 0.85rem;
-            color: #64748b;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--ink-muted);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
         }
 
         .register-link a {
-            color: #ff6b6b;
+            color: var(--accent-red);
             font-weight: 700;
+            text-decoration: underline;
+        }
+
+        /* OTP Verification Panel Styles */
+        .otp-target-info {
+            background: #EFE9DC;
+            border: 1.5px solid var(--ink-hairline);
+            padding: 0.75rem 1rem;
+            font-size: 0.8rem;
+            color: var(--ink-primary);
+            text-align: center;
+            margin-bottom: 1.25rem;
+            word-break: break-all;
+        }
+        .otp-target-info span {
+            color: var(--accent-red);
+            font-weight: 700;
+        }
+        .otp-input-field {
+            font-family: var(--font-mono);
+            font-size: 2rem !important;
+            letter-spacing: 0.35em;
+            text-align: center;
+            padding: 0.75rem 0.5rem !important;
+            font-weight: 700;
+            color: var(--ink-primary);
+            border: 2px solid var(--ink-primary) !important;
+            background: var(--paper-white) !important;
+            border-radius: 0 !important;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .otp-input-field:focus {
+            border-color: var(--accent-red) !important;
+            outline: none;
+        }
+        .otp-actions-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.25rem;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+        .resend-btn {
+            background: none;
+            border: none;
+            font-family: var(--font-mono);
+            font-size: 0.76rem;
+            color: var(--accent-red);
+            font-weight: 700;
+            cursor: pointer;
+            padding: 0;
+            text-transform: uppercase;
+        }
+        .resend-btn:disabled {
+            color: var(--ink-muted);
+            cursor: not-allowed;
             text-decoration: none;
+        }
+        .text-link-btn {
+            background: none;
+            border: none;
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            color: var(--ink-muted);
+            cursor: pointer;
+            padding: 0;
+            text-transform: uppercase;
+            text-decoration: underline;
+        }
+        .otp-help-text {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            color: var(--ink-muted);
+            text-align: center;
+            margin-top: 0.75rem;
+            line-height: 1.4;
         }
 
         /* Responsive adjustments */
@@ -304,9 +390,7 @@
 
     <!-- Simple Navbar -->
     <header class="login-navbar">
-        <a href="../index.html" class="logo">
-            <img src="../assets/images/logo.png" alt="CampusMart Logo" style="height: 70px; max-height: 70px; width: auto; object-fit: contain; display: block;">
-        </a>
+        <a href="../index.html" class="logo nav-brand">CAMPUS MART<span class="brand-red">.</span></a>
         <a href="../index.html" class="back-btn">← Back to Home</a>
     </header>
 
@@ -346,71 +430,120 @@
 
             <!-- Right Form Column -->
             <div class="login-form-card">
-                <h2>Create Account</h2>
-                <p class="subtitle">Join the ultimate student marketplace.</p>
-                
-                <form id="signup-form">
-                    <div class="input-group">
-                        <label for="signup-role">Select Primary Role</label>
-                        <div class="input-wrapper">
-                            <select id="signup-role">
-                                <option value="buyer">Buyer (Discover products & hire services)</option>
-                                <option value="seller">Seller (List items, run auctions, offer services)</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="input-group">
-                        <label for="signup-fullname">Full Name</label>
-                        <div class="input-wrapper">
-                            <input type="text" id="signup-fullname" placeholder="e.g. Rahul Sharma" required>
-                        </div>
-                    </div>
-
-                    <div class="input-group grid-2">
-                        <div>
-                            <label for="signup-email">College Email</label>
+                <!-- 1. Registration Details Form -->
+                <div id="signup-form-section">
+                    <h2>Create Account</h2>
+                    <p class="subtitle">Join the ultimate student marketplace.</p>
+                    
+                    <form id="signup-form">
+                        <div class="input-group">
+                            <label for="signup-role">Select Primary Role</label>
                             <div class="input-wrapper">
-                                <input type="email" id="signup-email" placeholder="student@college.edu" required>
+                                <select id="signup-role">
+                                    <option value="buyer">Buyer (Discover products & hire services)</option>
+                                    <option value="seller">Seller (List items, run auctions, offer services)</option>
+                                </select>
                             </div>
                         </div>
-                        <div>
-                            <label for="signup-phone">WhatsApp No.</label>
+
+                        <div class="input-group">
+                            <label for="signup-fullname">Full Name</label>
                             <div class="input-wrapper">
-                                <input type="tel" id="signup-phone" placeholder="9876543210" required>
+                                <input type="text" id="signup-fullname" placeholder="e.g. Rahul Sharma" required>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="input-group">
-                        <label for="signup-college">College / Department / Branch</label>
-                        <div class="input-wrapper">
-                            <input type="text" id="signup-college" placeholder="Campus Institute of Tech (BTech CSE)" required>
-                        </div>
-                    </div>
-
-                    <div class="input-group grid-2">
-                        <div>
-                            <label for="signup-password">Password</label>
-                            <div class="input-wrapper">
-                                <input type="password" id="signup-password" placeholder="••••••••" required>
+                        <div class="input-group grid-2">
+                            <div>
+                                <label for="signup-email">College Email</label>
+                                <div class="input-wrapper">
+                                    <input type="email" id="signup-email" placeholder="student@college.edu" required>
+                                </div>
+                            </div>
+                            <div>
+                                <label for="signup-phone">WhatsApp No.</label>
+                                <div class="input-wrapper">
+                                    <input type="tel" id="signup-phone" placeholder="9876543210" required>
+                                </div>
                             </div>
                         </div>
-                        <div>
-                            <label for="signup-confirmpassword">Confirm Password</label>
+
+                        <div class="input-group">
+                            <label for="signup-college">College / Department / Branch</label>
                             <div class="input-wrapper">
-                                <input type="password" id="signup-confirmpassword" placeholder="••••••••" required>
+                                <input type="text" id="signup-college" placeholder="Campus Institute of Tech (BTech CSE)" required>
                             </div>
                         </div>
+
+                        <div class="input-group grid-2">
+                            <div>
+                                <label for="signup-password">Password</label>
+                                <div class="input-wrapper">
+                                    <input type="password" id="signup-password" placeholder="••••••••" required>
+                                </div>
+                            </div>
+                            <div>
+                                <label for="signup-confirmpassword">Confirm Password</label>
+                                <div class="input-wrapper">
+                                    <input type="password" id="signup-confirmpassword" placeholder="••••••••" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-continue">
+                            Create Campus Account →
+                        </button>
+                    </form>
+
+                    <div class="register-link">
+                        Already have an account? <a href="login.html">Sign In Here</a>
+                    </div>
+                </div>
+
+                <!-- 2. Email OTP Verification Form (Hidden Initially) -->
+                <div id="signup-otp-section" style="display: none;">
+                    <h2>Verify Your Email</h2>
+                    <p class="subtitle">Enter the 6-digit code sent to your campus inbox.</p>
+                    
+                    <div class="otp-target-info font-mono">
+                        DISPATCHED TO: <span id="signup-otp-target-email">student@college.edu</span>
                     </div>
 
-                    <button type="submit" class="btn-continue">
-                        Create Campus Account →
-                    </button>
-                </form>
+                    <div id="signup-dev-otp-banner" style="display: none;"></div>
 
-                <div class="register-link">
-                    Already have an account? <a href="login.html">Sign In Here</a>
+                    <form id="signup-otp-form">
+                        <div class="input-group">
+                            <label for="signup-otp-input">Enter 6-Digit Code</label>
+                            <input 
+                                type="text" 
+                                id="signup-otp-input" 
+                                class="otp-input-field" 
+                                placeholder="••••••" 
+                                maxlength="6" 
+                                pattern="[0-9]{6}" 
+                                inputmode="numeric" 
+                                autocomplete="one-time-code" 
+                                required
+                            >
+                        </div>
+
+                        <button type="submit" class="btn-continue" id="signup-otp-submit-btn">
+                            Verify & Activate Account →
+                        </button>
+
+                        <div class="otp-actions-row">
+                            <button type="button" id="signup-resend-btn" class="resend-btn" disabled>
+                                Resend Code (60s)
+                            </button>
+                            <button type="button" id="signup-back-btn" class="text-link-btn">
+                                ← Change Details
+                            </button>
+                        </div>
+
+                        <p class="otp-help-text">
+                            Code expires in 5 minutes. Check your spam/junk folder if not received within 1 minute.
+                        </p>
+                    </form>
                 </div>
             </div>
             

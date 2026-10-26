@@ -13,6 +13,8 @@ const SEED_DATA = {
             rating: 4.9,
             completedTx: 8,
             trustScore: 95,
+            isVerified: true,
+            emailVerified: true,
             joined: '2025-09-10'
         },
         {
@@ -26,6 +28,8 @@ const SEED_DATA = {
             rating: 4.8,
             completedTx: 14,
             trustScore: 92,
+            isVerified: true,
+            emailVerified: true,
             joined: '2025-08-15'
         },
         {
@@ -39,6 +43,8 @@ const SEED_DATA = {
             rating: 4.95,
             completedTx: 22,
             trustScore: 98,
+            isVerified: true,
+            emailVerified: true,
             joined: '2025-07-20'
         }
     ],
