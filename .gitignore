@@ -53,3 +53,8 @@ env/
 __pycache__/
 *.py[cod]
 *$py.class
+
+# Agent workspace artifacts
+.agents/
+skills-lock.json
+
