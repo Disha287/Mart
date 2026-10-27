@@ -104,21 +104,9 @@
     }
 
     // =========================================================================
-    // 3. MANIFESTO DUPLICATE EXACT BOUNDING RECT VERIFICATION
-    // =========================================================================
+    // 3. MANIFESTO ALIGNMENT (Clean natural document flow, no duplicate overlay)
     function verifyManifestoAlignment() {
-        const base = document.getElementById('manifesto-base');
-        const fill = document.getElementById('manifesto-fill');
-        if (!base || !fill) return;
-
-        const baseRect = base.getBoundingClientRect();
-        const fillRect = fill.getBoundingClientRect();
-
-        // If sub-pixel rounding causes minor drift, force match
-        if (Math.abs(baseRect.width - fillRect.width) > 1 || Math.abs(baseRect.height - fillRect.height) > 1) {
-            fill.style.width = baseRect.width + 'px';
-            fill.style.height = baseRect.height + 'px';
-        }
+        // No-op: Single semantic manifesto sentence used
     }
 
     // =========================================================================
@@ -198,118 +186,22 @@
     }
 
     // =========================================================================
-    // 6. CENTRAL SCROLL CHOREOGRAPHY (ONE REQUESTANIMATIONFRAME LOOP)
+    // 6. CENTRAL SCROLL & NAVIGATION THEME CHOREOGRAPHY
     // =========================================================================
-    function calculateStageProgress(stageElem) {
-        if (!stageElem) return 0;
-        const rect = stageElem.getBoundingClientRect();
-        const totalScrollable = rect.height - viewportHeight;
-        if (totalScrollable <= 0) return 0;
-        return clamp(-rect.top / totalScrollable, 0, 1);
-    }
-
     function onScrollUpdate() {
-        if (prefersReducedMotion) return;
-
-        // Stage 1: Poster Hero Progress
-        if (stageHero) {
-            const p1 = calculateStageProgress(stageHero);
-            // Three independent variables: --hero-type-y (0 to -90px), --hero-type-scale (1 to 0.74), --hero-type-alpha (1 to 0)
-            const typeY = -p1 * 90;
-            const typeScale = 1 - (p1 * 0.26);
-            const typeAlpha = clamp(1 - (p1 * 1.3), 0, 1);
-
-            document.documentElement.style.setProperty('--hero-type-y', `${typeY.toFixed(1)}px`);
-            document.documentElement.style.setProperty('--hero-type-scale', `${typeScale.toFixed(3)}`);
-            document.documentElement.style.setProperty('--hero-type-alpha', `${typeAlpha.toFixed(3)}`);
-        }
-
-        // Stage 2: Clip-Wipe Manifesto Progress
-        if (stageManifesto) {
-            const p2 = calculateStageProgress(stageManifesto);
-            // Wipe bottom-up: inset(calc(100% - var(--manifesto-wipe)) 0 0)
-            const wipePct = p2 * 100;
-            const scaleVal = 1 + (p2 * 0.05);
-
-            document.documentElement.style.setProperty('--manifesto-wipe', `${wipePct.toFixed(1)}%`);
-            document.documentElement.style.setProperty('--manifesto-scale', `${scaleVal.toFixed(3)}`);
-        }
-
-        // Stage 3: Horizontal Card Rail Progress
-        if (stageRail && railOverflow > 0) {
-            const p3 = calculateStageProgress(stageRail);
-            // Translate by progress * overflowWidth
-            const railX = p3 * railOverflow;
-
-            document.documentElement.style.setProperty('--rail-x', `${railX.toFixed(1)}px`);
-            document.documentElement.style.setProperty('--rail-progress', `${(p3 * 100).toFixed(1)}%`);
-        }
-
-        // Stage 4: The Printed Artifact Progress
-        if (stageArtifact) {
-            const p4 = calculateStageProgress(stageArtifact);
-            // Six properties: --packet-alpha, --packet-enter, --packet-scale, --packet-cut, --packet-meter, --packet-copy-x
-            const packetAlpha = clamp(0.1 + p4 * 1.15, 0, 1);
-            const packetEnter = (1 - p4) * 38; // 38px to 0px
-            const packetScale = 0.78 + (p4 * 0.22); // 0.78 to 1.0
-            const packetCut = p4 >= 0.75 ? clamp((p4 - 0.75) / 0.25, 0, 1) : 0;
-            const packetMeter = (p4 * 100).toFixed(1) + '%';
-            const copyX = -p4 * 28; // slides slightly opposite
-
-            document.documentElement.style.setProperty('--packet-alpha', `${packetAlpha.toFixed(3)}`);
-            document.documentElement.style.setProperty('--packet-enter', `${packetEnter.toFixed(1)}px`);
-            document.documentElement.style.setProperty('--packet-scale', `${packetScale.toFixed(3)}`);
-            document.documentElement.style.setProperty('--packet-cut', `${packetCut.toFixed(3)}`);
-            document.documentElement.style.setProperty('--packet-meter', packetMeter);
-            document.documentElement.style.setProperty('--packet-copy-x', `${copyX.toFixed(1)}px`);
-
-            // Derive Phase Index: 0, 1, 2, 3
-            let currentPhaseIndex = 0;
-            if (p4 >= 0.25 && p4 < 0.50) currentPhaseIndex = 1;
-            else if (p4 >= 0.50 && p4 < 0.75) currentPhaseIndex = 2;
-            else if (p4 >= 0.75) currentPhaseIndex = 3;
-
-            // Only mutate DOM text or classes when derived index changes
-            if (currentPhaseIndex !== lastArtifactPhaseIndex) {
-                lastArtifactPhaseIndex = currentPhaseIndex;
-                updateArtifactStagePhase(currentPhaseIndex, p4);
-            }
-        }
-
-        // Stage 5: Parallax Season Band Progress
-        if (stageSeasons) {
-            const p5 = calculateStageProgress(stageSeasons);
-            // Parallax on --season-y (-4% to 4%) and --season-scale (1.10 to 1.055)
-            const seasonY = -4 + (p5 * 8);
-            const seasonScale = 1.10 - (p5 * 0.045);
-
-            document.documentElement.style.setProperty('--season-y', `${seasonY.toFixed(2)}%`);
-            document.documentElement.style.setProperty('--season-scale', `${seasonScale.toFixed(3)}`);
-
-            // Swap three chapters: floor(progress * 3)
-            const activeChapterIdx = Math.min(2, Math.floor(p5 * 3));
-            const chapters = document.querySelectorAll('.season-chapter');
-            chapters.forEach((ch, idx) => {
-                if (idx === activeChapterIdx) {
-                    ch.classList.add('chapter-active');
-                    ch.style.opacity = '1';
-                } else {
-                    ch.classList.remove('chapter-active');
-                    ch.style.opacity = '0.3';
-                }
-            });
-        }
-
-        // Navigation Color Transition
+        // Navigation Color Transition between dark loam and light cream sections
         if (navElement) {
             const heroRect = stageHero ? stageHero.getBoundingClientRect() : null;
             const artifactRect = stageArtifact ? stageArtifact.getBoundingClientRect() : null;
+            const footerElem = document.querySelector('.editorial-footer');
+            const footerRect = footerElem ? footerElem.getBoundingClientRect() : null;
 
-            // In hero or in artifact stage = dark ground
-            const inHero = heroRect && heroRect.bottom > 80;
-            const inArtifact = artifactRect && artifactRect.top <= 80 && artifactRect.bottom >= 80;
+            // In hero or in artifact stage or in footer = dark ground
+            const inHero = heroRect && heroRect.bottom > 70;
+            const inArtifact = artifactRect && artifactRect.top <= 70 && artifactRect.bottom >= 70;
+            const inFooter = footerRect && footerRect.top <= 70;
 
-            if (inHero || inArtifact) {
+            if (inHero || inArtifact || inFooter) {
                 navElement.classList.remove('nav-scrolled-light');
             } else {
                 navElement.classList.add('nav-scrolled-light');
@@ -326,46 +218,21 @@
         }
     }
 
-    // Update Artifact DOM Text ONLY on Phase Index Change
-    function updateArtifactStagePhase(phaseIndex, p4) {
-        // 4 Cues Cumulative Lighting
+    // Set Artifact DOM Text to Verified Active State
+    function updateArtifactStagePhase() {
+        // All 4 cues active
         const cues = document.querySelectorAll('.ticket-cues-list .cue-item');
-        if (cues.length >= 4) {
-            cues[0].classList.toggle('cue-active', phaseIndex >= 0 && p4 >= 0.15);
-            cues[1].classList.toggle('cue-active', phaseIndex >= 1);
-            cues[2].classList.toggle('cue-active', phaseIndex >= 2);
-            cues[3].classList.toggle('cue-active', phaseIndex >= 3);
-        }
+        cues.forEach(c => c.classList.add('cue-active'));
 
-        // Three Foot Values: test result reads 'PENDING' until phase 1
         const testResultElem = document.getElementById('ticket-result-val');
         if (testResultElem) {
-            if (phaseIndex === 0) {
-                testResultElem.textContent = 'PENDING';
-                testResultElem.style.color = 'var(--accent-red)';
-            } else {
-                testResultElem.textContent = 'PASSED · 98.4% AUTH';
-                testResultElem.style.color = '#15803d';
-            }
+            testResultElem.textContent = 'PASSED · 98.4% AUTH';
+            testResultElem.style.color = '#15803d';
         }
 
-        // Live Status Line Pill
         const statusPill = document.getElementById('ticket-status-pill');
         if (statusPill) {
-            switch (phaseIndex) {
-                case 0:
-                    statusPill.textContent = 'DRAFT // SPEC 001';
-                    break;
-                case 1:
-                    statusPill.textContent = 'AFFILIATION CONFIRMED';
-                    break;
-                case 2:
-                    statusPill.textContent = 'INVENTORY AUDITED';
-                    break;
-                case 3:
-                    statusPill.textContent = 'READY FOR PICKUP';
-                    break;
-            }
+            statusPill.textContent = 'CAMPUS VERIFIED // SPEC 001';
         }
     }
 
@@ -613,8 +480,20 @@
         initSeasonsCanvas();
         initTicketCanvas();
 
-        // 4. Products table
+        // 4. Products table & Artifact specs
         loadEditorialProducts();
+        updateArtifactStagePhase();
+
+        // 5. Horizontal rail scroll listener for progress fill
+        if (railContainer) {
+            railContainer.addEventListener('scroll', () => {
+                const maxScroll = railContainer.scrollWidth - railContainer.clientWidth;
+                if (maxScroll > 0) {
+                    const pct = (railContainer.scrollLeft / maxScroll) * 100;
+                    document.documentElement.style.setProperty('--rail-progress', `${pct.toFixed(1)}%`);
+                }
+            }, { passive: true });
+        }
 
         // 5. Measure overflow & register scroll
         function handleResize() {

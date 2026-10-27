@@ -38,24 +38,24 @@
     --hero-type-alpha: 1;
 
     /* Stage 2: Manifesto Variables */
-    --manifesto-wipe: 0%;
+    --manifesto-wipe: 100%;
     --manifesto-scale: 1;
 
     /* Stage 3: Horizontal Card Rail Variables */
     --rail-x: 0px;
-    --rail-progress: 0%;
+    --rail-progress: 100%;
 
     /* Stage 4: Printed Artifact Variables */
-    --packet-alpha: 0;
-    --packet-enter: 38px;
-    --packet-scale: 0.78;
+    --packet-alpha: 1;
+    --packet-enter: 0px;
+    --packet-scale: 1;
     --packet-cut: 0;
-    --packet-meter: 0%;
+    --packet-meter: 100%;
     --packet-copy-x: 0px;
 
     /* Stage 5: Parallax Season Band Variables */
-    --season-y: -4%;
-    --season-scale: 1.10;
+    --season-y: 0%;
+    --season-scale: 1;
 }
 
 /* --- 2. GLOBAL RESET & ZERO RADII MANDATE --- */
@@ -408,7 +408,7 @@ button {
 }
 
 /* ==========================================================================
-   PINNED STAGE ARCHITECTURE (260svh to 420svh)
+   STAGE ARCHITECTURE (CLEAN NATURAL FLOW)
    ========================================================================== */
 .scroll-stage {
     position: relative;
@@ -416,22 +416,22 @@ button {
 }
 
 .sticky-viewport {
-    position: sticky;
-    top: 0;
-    left: 0;
+    position: relative;
     width: 100%;
-    height: 100svh;
-    overflow: hidden;
+    min-height: auto;
+    overflow: visible;
 }
 
 /* ==========================================================================
-   STAGE 1 — POSTER HERO (280svh, Dark Loam #241a12)
-   Driven by: --hero-type-y, --hero-type-scale, --hero-type-alpha
+   STAGE 1 — POSTER HERO (Full Viewport, Dark Loam #241a12)
    ========================================================================== */
 .stage-hero {
-    height: 280svh;
+    min-height: 100svh;
     background-color: var(--dark-loam);
     color: var(--paper-white);
+    position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
 .hero-viewport {
@@ -439,8 +439,10 @@ button {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 6.5rem 3.5rem 2.5rem 3.5rem;
+    padding: 7rem 3.5rem 2.5rem 3.5rem;
     position: relative;
+    min-height: 100svh;
+    flex: 1;
 }
 
 #hero-canvas {
@@ -469,8 +471,8 @@ button {
     display: flex;
     flex-direction: column;
     align-items: center;
-    transform: translateY(var(--hero-type-y)) scale(var(--hero-type-scale));
-    opacity: var(--hero-type-alpha);
+    transform: none;
+    opacity: 1;
     transform-origin: center center;
     will-change: transform, opacity;
     margin-bottom: 2rem;
@@ -543,13 +545,13 @@ button {
 }
 
 /* ==========================================================================
-   STAGE 2 — CLIP-WIPE MANIFESTO (260svh, Cream #e7e2d8)
-   Driven by: --manifesto-wipe, --manifesto-scale
+   STAGE 2 — MANIFESTO (Cream #e7e2d8)
    ========================================================================== */
 .stage-manifesto {
-    height: 260svh;
+    height: auto;
     background-color: var(--bg-cream);
     color: var(--ink-primary);
+    position: relative;
 }
 
 .manifesto-viewport {
@@ -559,50 +561,42 @@ button {
     justify-content: center;
     padding: 6rem 3.5rem;
     position: relative;
+    height: auto;
 }
 
 .manifesto-container {
     max-width: 1200px;
     margin: 0 auto;
     width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .manifesto-quote-wrapper {
     position: relative;
-    max-width: 16ch;
+    max-width: 960px;
     margin-bottom: 2.5rem;
-    transform: scale(var(--manifesto-scale));
-    transform-origin: left center;
-    will-change: transform;
+    width: 100%;
 }
 
 .manifesto-sentence {
     font-family: var(--font-display);
-    font-size: clamp(34px, 5.6vw, 78px);
-    line-height: 0.86;
-    letter-spacing: -0.035em;
+    font-size: clamp(34px, 5.4vw, 76px);
+    line-height: 0.95;
+    letter-spacing: -0.025em;
     text-transform: uppercase;
-    width: 100%;
-}
-
-.manifesto-sentence-base {
-    color: rgba(23, 23, 23, 0.34);
-}
-
-.manifesto-sentence-fill {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
     color: var(--ink-primary);
-    clip-path: inset(calc(100% - var(--manifesto-wipe)) 0 0 0);
-    will-change: clip-path;
-    pointer-events: none;
+    width: 100%;
+    display: block;
 }
 
-.manifesto-sentence-fill .accent-mark {
+.manifesto-sentence .accent-mark {
     color: var(--accent-red);
+}
+
+.manifesto-sentence-base,
+.manifesto-sentence-fill {
+    display: none;
 }
 
 .manifesto-subtext {
@@ -651,13 +645,13 @@ button {
 }
 
 /* ==========================================================================
-   STAGE 3 — HORIZONTAL CARD RAIL (340svh, Cream #e7e2d8)
-   Driven by: --rail-x, --rail-progress
+   STAGE 3 — HORIZONTAL CARD RAIL (Cream #e7e2d8)
    ========================================================================== */
 .stage-rail {
-    height: 340svh;
+    height: auto;
     background-color: var(--bg-cream);
     color: var(--ink-primary);
+    position: relative;
 }
 
 .rail-viewport {
@@ -665,8 +659,9 @@ button {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 6rem 0 2.5rem 0;
-    overflow: hidden;
+    padding: 5rem 0 2.5rem 0;
+    overflow: visible;
+    height: auto;
 }
 
 .rail-header {
@@ -687,9 +682,25 @@ button {
 
 .rail-track-container {
     width: 100%;
-    overflow: hidden;
-    margin: auto 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    margin: 2rem 0;
     position: relative;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-red) var(--bg-cream);
+    -webkit-overflow-scrolling: touch;
+}
+
+.rail-track-container::-webkit-scrollbar {
+    height: 6px;
+}
+
+.rail-track-container::-webkit-scrollbar-track {
+    background: var(--ink-hairline-subtle);
+}
+
+.rail-track-container::-webkit-scrollbar-thumb {
+    background: var(--accent-red);
 }
 
 .rail-track {
@@ -698,8 +709,8 @@ button {
     gap: 2rem;
     padding: 1.5rem 3.5rem;
     width: max-content;
-    transform: translateX(calc(-1 * var(--rail-x)));
-    will-change: transform;
+    transform: none;
+    will-change: auto;
 }
 
 /* 6 Editorial Product Cards (1.5px ink border, paper fill, 3/4 aspect plate) */
@@ -862,14 +873,13 @@ button {
 }
 
 /* ==========================================================================
-   STAGE 4 — THE PRINTED ARTIFACT (420svh, Dark Loam #241a12)
-   Driven by 6 properties: --packet-alpha, --packet-enter, --packet-scale,
-   --packet-cut, --packet-meter, --packet-copy-x
+   STAGE 4 — THE PRINTED ARTIFACT (Dark Loam #241a12)
    ========================================================================== */
 .stage-artifact {
-    height: 420svh;
+    height: auto;
     background-color: var(--dark-loam);
     color: var(--paper-white);
+    position: relative;
 }
 
 .artifact-viewport {
@@ -878,6 +888,7 @@ button {
     align-items: center;
     padding: 6rem 3.5rem;
     position: relative;
+    height: auto;
 }
 
 .artifact-grid {
@@ -894,8 +905,7 @@ button {
     display: flex;
     flex-direction: column;
     gap: 1.75rem;
-    transform: translateX(var(--packet-copy-x));
-    will-change: transform;
+    transform: none;
 }
 
 .artifact-headline {
@@ -921,7 +931,7 @@ button {
     background: var(--paper-white);
     color: var(--ink-primary);
     border: 1.5px solid var(--ink-primary);
-    aspect-ratio: 3 / 4;
+    aspect-ratio: auto;
     max-width: 440px;
     width: 100%;
     margin-left: auto;
@@ -929,9 +939,8 @@ button {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    opacity: var(--packet-alpha);
-    transform: translateY(var(--packet-enter)) scale(var(--packet-scale));
-    will-change: transform, opacity;
+    opacity: 1;
+    transform: none;
     position: relative;
 }
 
@@ -1043,9 +1052,8 @@ button {
     border-top: 2px dashed var(--ink-primary);
     margin: 0.5rem 0;
     position: relative;
-    transform: translateY(calc(var(--packet-cut) * 14px));
-    opacity: calc(0.35 + var(--packet-cut) * 0.65);
-    will-change: transform, opacity;
+    transform: none;
+    opacity: 1;
 }
 
 /* Three Mono Rows at the Foot */
@@ -1099,13 +1107,13 @@ button {
 }
 
 /* ==========================================================================
-   STAGE 5 — PARALLAX SEASON BAND (300svh, Cream #e7e2d8)
-   Driven by: --season-y, --season-scale
+   STAGE 5 — PARALLAX SEASON BAND (Cream #e7e2d8)
    ========================================================================== */
 .stage-seasons {
-    height: 300svh;
+    height: auto;
     background-color: var(--bg-cream);
     color: var(--ink-primary);
+    position: relative;
 }
 
 .seasons-viewport {
@@ -1116,6 +1124,7 @@ button {
     padding: 6rem 3.5rem 3.5rem 3.5rem;
     position: relative;
     overflow: hidden;
+    height: auto;
 }
 
 #seasons-canvas {
@@ -1127,8 +1136,7 @@ button {
     z-index: 1;
     pointer-events: none;
     opacity: 0.75;
-    transform: translateY(var(--season-y)) scale(var(--season-scale));
-    will-change: transform;
+    transform: none;
 }
 
 .seasons-content {
@@ -1164,9 +1172,8 @@ button {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
-    opacity: 0.3;
-    transition: opacity 0.35s var(--ease-general), border-color 0.35s var(--ease-general);
-    border-left: 2px solid transparent;
+    opacity: 1;
+    border-left: 2px solid var(--accent-red);
     padding-left: 1.25rem;
 }
 

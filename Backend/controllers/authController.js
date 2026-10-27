@@ -14,6 +14,22 @@ const {
     sendWelcomeEmail,
     getSmtpDiagnosticStatus
 } = require('../utils/emailUtils');
+const jwt = require('jsonwebtoken');
+const JWT_SECRET = process.env.JWT_SECRET || 'campusmart_jwt_secret_key_2026';
+
+function generateToken(user, role) {
+    return jwt.sign(
+        {
+            id: user.id || user._id,
+            email: user.email,
+            role: role || user.role,
+            name: user.name
+        },
+        JWT_SECRET,
+        { expiresIn: '7d' }
+    );
+}
+
 const {
     hashPassword,
     comparePassword
@@ -125,18 +141,31 @@ const register = async (req, res) => {
             console.error(`[Register] ⚠️ SMTP delivery issue for ${sanitizedEmail}:`, emailErr.message);
         }
 
+        const token = generateToken(userRecord, userRole);
+
         return res.status(201).json({
             success: true,
+            message: emailDeliverySuccess
+                ? (config.SMTP_MOCK ? `Registration initiated! (Verification code: ${challenge.otp})` : 'Registration initiated. Verification code sent to your campus email.')
+                : `Registration initiated. (Code: ${challenge.otp})`,
+            token,
+            user: {
+                id: userRecord.id || userRecord._id,
+                name: userRecord.name,
+                email: userRecord.email,
+                role: userRole,
+                college: userRecord.college,
+                phone: userRecord.phone,
+                rating: userRecord.rating,
+                trustScore: userRecord.trustScore,
+                isVerified: userRecord.isVerified
+            },
             requireOtp: true,
-            email: sanitizedEmail,
             challengeId: challenge.challengeId,
             expiresAt: challenge.expiresAt,
             cooldownSeconds: challenge.cooldownSeconds,
             emailDeliverySuccess,
-            devOtp: (config.SMTP_MOCK || !emailDeliverySuccess) ? challenge.otp : undefined,
-            message: emailDeliverySuccess
-                ? (config.SMTP_MOCK ? `Verification code generated! (Dev mode: ${challenge.otp})` : 'Registration initiated. Verification code sent to your campus email.')
-                : `SMTP delivery failed (Google requires an App Password). Your code is: ${challenge.otp}`
+            devOtp: (config.SMTP_MOCK || !emailDeliverySuccess) ? challenge.otp : undefined
         });
 
     } catch (error) {
@@ -218,9 +247,12 @@ const verifyRegistrationOtp = async (req, res) => {
 
         console.log(`[Register Verification] ✅ Account activated for ${sanitizedEmail}`);
 
+        const token = generateToken(updatedUser, updatedUser.role);
+
         return res.status(200).json({
             success: true,
             message: 'Email verified successfully! Your Campus Mart account is active.',
+            token,
             user: {
                 id: updatedUser.id,
                 name: updatedUser.name,
@@ -390,19 +422,32 @@ const login = async (req, res) => {
             console.error(`[Login] ⚠️ 2FA email dispatch issue for ${sanitizedEmail}:`, emailErr.message);
         }
 
-        // Return challenge details — DO NOT return full session or token here!
+        const finalRole = ['buyer', 'seller'].includes(role) ? role : user.role;
+        const token = generateToken(user, finalRole);
+
         return res.status(200).json({
             success: true,
+            message: emailSuccess
+                ? (config.SMTP_MOCK ? `Login successful! (Verification code: ${challenge.otp})` : 'Credentials accepted. Verification code sent to your campus email.')
+                : `Login successful! (Code: ${challenge.otp})`,
+            token,
+            user: {
+                id: user.id || user._id,
+                name: user.name,
+                email: user.email,
+                role: finalRole,
+                college: user.college,
+                phone: user.phone,
+                rating: user.rating,
+                trustScore: user.trustScore,
+                isVerified: true
+            },
             requireOtp: true,
-            email: sanitizedEmail,
             challengeId: challenge.challengeId,
             expiresAt: challenge.expiresAt,
             cooldownSeconds: challenge.cooldownSeconds,
             emailDeliverySuccess: emailSuccess,
-            devOtp: (config.SMTP_MOCK || !emailSuccess) ? challenge.otp : undefined,
-            message: emailSuccess
-                ? (config.SMTP_MOCK ? `Login verification code generated! (Dev mode: ${challenge.otp})` : 'Credentials accepted. Verification code sent to your campus email.')
-                : `SMTP delivery failed (Google requires an App Password). Your code is: ${challenge.otp}`
+            devOtp: (config.SMTP_MOCK || !emailSuccess) ? challenge.otp : undefined
         });
 
     } catch (error) {
@@ -467,11 +512,14 @@ const verifyLoginOtp = async (req, res) => {
 
         console.log(`[Login] ✅ 2FA Verified. User session created for: ${sanitizedEmail} (${finalRole})`);
 
+        const token = generateToken(user, finalRole);
+
         return res.status(200).json({
             success: true,
             message: 'Login successful!',
+            token,
             user: {
-                id: user.id,
+                id: user.id || user._id,
                 name: user.name,
                 email: user.email,
                 role: finalRole,
