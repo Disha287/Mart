@@ -479,16 +479,19 @@
                             <div>
                                 <label for="signup-password">Password</label>
                                 <div class="input-wrapper">
-                                    <input type="password" id="signup-password" placeholder="••••••••" required>
+                                    <input type="password" id="signup-password" placeholder="••••••••" minlength="8" required>
                                 </div>
                             </div>
                             <div>
                                 <label for="signup-confirmpassword">Confirm Password</label>
                                 <div class="input-wrapper">
-                                    <input type="password" id="signup-confirmpassword" placeholder="••••••••" required>
+                                    <input type="password" id="signup-confirmpassword" placeholder="••••••••" minlength="8" required>
                                 </div>
                             </div>
                         </div>
+                        <p style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-muted); margin-top: -0.4rem; margin-bottom: 0.85rem; line-height: 1.4;">
+                            🔒 Must be at least 8 characters with 1 uppercase, 1 lowercase, 1 number, and 1 special symbol.
+                        </p>
 
                         <button type="submit" class="btn-continue">
                             Create Campus Account →

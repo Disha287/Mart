@@ -32,7 +32,8 @@ function generateToken(user, role) {
 
 const {
     hashPassword,
-    comparePassword
+    comparePassword,
+    validatePasswordStrength
 } = require('../utils/securityUtils');
 
 // ============================================================
@@ -68,10 +69,11 @@ const register = async (req, res) => {
             });
         }
 
-        if (password.length < 6) {
+        const pwdValidation = validatePasswordStrength(password);
+        if (!pwdValidation.valid) {
             return res.status(400).json({
                 success: false,
-                message: 'Password must be at least 6 characters long.'
+                message: pwdValidation.message
             });
         }
 

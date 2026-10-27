@@ -18,6 +18,29 @@ document.addEventListener('DOMContentLoaded', function() {
     updateUserNavUI();
 });
 
+// Password strength validator
+function validatePasswordRequirements(password) {
+    if (!password || typeof password !== 'string') {
+        return { valid: false, message: 'Password is required.' };
+    }
+    if (password.length < 8) {
+        return { valid: false, message: 'Password must be at least 8 characters long.' };
+    }
+    if (!/[A-Z]/.test(password)) {
+        return { valid: false, message: 'Password must contain at least one uppercase letter (A-Z).' };
+    }
+    if (!/[a-z]/.test(password)) {
+        return { valid: false, message: 'Password must contain at least one lowercase letter (a-z).' };
+    }
+    if (!/[0-9]/.test(password)) {
+        return { valid: false, message: 'Password must contain at least one number (0-9).' };
+    }
+    if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?`~]/.test(password)) {
+        return { valid: false, message: 'Password must contain at least one special character (e.g. !@#$%^&*).' };
+    }
+    return { valid: true };
+}
+
 // ---------------------------------------------------------------------------
 // 1. Core Form Handlers (Signup & Login with OTP Verification)
 // ---------------------------------------------------------------------------
@@ -57,8 +80,9 @@ function initAuthForms() {
                 return;
             }
 
-            if (password.length < 6) {
-                showToast('Password must be at least 6 characters long.', 'warning');
+            const passwordValidation = validatePasswordRequirements(password);
+            if (!passwordValidation.valid) {
+                showToast(passwordValidation.message, 'warning');
                 return;
             }
 
