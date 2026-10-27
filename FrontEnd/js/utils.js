@@ -37,8 +37,14 @@ function setCurrentUser(user) {
     }
 }
 
+function clearCurrentUser() {
+    try {
+        sessionStorage.removeItem('cm_session');
+    } catch (e) {}
+}
+
 function logoutUser() {
-    sessionStorage.removeItem('cm_session');
+    clearCurrentUser();
     showToast('Logged out successfully', 'info');
     setTimeout(() => {
         window.location.href = window.location.pathname.includes('/pages/') ? 'login.html' : 'pages/login.html';

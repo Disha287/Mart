@@ -5,21 +5,22 @@
 require("dotenv").config();
 
 module.exports = {
-    PORT: process.env.PORT || 5000,
+    PORT: parseInt(process.env.PORT, 10) || 5000,
     NODE_ENV: process.env.NODE_ENV || "development",
     MONGO_URI: process.env.MONGO_URI || "",
+    JWT_SECRET: process.env.JWT_SECRET || "campusmart_jwt_secret_key_2026",
     CORS_ORIGIN: process.env.CORS_ORIGIN || "*",
     API_PREFIX: "/api",
 
     // SMTP Configuration
-    SMTP_HOST: process.env.SMTP_HOST || "",
+    SMTP_HOST: process.env.SMTP_HOST || "smtp.gmail.com",
     SMTP_PORT: parseInt(process.env.SMTP_PORT, 10) || 587,
     SMTP_SECURE: process.env.SMTP_SECURE === "true",
-    SMTP_USER: process.env.SMTP_USER || "",
+    SMTP_USER: process.env.SMTP_USER || "campusmart044@gmail.com",
     SMTP_PASS: process.env.SMTP_PASS || "",
-    SMTP_FROM_EMAIL: process.env.SMTP_FROM_EMAIL || process.env.SMTP_USER || "no-reply@campusmart.edu",
-    SMTP_FROM_NAME: process.env.SMTP_FROM_NAME || "Campus Mart",
-    SMTP_MOCK: process.env.SMTP_MOCK === "true" || process.env.NODE_ENV === "test" || !process.env.SMTP_HOST,
+    SMTP_FROM_EMAIL: process.env.SMTP_FROM_EMAIL || process.env.SMTP_USER || "campusmart044@gmail.com",
+    SMTP_FROM_NAME: process.env.SMTP_FROM_NAME || "CampusMart",
+    SMTP_MOCK: process.env.SMTP_MOCK === "true" || (process.env.NODE_ENV === "test" && process.env.SMTP_MOCK !== "false"),
 
     // OTP Security Controls
     OTP_EXPIRY_MINUTES: parseInt(process.env.OTP_EXPIRY_MINUTES, 10) || 5,

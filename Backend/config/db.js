@@ -16,7 +16,7 @@ const connectDB = async () => {
     }
 
     try {
-        await mongoose.connect(config.MONGO_URI, { serverSelectionTimeoutMS: 5000 });
+        await mongoose.connect(config.MONGO_URI, { serverSelectionTimeoutMS: 2500 });
         console.log(`MongoDB Connected: ${mongoose.connection.host}`);
     } catch (err) {
         console.warn(`⚠️ [MongoDB Atlas Connection Notice] Could not connect to remote Atlas cluster (${err.message}).`);

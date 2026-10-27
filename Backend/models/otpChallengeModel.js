@@ -105,19 +105,46 @@ class OtpChallengeModel {
     }
 
     /**
-     * Mark challenge as successfully used
+     * Find latest pending challenge for email and purpose
+     */
+    async findLatestPending(email, purpose) {
+        if (!email) return null;
+        const cleanEmail = email.toLowerCase().trim();
+        const now = new Date();
+
+        if (mongoose.connection.readyState === 1) {
+            return await OtpChallenge.findOne({
+                email: cleanEmail,
+                purpose,
+                isUsed: false,
+                expiresAt: { $gt: now }
+            }).sort({ createdAt: -1 }).lean();
+        }
+
+        const matches = this.collection.filter(c => 
+            c.email === cleanEmail && 
+            c.purpose === purpose && 
+            !c.isUsed && 
+            new Date(c.expiresAt) > now
+        );
+        if (matches.length === 0) return null;
+        return matches[matches.length - 1];
+    }
+
+    /**
+     * Mark challenge as successfully used (atomic single-use transition)
      */
     async markAsUsed(id) {
         const now = new Date();
         if (mongoose.connection.readyState === 1) {
             return await OtpChallenge.findOneAndUpdate(
-                { id },
+                { id, isUsed: false },
                 { $set: { isUsed: true, usedAt: now } },
                 { returnDocument: 'after' }
             ).lean();
         }
 
-        const challenge = this.collection.find(c => c.id === id);
+        const challenge = this.collection.find(c => c.id === id && !c.isUsed);
         if (challenge) {
             challenge.isUsed = true;
             challenge.usedAt = now;

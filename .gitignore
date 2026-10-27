@@ -29,6 +29,7 @@ yarn-error.log*
 tmp/
 temp/
 *.tmp
+*.zip
 
 # Operating System files (Windows / macOS / Linux)
 .DS_Store

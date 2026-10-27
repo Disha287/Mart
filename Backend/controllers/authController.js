@@ -15,7 +15,7 @@ const {
     getSmtpDiagnosticStatus
 } = require('../utils/emailUtils');
 const jwt = require('jsonwebtoken');
-const JWT_SECRET = process.env.JWT_SECRET || 'campusmart_jwt_secret_key_2026';
+const JWT_SECRET = config.JWT_SECRET || process.env.JWT_SECRET || 'campusmart_jwt_secret_key_2026';
 
 function generateToken(user, role) {
     return jwt.sign(
@@ -39,6 +39,7 @@ const {
 // ============================================================
 // 1. POST /api/auth/register
 // Initiate registration, create unverified user, issue OTP challenge
+// Security: Never issue or persist a session token before verification!
 // ============================================================
 const register = async (req, res) => {
     try {
@@ -59,7 +60,7 @@ const register = async (req, res) => {
             });
         }
 
-        // Educational domain check
+        // Educational domain policy check
         const eduCheck = isEducationalEmail(sanitizedEmail);
         if (!eduCheck.valid) {
             console.log(`[Register] Rejected non-educational email: ${sanitizedEmail}`);
@@ -125,10 +126,7 @@ const register = async (req, res) => {
             metadata: { role: userRole }
         });
 
-        // Send OTP email
-        let emailDeliverySuccess = true;
-        let emailErrorDetail = null;
-
+        // Dispatch OTP email
         try {
             await sendRegistrationOtpEmail(
                 sanitizedEmail,
@@ -138,36 +136,36 @@ const register = async (req, res) => {
             );
             console.log(`[Register] ✅ Registration OTP dispatched to: ${sanitizedEmail}`);
         } catch (emailErr) {
-            emailDeliverySuccess = false;
-            emailErrorDetail = emailErr.message;
             console.error(`[Register] ⚠️ SMTP delivery issue for ${sanitizedEmail}:`, emailErr.message);
+
+            let userFriendlyMsg = 'Failed to deliver verification email.';
+            if (emailErr.code === 'SMTP_NOT_CONFIGURED') {
+                userFriendlyMsg = 'Email delivery failed: SMTP is not configured. Please set SMTP credentials in Backend/.env.';
+            } else if (emailErr.message && (emailErr.message.includes('BadCredentials') || emailErr.message.includes('535') || emailErr.code === 'EAUTH')) {
+                userFriendlyMsg = 'Email delivery failed: Gmail authentication error (535 BadCredentials). Please ensure a 16-character Google App Password (not your Gmail account password) is generated at https://myaccount.google.com/apppasswords and set as SMTP_PASS in Backend/.env.';
+            } else if (emailErr.code === 'ETIMEDOUT' || emailErr.code === 'ESOCKETTIMEDOUT') {
+                userFriendlyMsg = 'Email delivery failed: Connection to smtp.gmail.com timed out. Please check network connectivity.';
+            } else {
+                userFriendlyMsg = `Email delivery failed: ${emailErr.message}`;
+            }
+
+            return res.status(503).json({
+                success: false,
+                emailDeliverySuccess: false,
+                message: userFriendlyMsg
+            });
         }
 
-        const token = generateToken(userRecord, userRole);
-
+        // Success: Only challenge metadata returned (NO session token before verification!)
         return res.status(201).json({
             success: true,
-            message: emailDeliverySuccess
-                ? (config.SMTP_MOCK ? `Registration initiated! (Verification code: ${challenge.otp})` : 'Registration initiated. Verification code sent to your campus email.')
-                : `Registration initiated. (Code: ${challenge.otp})`,
-            token,
-            user: {
-                id: userRecord.id || userRecord._id,
-                name: userRecord.name,
-                email: userRecord.email,
-                role: userRole,
-                college: userRecord.college,
-                phone: userRecord.phone,
-                rating: userRecord.rating,
-                trustScore: userRecord.trustScore,
-                isVerified: userRecord.isVerified
-            },
+            message: 'Registration initiated. Verification code sent to your campus email.',
             requireOtp: true,
             challengeId: challenge.challengeId,
             expiresAt: challenge.expiresAt,
             cooldownSeconds: challenge.cooldownSeconds,
-            emailDeliverySuccess,
-            devOtp: (config.SMTP_MOCK || !emailDeliverySuccess) ? challenge.otp : undefined
+            email: sanitizedEmail,
+            emailDeliverySuccess: true
         });
 
     } catch (error) {
@@ -181,7 +179,7 @@ const register = async (req, res) => {
 
 // ============================================================
 // 2. POST /api/auth/verify-registration-otp
-// Verify registration OTP and activate user account
+// Verify registration OTP, activate user account, and issue session
 // ============================================================
 const verifyRegistrationOtp = async (req, res) => {
     try {
@@ -243,12 +241,13 @@ const verifyRegistrationOtp = async (req, res) => {
                 console.log(`[Welcome Email] ✅ Dispatched to ${sanitizedEmail}`);
             } catch (wErr) {
                 console.warn(`[Welcome Email Warning] Could not dispatch welcome email to ${sanitizedEmail}:`, wErr.message);
-                // Do NOT fail registration if welcome email fails
+                // Non-blocking: Do not fail registration verification if welcome email is deferred
             }
         }
 
         console.log(`[Register Verification] ✅ Account activated for ${sanitizedEmail}`);
 
+        // Issue authenticated session token ONLY AFTER successful verification
         const token = generateToken(updatedUser, updatedUser.role);
 
         return res.status(200).json({
@@ -279,6 +278,7 @@ const verifyRegistrationOtp = async (req, res) => {
 
 // ============================================================
 // 3. POST /api/auth/resend-registration-otp
+// Resend registration OTP with cooldown enforcement
 // ============================================================
 const resendRegistrationOtp = async (req, res) => {
     try {
@@ -325,7 +325,6 @@ const resendRegistrationOtp = async (req, res) => {
 
         const newChallenge = resendResult.newChallenge;
 
-        let resendDeliverySuccess = true;
         try {
             await sendRegistrationOtpEmail(
                 sanitizedEmail,
@@ -333,9 +332,26 @@ const resendRegistrationOtp = async (req, res) => {
                 newChallenge.otp,
                 config.OTP_EXPIRY_MINUTES
             );
+            console.log(`[Resend OTP] ✅ New OTP dispatched to: ${sanitizedEmail}`);
         } catch (emailErr) {
-            resendDeliverySuccess = false;
             console.error(`[Resend OTP Error] SMTP failed for ${sanitizedEmail}:`, emailErr.message);
+
+            let userFriendlyMsg = 'Failed to deliver verification email.';
+            if (emailErr.code === 'SMTP_NOT_CONFIGURED') {
+                userFriendlyMsg = 'Email delivery failed: SMTP is not configured. Please set SMTP credentials in Backend/.env.';
+            } else if (emailErr.message && (emailErr.message.includes('BadCredentials') || emailErr.message.includes('535') || emailErr.code === 'EAUTH')) {
+                userFriendlyMsg = 'Email delivery failed: Gmail authentication error (535 BadCredentials). Please check SMTP_PASS in Backend/.env.';
+            } else if (emailErr.code === 'ETIMEDOUT' || emailErr.code === 'ESOCKETTIMEDOUT') {
+                userFriendlyMsg = 'Email delivery failed: Connection to smtp.gmail.com timed out.';
+            } else {
+                userFriendlyMsg = `Email delivery failed: ${emailErr.message}`;
+            }
+
+            return res.status(503).json({
+                success: false,
+                emailDeliverySuccess: false,
+                message: userFriendlyMsg
+            });
         }
 
         return res.status(200).json({
@@ -343,10 +359,9 @@ const resendRegistrationOtp = async (req, res) => {
             challengeId: newChallenge.challengeId,
             expiresAt: newChallenge.expiresAt,
             cooldownSeconds: newChallenge.cooldownSeconds,
-            devOtp: (config.SMTP_MOCK || !resendDeliverySuccess) ? newChallenge.otp : undefined,
-            message: resendDeliverySuccess
-                ? (config.SMTP_MOCK ? `A fresh verification code has been generated! (Dev mode: ${newChallenge.otp})` : 'A fresh verification code has been dispatched to your campus email.')
-                : `SMTP delivery failed. Your new code is: ${newChallenge.otp}`
+            email: sanitizedEmail,
+            emailDeliverySuccess: true,
+            message: 'A fresh verification code has been dispatched to your campus email.'
         });
 
     } catch (error) {
@@ -361,6 +376,7 @@ const resendRegistrationOtp = async (req, res) => {
 // ============================================================
 // 4. POST /api/auth/login
 // Validate password credentials and trigger Login OTP
+// Security: Never issue a session token before 2FA verification!
 // ============================================================
 const login = async (req, res) => {
     try {
@@ -415,41 +431,41 @@ const login = async (req, res) => {
             metadata: { requestedRole: role || user.role }
         });
 
-        let emailSuccess = true;
+        // Dispatch 2FA OTP Email
         try {
             await sendLoginOtpEmail(sanitizedEmail, user.name, challenge.otp, config.OTP_EXPIRY_MINUTES);
             console.log(`[Login] ✅ 2FA OTP dispatched to ${sanitizedEmail}`);
         } catch (emailErr) {
-            emailSuccess = false;
             console.error(`[Login] ⚠️ 2FA email dispatch issue for ${sanitizedEmail}:`, emailErr.message);
+
+            let userFriendlyMsg = 'Failed to deliver login verification code.';
+            if (emailErr.code === 'SMTP_NOT_CONFIGURED') {
+                userFriendlyMsg = 'Email delivery failed: SMTP is not configured. Please set SMTP credentials in Backend/.env.';
+            } else if (emailErr.message && (emailErr.message.includes('BadCredentials') || emailErr.message.includes('535') || emailErr.code === 'EAUTH')) {
+                userFriendlyMsg = 'Email delivery failed: Gmail authentication error (535 BadCredentials). Please ensure a 16-character Google App Password (not your Gmail account password) is generated at https://myaccount.google.com/apppasswords and set as SMTP_PASS in Backend/.env.';
+            } else if (emailErr.code === 'ETIMEDOUT' || emailErr.code === 'ESOCKETTIMEDOUT') {
+                userFriendlyMsg = 'Email delivery failed: Connection to smtp.gmail.com timed out.';
+            } else {
+                userFriendlyMsg = `Email delivery failed: ${emailErr.message}`;
+            }
+
+            return res.status(503).json({
+                success: false,
+                emailDeliverySuccess: false,
+                message: userFriendlyMsg
+            });
         }
 
-        const finalRole = ['buyer', 'seller'].includes(role) ? role : user.role;
-        const token = generateToken(user, finalRole);
-
+        // Success: Only challenge metadata returned (NO session token before 2FA verification!)
         return res.status(200).json({
             success: true,
-            message: emailSuccess
-                ? (config.SMTP_MOCK ? `Login successful! (Verification code: ${challenge.otp})` : 'Credentials accepted. Verification code sent to your campus email.')
-                : `Login successful! (Code: ${challenge.otp})`,
-            token,
-            user: {
-                id: user.id || user._id,
-                name: user.name,
-                email: user.email,
-                role: finalRole,
-                college: user.college,
-                phone: user.phone,
-                rating: user.rating,
-                trustScore: user.trustScore,
-                isVerified: true
-            },
+            message: 'Credentials accepted. Verification code sent to your campus email.',
             requireOtp: true,
             challengeId: challenge.challengeId,
             expiresAt: challenge.expiresAt,
             cooldownSeconds: challenge.cooldownSeconds,
-            emailDeliverySuccess: emailSuccess,
-            devOtp: (config.SMTP_MOCK || !emailSuccess) ? challenge.otp : undefined
+            email: sanitizedEmail,
+            emailDeliverySuccess: true
         });
 
     } catch (error) {
@@ -514,6 +530,7 @@ const verifyLoginOtp = async (req, res) => {
 
         console.log(`[Login] ✅ 2FA Verified. User session created for: ${sanitizedEmail} (${finalRole})`);
 
+        // Issue authenticated session token ONLY AFTER successful 2FA
         const token = generateToken(user, finalRole);
 
         return res.status(200).json({
@@ -583,7 +600,6 @@ const resendLoginOtp = async (req, res) => {
 
         const newChallenge = resendResult.newChallenge;
 
-        let resendLoginSuccess = true;
         try {
             await sendLoginOtpEmail(
                 sanitizedEmail,
@@ -591,9 +607,26 @@ const resendLoginOtp = async (req, res) => {
                 newChallenge.otp,
                 config.OTP_EXPIRY_MINUTES
             );
+            console.log(`[Resend Login OTP] ✅ New 2FA OTP dispatched to: ${sanitizedEmail}`);
         } catch (emailErr) {
-            resendLoginSuccess = false;
             console.error(`[Resend Login OTP Error] SMTP failed for ${sanitizedEmail}:`, emailErr.message);
+
+            let userFriendlyMsg = 'Failed to deliver login verification code.';
+            if (emailErr.code === 'SMTP_NOT_CONFIGURED') {
+                userFriendlyMsg = 'Email delivery failed: SMTP is not configured. Please set SMTP credentials in Backend/.env.';
+            } else if (emailErr.message && (emailErr.message.includes('BadCredentials') || emailErr.message.includes('535') || emailErr.code === 'EAUTH')) {
+                userFriendlyMsg = 'Email delivery failed: Gmail authentication error (535 BadCredentials). Please check SMTP_PASS in Backend/.env.';
+            } else if (emailErr.code === 'ETIMEDOUT' || emailErr.code === 'ESOCKETTIMEDOUT') {
+                userFriendlyMsg = 'Email delivery failed: Connection to smtp.gmail.com timed out.';
+            } else {
+                userFriendlyMsg = `Email delivery failed: ${emailErr.message}`;
+            }
+
+            return res.status(503).json({
+                success: false,
+                emailDeliverySuccess: false,
+                message: userFriendlyMsg
+            });
         }
 
         return res.status(200).json({
@@ -601,10 +634,9 @@ const resendLoginOtp = async (req, res) => {
             challengeId: newChallenge.challengeId,
             expiresAt: newChallenge.expiresAt,
             cooldownSeconds: newChallenge.cooldownSeconds,
-            devOtp: (config.SMTP_MOCK || !resendLoginSuccess) ? newChallenge.otp : undefined,
-            message: resendLoginSuccess
-                ? (config.SMTP_MOCK ? `A fresh login verification code has been generated! (Dev mode: ${newChallenge.otp})` : 'A fresh login verification code has been dispatched to your campus email.')
-                : `SMTP delivery failed. Your new code is: ${newChallenge.otp}`
+            email: sanitizedEmail,
+            emailDeliverySuccess: true,
+            message: 'A fresh login verification code has been dispatched to your campus email.'
         });
 
     } catch (error) {

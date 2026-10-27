@@ -132,23 +132,34 @@ class OtpService {
         }
 
         // Mark as used atomically
-        await OtpChallengeModel.markAsUsed(challengeId);
+        const consumed = await OtpChallengeModel.markAsUsed(challengeId);
+        if (!consumed) {
+            return {
+                valid: false,
+                error: 'This verification code has already been used. Please request a new one.',
+                code: 'ALREADY_USED'
+            };
+        }
 
         return {
             valid: true,
-            challenge
+            challenge: { ...challenge, isUsed: true }
         };
     }
 
     /**
      * Resend an OTP challenge with cooldown check
      * @param {Object} params
-     * @param {string} params.challengeId
+     * @param {string} [params.challengeId]
      * @param {string} params.email
      * @param {'registration'|'login'} params.purpose
-     * @returns {Promise<{ success: boolean, error?: string, code?: string, newChallenge?: Object }>}
+     * @returns {Promise<{ success: boolean, error?: string, code?: string, newChallenge?: Object, waitSeconds?: number }>}
      */
     async resendOtp({ challengeId, email, purpose }) {
+        if (!email || !purpose) {
+            return { success: false, error: 'Email and purpose are required.', code: 'MISSING_FIELDS' };
+        }
+
         const cleanEmail = email.toLowerCase().trim();
         let existing = null;
 
@@ -156,12 +167,17 @@ class OtpService {
             existing = await OtpChallengeModel.findById(challengeId);
         }
 
-        // Check cooldown
+        // Prevent cooldown bypass: if challengeId is missing or invalid, check the latest active challenge for email & purpose
+        if (!existing) {
+            existing = await OtpChallengeModel.findLatestPending(cleanEmail, purpose);
+        }
+
+        // Check cooldown BEFORE invalidating any active challenge
         if (existing && existing.resendCooldownUntil) {
             const now = new Date();
             const cooldownUntil = new Date(existing.resendCooldownUntil);
             if (now < cooldownUntil) {
-                const waitSeconds = Math.ceil((cooldownUntil.getTime() - now.getTime()) / 1000);
+                const waitSeconds = Math.max(1, Math.ceil((cooldownUntil.getTime() - now.getTime()) / 1000));
                 return {
                     success: false,
                     error: `Please wait ${waitSeconds} second${waitSeconds === 1 ? '' : 's'} before requesting another code.`,

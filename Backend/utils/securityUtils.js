@@ -42,8 +42,8 @@ async function comparePassword(plainPassword, hashedPassword) {
  */
 function generateSecureOtp() {
     // crypto.randomInt is cryptographically strong (uses CSPRNG)
-    const otpInt = crypto.randomInt(100000, 1000000);
-    return otpInt.toString();
+    const otpInt = crypto.randomInt(0, 1000000);
+    return otpInt.toString().padStart(6, '0');
 }
 
 /**

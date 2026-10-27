@@ -119,6 +119,10 @@ function isEducationalEmail(email) {
  */
 let transporter = null;
 
+function resetTransporter() {
+    transporter = null;
+}
+
 function getTransporter() {
     if (transporter) return transporter;
 
@@ -132,7 +136,7 @@ function getTransporter() {
                 const otpStr = otpMatch ? otpMatch[1] : 'N/A';
 
                 console.log('\n╔══════════════════════════════════════════════════════════════════╗');
-                console.log('║  📬 [DEV EMAIL CAPTURE] (Real SMTP not configured in .env)      ║');
+                console.log('║  📬 [DEV EMAIL CAPTURE] (Mock Delivery / Test Mode)              ║');
                 console.log(`║  To:      ${(mailOptions.to || '').padEnd(52)}║`);
                 console.log(`║  Subject: ${(mailOptions.subject || '').padEnd(52)}║`);
                 console.log(`║  🔑 OTP:   ${otpStr.padEnd(52)}║`);
@@ -147,32 +151,45 @@ function getTransporter() {
         return transporter;
     }
 
-    const isConfigured = Boolean(config.SMTP_HOST && config.SMTP_USER && config.SMTP_PASS);
+    const cleanPass = config.SMTP_PASS ? String(config.SMTP_PASS).trim().replace(/\s+/g, '') : '';
+    const isConfigured = Boolean(config.SMTP_HOST && config.SMTP_USER && cleanPass);
 
     if (!isConfigured) {
+        const missing = [];
+        if (!config.SMTP_HOST) missing.push('SMTP_HOST');
+        if (!config.SMTP_USER) missing.push('SMTP_USER');
+        if (!cleanPass) missing.push('SMTP_PASS');
+
         // Return a transporter that yields a structured diagnostic error
         return {
             sendMail: async () => {
-                const err = new Error('SMTP credentials are not configured in environment variables.');
+                const err = new Error(`SMTP credentials are not configured in environment variables. Missing: ${missing.join(', ')}`);
                 err.code = 'SMTP_NOT_CONFIGURED';
                 throw err;
             },
-            verify: async () => false
+            verify: async () => {
+                const err = new Error(`SMTP credentials are not configured in environment variables. Missing: ${missing.join(', ')}`);
+                err.code = 'SMTP_NOT_CONFIGURED';
+                throw err;
+            }
         };
     }
 
-    transporter = nodemailer.createTransport({
-        host: config.SMTP_HOST,
-        port: config.SMTP_PORT,
-        secure: config.SMTP_SECURE, // true for 465, false for 587/STARTTLS
+    const transportConfig = {
+        host: config.SMTP_HOST || 'smtp.gmail.com',
+        port: config.SMTP_PORT || 587,
+        secure: config.SMTP_SECURE, // false for 587 (STARTTLS)
         auth: {
             user: config.SMTP_USER,
-            pass: config.SMTP_PASS
+            pass: cleanPass
         },
-        connectionTimeout: 10000,
-        greetingTimeout: 5000,
-        socketTimeout: 15000
-    });
+        // Secure TLS defaults: Do NOT disable certificate validation
+        connectionTimeout: 15000,
+        greetingTimeout: 10000,
+        socketTimeout: 20000
+    };
+
+    transporter = nodemailer.createTransport(transportConfig);
 
     return transporter;
 }
@@ -181,7 +198,8 @@ function getTransporter() {
  * Diagnostic status checker for SMTP service
  */
 async function getSmtpDiagnosticStatus() {
-    const isConfigured = Boolean(config.SMTP_HOST && config.SMTP_USER && config.SMTP_PASS);
+    const cleanPass = config.SMTP_PASS ? String(config.SMTP_PASS).trim().replace(/\s+/g, '') : '';
+    const isConfigured = Boolean(config.SMTP_HOST && config.SMTP_USER && cleanPass);
     const maskedUser = config.SMTP_USER ? config.SMTP_USER.replace(/(.{2})(.*)(@.*)/, '$1***$3') : 'Not Set';
 
     const status = {
@@ -193,16 +211,23 @@ async function getSmtpDiagnosticStatus() {
         senderEmail: config.SMTP_FROM_EMAIL,
         userMasked: maskedUser,
         verified: false,
-        error: null
+        error: null,
+        hint: null
     };
 
     if (config.SMTP_MOCK) {
         status.verified = true;
+        status.message = 'Mock SMTP mode active (simulated email dispatch). Real emails are not sent.';
         return status;
     }
 
     if (!isConfigured) {
-        status.error = 'SMTP_NOT_CONFIGURED: Missing SMTP_HOST, SMTP_USER, or SMTP_PASS';
+        const missing = [];
+        if (!config.SMTP_HOST) missing.push('SMTP_HOST');
+        if (!config.SMTP_USER) missing.push('SMTP_USER');
+        if (!cleanPass) missing.push('SMTP_PASS');
+        status.error = `SMTP_NOT_CONFIGURED: Missing ${missing.join(', ')} in Backend/.env`;
+        status.hint = 'Configure your Gmail address and 16-character Google App Password in Backend/.env to enable real email delivery.';
         return status;
     }
 
@@ -211,9 +236,18 @@ async function getSmtpDiagnosticStatus() {
         if (typeof client.verify === 'function') {
             await client.verify();
             status.verified = true;
+            status.message = 'SMTP connection and credentials verified successfully with Gmail.';
         }
     } catch (e) {
+        status.verified = false;
         status.error = e.message;
+        if (e.message && (e.message.includes('BadCredentials') || e.message.includes('535') || e.code === 'EAUTH')) {
+            status.hint = 'Gmail requires a 16-character Google App Password rather than your standard account password. To fix: Enable 2-Step Verification on your Google Account -> go to Security -> 2-Step Verification -> App passwords -> generate password for CampusMart -> paste the 16-character code into Backend/.env SMTP_PASS.';
+        } else if (e.code === 'ETIMEDOUT' || e.code === 'ESOCKETTIMEDOUT') {
+            status.hint = 'Connection to smtp.gmail.com timed out. Please check network connectivity and firewall settings.';
+        } else if (e.code === 'ENOTFOUND') {
+            status.hint = 'DNS lookup failed for SMTP host. Please verify SMTP_HOST in Backend/.env.';
+        }
     }
 
     return status;
@@ -413,13 +447,21 @@ async function sendRegistrationOtpEmail(toEmail, recipientName, otp, expiryMinut
       `Never share this code with anyone.\n` +
       `Web: ${config.APP_URL}\n`;
 
-    return await client.sendMail({
+    const result = await client.sendMail({
         from: `"${config.SMTP_FROM_NAME}" <${config.SMTP_FROM_EMAIL}>`,
         to: toEmail,
         subject: title,
         text: textContent,
         html: getEmailWrapper(title, contentHtml)
     });
+
+    if (result && result.rejected && result.rejected.length > 0) {
+        const err = new Error(`Email delivery was rejected for recipient: ${result.rejected.join(', ')}`);
+        err.code = 'RECIPIENT_REJECTED';
+        throw err;
+    }
+
+    return result;
 }
 
 /**
@@ -453,13 +495,21 @@ async function sendLoginOtpEmail(toEmail, recipientName, otp, expiryMinutes = 5)
       `If you did not attempt to sign in, please secure your account.\n` +
       `Web: ${config.APP_URL}\n`;
 
-    return await client.sendMail({
+    const result = await client.sendMail({
         from: `"${config.SMTP_FROM_NAME}" <${config.SMTP_FROM_EMAIL}>`,
         to: toEmail,
         subject: title,
         text: textContent,
         html: getEmailWrapper(title, contentHtml)
     });
+
+    if (result && result.rejected && result.rejected.length > 0) {
+        const err = new Error(`Email delivery was rejected for recipient: ${result.rejected.join(', ')}`);
+        err.code = 'RECIPIENT_REJECTED';
+        throw err;
+    }
+
+    return result;
 }
 
 /**
@@ -499,19 +549,28 @@ async function sendWelcomeEmail(toEmail, recipientName, role = 'buyer') {
       `Start discovering textbooks, essentials, electronics, and verified student listings.\n` +
       `Access the platform at: ${config.APP_URL}\n`;
 
-    return await client.sendMail({
+    const result = await client.sendMail({
         from: `"${config.SMTP_FROM_NAME}" <${config.SMTP_FROM_EMAIL}>`,
         to: toEmail,
         subject: title,
         text: textContent,
         html: getEmailWrapper(title, contentHtml)
     });
+
+    if (result && result.rejected && result.rejected.length > 0) {
+        const err = new Error(`Email delivery was rejected for recipient: ${result.rejected.join(', ')}`);
+        err.code = 'RECIPIENT_REJECTED';
+        throw err;
+    }
+
+    return result;
 }
 
 module.exports = {
     sanitizeAndValidateEmail,
     isEducationalEmail,
     getTransporter,
+    resetTransporter,
     getSmtpDiagnosticStatus,
     sendRegistrationOtpEmail,
     sendLoginOtpEmail,

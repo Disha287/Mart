@@ -1,23 +1,45 @@
 // ============================================================
-// VERIFICATION TEST SUITE — DIRECT AUTHENTICATION (NO OTP)
+// CAMPUSMART BACKEND — AUTH SECURITY & NO-BYPASS TEST SUITE
+// Verifies that OTP cannot be bypassed and direct token leaks are prevented
 // ============================================================
 
 const dns = require('dns');
-dns.setServers(['8.8.8.8', '8.8.4.4']);
+try {
+    dns.setServers(['8.8.8.8', '8.8.4.4']);
+} catch (e) {}
+
+process.env.SMTP_MOCK = 'true';
+process.env.NODE_ENV = 'test';
 require('dotenv').config({ path: './.env' });
 const mongoose = require('mongoose');
 
-async function runAuthTests() {
+const baseUrl = 'http://localhost:5000/api/auth';
+
+async function runAuthSecurityTests() {
     console.log('╔══════════════════════════════════════════════════════════════════╗');
-    console.log('║  RUNNING DIRECT AUTH (NO OTP) TEST SUITE                         ║');
+    console.log('║  VERIFYING OTP ENFORCEMENT & STRICT ANTI-BYPASS SECURITY         ║');
     console.log('╚══════════════════════════════════════════════════════════════════╝\n');
 
-    const baseUrl = 'http://localhost:5000/api/auth';
-    const testEmail = `student.${Date.now()}@chitkara.edu.in`;
-    const testPassword = 'Password123!';
+    // Ensure server is reachable
+    try {
+        await fetch(`${baseUrl}/smtp-status`, { signal: AbortSignal.timeout(1000) });
+    } catch (e) {
+        require('../server');
+        for (let i = 0; i < 20; i++) {
+            try {
+                const res = await fetch('http://localhost:5000/', { signal: AbortSignal.timeout(500) });
+                if (res.ok) break;
+            } catch (err) {
+                await new Promise(r => setTimeout(r, 400));
+            }
+        }
+    }
 
-    // TEST 1: Register with valid educational email
-    console.log('--- [TEST 1] Register with Valid Educational Email ---');
+    const testEmail = `student.nobypass.${Date.now()}@chitkara.edu.in`;
+    const testPassword = 'CampusPassword123!';
+
+    // TEST 1: Registration requires OTP and yields NO session token
+    console.log('--- [TEST 1] Register Requires OTP and Does Not Issue Session Token ---');
     const regRes = await fetch(`${baseUrl}/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -31,18 +53,18 @@ async function runAuthTests() {
         })
     });
     const regData = await regRes.json();
-    console.log('  Status:', regRes.status, 'Response:', regData);
+    console.log('  Status:', regRes.status, 'requireOtp:', regData.requireOtp, 'hasToken:', Boolean(regData.token));
 
-    if (regRes.status !== 201 || !regData.success) {
-        throw new Error(`TEST 1 Failed: Expected status 201 with success: true, got ${regRes.status}`);
+    if (regRes.status !== 201 || !regData.success || !regData.requireOtp) {
+        throw new Error(`TEST 1 Failed: Expected status 201 with requireOtp, got ${regRes.status}`);
     }
-    if (regData.unverified || regData.otpSent) {
-        throw new Error('TEST 1 Failed: Response still contains OTP/unverified flags!');
+    if (regData.token || regData.user) {
+        throw new Error('TEST 1 Failed: Session token or user object leaked before email verification!');
     }
-    console.log('  ✅ PASS: User registered directly with zero OTP requirements.\n');
+    console.log('  ✅ PASS: Registration requires OTP verification; no token issued.\n');
 
     // TEST 2: Register with personal email (MUST BE REJECTED)
-    console.log('--- [TEST 2] Register with Personal Email (@gmail.com) ---');
+    console.log('--- [TEST 2] Register with Personal Email (@gmail.com) Rejected ---');
     const pEmail = `test.${Date.now()}@gmail.com`;
     const pRes = await fetch(`${baseUrl}/register`, {
         method: 'POST',
@@ -56,15 +78,15 @@ async function runAuthTests() {
         })
     });
     const pData = await pRes.json();
-    console.log('  Status:', pRes.status, 'Response:', pData);
+    console.log('  Status:', pRes.status, 'Message:', pData.message);
 
     if (pRes.status !== 400 || pData.success !== false) {
         throw new Error(`TEST 2 Failed: Expected 400 rejection for @gmail.com, got ${pRes.status}`);
     }
-    console.log('  ✅ PASS: Personal email correctly rejected by backend validation.\n');
+    console.log('  ✅ PASS: Personal email correctly rejected by educational email policy.\n');
 
-    // TEST 3: Login with newly registered educational user
-    console.log('--- [TEST 3] Direct Login with Registered Educational Account ---');
+    // TEST 3: Unverified user cannot log in directly
+    console.log('--- [TEST 3] Unverified Account Cannot Log In ---');
     const loginRes = await fetch(`${baseUrl}/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -74,45 +96,49 @@ async function runAuthTests() {
         })
     });
     const loginData = await loginRes.json();
-    console.log('  Status:', loginRes.status, 'Response:', loginData);
+    console.log('  Status:', loginRes.status, 'unverified:', loginData.unverified);
 
-    if (loginRes.status !== 200 || !loginData.success || !loginData.user) {
-        throw new Error(`TEST 3 Failed: Expected 200 login success, got ${loginRes.status}`);
+    if (loginRes.status !== 403 || !loginData.unverified) {
+        throw new Error(`TEST 3 Failed: Expected 403 unverified rejection, got ${loginRes.status}`);
     }
-    console.log('  ✅ PASS: Login succeeded directly with full user profile.\n');
+    console.log('  ✅ PASS: Unverified account strictly forbidden from logging in.\n');
 
     // TEST 4: Duplicate Account Prevention
-    console.log('--- [TEST 4] Duplicate Account Prevention ---');
+    console.log('--- [TEST 4] Duplicate Account Re-registration Safety ---');
     const dupRes = await fetch(`${baseUrl}/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            name: 'Duplicate Student',
+            name: 'Priya Sharma Updated',
             email: testEmail,
             password: testPassword,
             role: 'buyer',
-            college: 'Chitkara University'
+            college: 'Chitkara University',
+            phone: '9876543210'
         })
     });
     const dupData = await dupRes.json();
-    console.log('  Status:', dupRes.status, 'Response:', dupData);
+    console.log('  Status:', dupRes.status, 'requireOtp:', dupData.requireOtp);
 
-    if (dupRes.status !== 409) {
-        throw new Error(`TEST 4 Failed: Expected 409 conflict for existing email, got ${dupRes.status}`);
+    // Should update unverified user and issue new challenge without duplicate records
+    if (dupRes.status !== 201 || !dupData.requireOtp) {
+        throw new Error(`TEST 4 Failed: Expected 201 with requireOtp for unverified re-registration, got ${dupRes.status}`);
     }
-    console.log('  ✅ PASS: Duplicate registration properly blocked.\n');
+    console.log('  ✅ PASS: Unverified user re-registration handled safely without duplicating.\n');
 
-    // Cleanup created test user from database
-    await mongoose.connect(process.env.MONGO_URI);
-    await mongoose.connection.collection('users').deleteOne({ email: testEmail });
-    await mongoose.disconnect();
+    // Cleanup
+    if (mongoose.connection.readyState === 1) {
+        await mongoose.connection.collection('users').deleteOne({ email: testEmail });
+        await mongoose.connection.collection('otpchallenges').deleteMany({ email: testEmail });
+    }
 
     console.log('╔══════════════════════════════════════════════════════════════════╗');
-    console.log('║  🎉 ALL DIRECT AUTH (NO OTP) TESTS PASSED SUCCESSFULLY!          ║');
+    console.log('║  🎉 ALL ANTI-BYPASS & SECURITY CHECKS PASSED SUCCESSFULLY!       ║');
     console.log('╚══════════════════════════════════════════════════════════════════╝\n');
+    process.exit(0);
 }
 
-runAuthTests().catch(err => {
-    console.error('❌ Test failed:', err);
+runAuthSecurityTests().catch(err => {
+    console.error('❌ Security test failed:', err);
     process.exit(1);
 });

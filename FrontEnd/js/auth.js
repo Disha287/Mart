@@ -1,19 +1,31 @@
 /* ==========================================================================
    CAMPUSMART - Authentication Engine (Production Email OTP & 2FA)
+   Handles registration OTP, login 2FA, OTP sanitization, paste, and navigation
    ========================================================================== */
 
 const AUTH_API_BASE = (window.location.origin.includes('localhost'))
     ? (window.location.port === '5000' ? '/api/auth' : 'http://localhost:5000/api/auth')
     : '/api/auth';
 
-// In-memory verification challenge state (NEVER stored in localStorage)
+// In-memory verification challenge state (NEVER stored in localStorage or persisted)
 let activeRegChallenge = null;
 let activeLoginChallenge = null;
 let regCooldownTimer = null;
 let loginCooldownTimer = null;
 
-// Initialize when DOM is ready
+// Ensure clearCurrentUser exists in scope
+if (typeof clearCurrentUser !== 'function') {
+    window.clearCurrentUser = function() {
+        try {
+            sessionStorage.removeItem('cm_session');
+        } catch (e) {}
+    };
+}
+
+// Initialize when DOM is ready (guard against duplicate initialization)
 document.addEventListener('DOMContentLoaded', function() {
+    if (window._cmAuthInitialized) return;
+    window._cmAuthInitialized = true;
     initAuthForms();
     updateUserNavUI();
 });
@@ -41,6 +53,39 @@ function validatePasswordRequirements(password) {
     return { valid: true };
 }
 
+/**
+ * Setup input and paste handlers on 6-digit OTP fields
+ */
+function setupOtpInputHandlers(inputEl, formEl) {
+    if (!inputEl) return;
+
+    // Filter keyboard entry to only digits (max 6)
+    inputEl.addEventListener('input', function() {
+        const cleaned = this.value.replace(/\D/g, '').slice(0, 6);
+        this.value = cleaned;
+    });
+
+    // Support pasting complete OTP (strips spaces, dashes, newlines)
+    inputEl.addEventListener('paste', function(e) {
+        e.preventDefault();
+        const pasteData = (e.clipboardData || window.clipboardData).getData('text');
+        const digits = pasteData.replace(/\D/g, '').slice(0, 6);
+        this.value = digits;
+        if (digits.length === 6 && formEl) {
+            // Optional micro-animation: flash border
+            inputEl.style.borderColor = 'var(--accent-red, #ef493c)';
+        }
+    });
+
+    // Handle Enter keypress cleanly
+    inputEl.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && this.value.length === 6 && formEl) {
+            e.preventDefault();
+            formEl.requestSubmit();
+        }
+    });
+}
+
 // ---------------------------------------------------------------------------
 // 1. Core Form Handlers (Signup & Login with OTP Verification)
 // ---------------------------------------------------------------------------
@@ -56,6 +101,10 @@ function initAuthForms() {
     const signupBackBtn = document.getElementById('signup-back-btn');
     const signupTargetEmail = document.getElementById('signup-otp-target-email');
     const signupOtpInput = document.getElementById('signup-otp-input');
+
+    if (signupOtpInput && signupOtpForm) {
+        setupOtpInputHandlers(signupOtpInput, signupOtpForm);
+    }
 
     if (signupForm) {
         signupForm.addEventListener('submit', async function(e) {
@@ -108,13 +157,13 @@ function initAuthForms() {
 
                 const data = await response.json();
 
-                if (response.ok && data.success) {
+                if (response.ok && data.success && data.requireOtp) {
                     activeRegChallenge = {
                         email: data.email || email,
                         challengeId: data.challengeId
                     };
 
-                    // Switch view to OTP verification
+                    // Switch view to OTP verification panel
                     if (signupFormSection && signupOtpSection) {
                         signupFormSection.style.display = 'none';
                         signupOtpSection.style.display = 'block';
@@ -123,24 +172,8 @@ function initAuthForms() {
                         signupTargetEmail.textContent = data.email || email;
                     }
                     if (signupOtpInput) {
-                        signupOtpInput.value = data.devOtp || '';
+                        signupOtpInput.value = '';
                         signupOtpInput.focus();
-                    }
-
-                    const devBanner = document.getElementById('signup-dev-otp-banner');
-                    if (devBanner) {
-                        if (data.devOtp) {
-                            devBanner.style.display = 'block';
-                            devBanner.innerHTML = `
-                                <div style="background: #FFFDF8; border: 1.5px dashed var(--accent-red); padding: 0.85rem; margin-bottom: 1.25rem; text-align: center; font-family: var(--font-mono); font-size: 0.82rem; color: var(--ink-primary);">
-                                    <span style="color: var(--accent-red); font-weight: 900; letter-spacing: 0.1em;">🔑 VERIFICATION CODE:</span>
-                                    <div style="font-size: 1.8rem; font-weight: 900; letter-spacing: 0.25em; color: var(--accent-red); margin: 0.25rem 0;">${data.devOtp}</div>
-                                    <span style="font-size: 0.72rem; color: var(--ink-muted);">(Pre-filled automatically below • Click Verify below to activate)</span>
-                                </div>
-                            `;
-                        } else {
-                            devBanner.style.display = 'none';
-                        }
                     }
 
                     startResendCooldown('signup', data.cooldownSeconds || 60);
@@ -198,9 +231,19 @@ function initAuthForms() {
 
                 if (response.ok && data.success) {
                     showToast('🎉 ' + data.message, 'success');
-                    setTimeout(() => {
-                        window.location.href = 'login.html';
-                    }, 1200);
+
+                    // If a verified user session is issued, store it and proceed to their dashboard
+                    if (data.user) {
+                        setCurrentUser(data.user);
+                        const redirectPath = data.user.role === 'seller' ? 'seller-dashboard.html' : 'buyer-dashboard.html';
+                        setTimeout(() => {
+                            window.location.href = redirectPath;
+                        }, 1000);
+                    } else {
+                        setTimeout(() => {
+                            window.location.href = 'login.html';
+                        }, 1200);
+                    }
                 } else {
                     showToast(data.message || 'Verification failed. Please check the code.', 'error');
                     if (signupOtpInput) {
@@ -238,27 +281,22 @@ function initAuthForms() {
 
                 const data = await response.json();
                 if (response.ok && data.success) {
+                    // Update challenge ID with the fresh replacement challenge
                     activeRegChallenge.challengeId = data.challengeId;
-                    if (signupOtpInput && data.devOtp) {
-                        signupOtpInput.value = data.devOtp;
-                    }
-                    const devBanner = document.getElementById('signup-dev-otp-banner');
-                    if (devBanner && data.devOtp) {
-                        devBanner.style.display = 'block';
-                        devBanner.innerHTML = `
-                            <div style="background: #FFFDF8; border: 1.5px dashed var(--accent-red); padding: 0.85rem; margin-bottom: 1.25rem; text-align: center; font-family: var(--font-mono); font-size: 0.82rem; color: var(--ink-primary);">
-                                <span style="color: var(--accent-red); font-weight: 900; letter-spacing: 0.1em;">🔑 VERIFICATION CODE:</span>
-                                <div style="font-size: 1.8rem; font-weight: 900; letter-spacing: 0.25em; color: var(--accent-red); margin: 0.25rem 0;">${data.devOtp}</div>
-                                <span style="font-size: 0.72rem; color: var(--ink-muted);">(Pre-filled automatically below • Click Verify below to activate)</span>
-                            </div>
-                        `;
+                    if (signupOtpInput) {
+                        signupOtpInput.value = '';
+                        signupOtpInput.focus();
                     }
                     startResendCooldown('signup', data.cooldownSeconds || 60);
-                    showToast('A fresh verification code has been dispatched.', 'success');
+                    showToast(data.message || 'A fresh verification code has been dispatched.', 'success');
                 } else {
                     showToast(data.message || 'Could not resend verification code.', 'error');
-                    signupResendBtn.disabled = false;
-                    signupResendBtn.textContent = 'Resend Code';
+                    if (data.code === 'COOLDOWN_ACTIVE' && data.waitSeconds) {
+                        startResendCooldown('signup', data.waitSeconds);
+                    } else {
+                        signupResendBtn.disabled = false;
+                        signupResendBtn.textContent = 'Resend Code';
+                    }
                 }
             } catch (err) {
                 console.error('Resend OTP error:', err);
@@ -291,6 +329,10 @@ function initAuthForms() {
     const loginBackBtn = document.getElementById('login-back-btn');
     const loginTargetEmail = document.getElementById('login-otp-target-email');
     const loginOtpInput = document.getElementById('login-otp-input');
+
+    if (loginOtpInput && loginOtpForm) {
+        setupOtpInputHandlers(loginOtpInput, loginOtpForm);
+    }
 
     if (loginForm) {
         loginForm.addEventListener('submit', async function(e) {
@@ -332,7 +374,7 @@ function initAuthForms() {
                 const data = await response.json();
 
                 if (response.ok && data.success && data.requireOtp) {
-                    // Credentials validated! Transition to 2FA OTP verification
+                    // Credentials validated! Transition to 2FA OTP verification panel
                     activeLoginChallenge = {
                         email: data.email || identifier,
                         challengeId: data.challengeId,
@@ -347,24 +389,8 @@ function initAuthForms() {
                         loginTargetEmail.textContent = data.email || identifier;
                     }
                     if (loginOtpInput) {
-                        loginOtpInput.value = data.devOtp || '';
+                        loginOtpInput.value = '';
                         loginOtpInput.focus();
-                    }
-
-                    const devBanner = document.getElementById('login-dev-otp-banner');
-                    if (devBanner) {
-                        if (data.devOtp) {
-                            devBanner.style.display = 'block';
-                            devBanner.innerHTML = `
-                                <div style="background: #FFFDF8; border: 1.5px dashed var(--accent-red); padding: 0.85rem; margin-bottom: 1.25rem; text-align: center; font-family: var(--font-mono); font-size: 0.82rem; color: var(--ink-primary);">
-                                    <span style="color: var(--accent-red); font-weight: 900; letter-spacing: 0.1em;">🔑 2FA VERIFICATION CODE:</span>
-                                    <div style="font-size: 1.8rem; font-weight: 900; letter-spacing: 0.25em; color: var(--accent-red); margin: 0.25rem 0;">${data.devOtp}</div>
-                                    <span style="font-size: 0.72rem; color: var(--ink-muted);">(Pre-filled automatically below • Click Verify below to enter)</span>
-                                </div>
-                            `;
-                        } else {
-                            devBanner.style.display = 'none';
-                        }
                     }
 
                     startResendCooldown('login', data.cooldownSeconds || 60);
@@ -376,7 +402,6 @@ function initAuthForms() {
                 }
             } catch (err) {
                 console.error('Login error:', err);
-                // STRICT SECURITY: Do NOT fallback to local plaintext authentication
                 showToast('Could not reach Campus Mart authentication server. Please check your connection.', 'error');
             } finally {
                 if (submitBtn) {
@@ -471,26 +496,20 @@ function initAuthForms() {
                 const data = await response.json();
                 if (response.ok && data.success) {
                     activeLoginChallenge.challengeId = data.challengeId;
-                    if (loginOtpInput && data.devOtp) {
-                        loginOtpInput.value = data.devOtp;
-                    }
-                    const devBanner = document.getElementById('login-dev-otp-banner');
-                    if (devBanner && data.devOtp) {
-                        devBanner.style.display = 'block';
-                        devBanner.innerHTML = `
-                            <div style="background: #FFFDF8; border: 1.5px dashed var(--accent-red); padding: 0.85rem; margin-bottom: 1.25rem; text-align: center; font-family: var(--font-mono); font-size: 0.82rem; color: var(--ink-primary);">
-                                <span style="color: var(--accent-red); font-weight: 900; letter-spacing: 0.1em;">🔑 2FA VERIFICATION CODE:</span>
-                                <div style="font-size: 1.8rem; font-weight: 900; letter-spacing: 0.25em; color: var(--accent-red); margin: 0.25rem 0;">${data.devOtp}</div>
-                                <span style="font-size: 0.72rem; color: var(--ink-muted);">(Pre-filled automatically below • Click Verify below to enter)</span>
-                            </div>
-                        `;
+                    if (loginOtpInput) {
+                        loginOtpInput.value = '';
+                        loginOtpInput.focus();
                     }
                     startResendCooldown('login', data.cooldownSeconds || 60);
-                    showToast('A fresh login code has been dispatched.', 'success');
+                    showToast(data.message || 'A fresh login code has been dispatched.', 'success');
                 } else {
                     showToast(data.message || 'Could not resend code.', 'error');
-                    loginResendBtn.disabled = false;
-                    loginResendBtn.textContent = 'Resend Code';
+                    if (data.code === 'COOLDOWN_ACTIVE' && data.waitSeconds) {
+                        startResendCooldown('login', data.waitSeconds);
+                    } else {
+                        loginResendBtn.disabled = false;
+                        loginResendBtn.textContent = 'Resend Code';
+                    }
                 }
             } catch (err) {
                 console.error('Resend Login OTP error:', err);
@@ -559,7 +578,7 @@ function logoutUser() {
 }
 
 function updateUserNavUI() {
-    const user = getCurrentUser();
+    const user = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
     const userNavBtn = document.getElementById('nav-user-btn');
     if (!userNavBtn) return;
 
