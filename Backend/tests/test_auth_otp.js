@@ -24,7 +24,7 @@ const API_URL = 'http://localhost:5000/api';
 
 async function ensureServerRunning() {
     try {
-        await fetch(`${BASE_URL}/smtp-status`, { signal: AbortSignal.timeout(1000) });
+        await fetch(`http://localhost:5000/`, { signal: AbortSignal.timeout(2000) });
         return;
     } catch (connErr) {
         console.log('[Test Suite] Local server not running. Starting Express server on port 5000...');

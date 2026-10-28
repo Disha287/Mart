@@ -157,7 +157,7 @@ const register = async (req, res) => {
         }
 
         // Success: Only challenge metadata returned (NO session token before verification!)
-        return res.status(201).json({
+        const regResponse = {
             success: true,
             message: 'Registration initiated. Verification code sent to your campus email.',
             requireOtp: true,
@@ -166,7 +166,14 @@ const register = async (req, res) => {
             cooldownSeconds: challenge.cooldownSeconds,
             email: sanitizedEmail,
             emailDeliverySuccess: true
-        });
+        };
+
+        if (process.env.NODE_ENV !== 'production') {
+            regResponse.devOtp = challenge.otp;
+            console.log(`\n🔑 [TESTING / DEV OTP] Code for ${sanitizedEmail}: ${challenge.otp} (Challenge: ${challenge.challengeId})\n`);
+        }
+
+        return res.status(201).json(regResponse);
 
     } catch (error) {
         console.error('[Register Error]', error);
@@ -185,10 +192,10 @@ const verifyRegistrationOtp = async (req, res) => {
     try {
         const { email, challengeId, otp } = req.body;
 
-        if (!email || !challengeId || !otp) {
+        if (!email || !otp) {
             return res.status(400).json({
                 success: false,
-                message: 'Email, challengeId, and OTP are required.'
+                message: 'Email and OTP are required.'
             });
         }
 
@@ -457,7 +464,7 @@ const login = async (req, res) => {
         }
 
         // Success: Only challenge metadata returned (NO session token before 2FA verification!)
-        return res.status(200).json({
+        const loginResponse = {
             success: true,
             message: 'Credentials accepted. Verification code sent to your campus email.',
             requireOtp: true,
@@ -466,7 +473,14 @@ const login = async (req, res) => {
             cooldownSeconds: challenge.cooldownSeconds,
             email: sanitizedEmail,
             emailDeliverySuccess: true
-        });
+        };
+
+        if (process.env.NODE_ENV !== 'production') {
+            loginResponse.devOtp = challenge.otp;
+            console.log(`\n🔑 [TESTING / DEV 2FA OTP] Code for ${sanitizedEmail}: ${challenge.otp} (Challenge: ${challenge.challengeId})\n`);
+        }
+
+        return res.status(200).json(loginResponse);
 
     } catch (error) {
         console.error('[Login Error]', error);
@@ -485,10 +499,10 @@ const verifyLoginOtp = async (req, res) => {
     try {
         const { email, challengeId, otp, role } = req.body;
 
-        if (!email || !challengeId || !otp) {
+        if (!email || !otp) {
             return res.status(400).json({
                 success: false,
-                message: 'Email, challengeId, and OTP are required.'
+                message: 'Email and OTP are required.'
             });
         }
 

@@ -22,7 +22,7 @@ async function runAuthSecurityTests() {
 
     // Ensure server is reachable
     try {
-        await fetch(`${baseUrl}/smtp-status`, { signal: AbortSignal.timeout(1000) });
+        await fetch('http://localhost:5000/', { signal: AbortSignal.timeout(2000) });
     } catch (e) {
         require('../server');
         for (let i = 0; i < 20; i++) {

@@ -100,6 +100,7 @@ app.get('/api', (req, res) => {
 // API ROUTES
 // ============================================================
 app.use('/api/auth',     authRoutes);
+app.use('/api',          authRoutes); // Alias: allows /api/login, /api/register directly
 app.use('/api/users',    userRoutes);
 app.use('/api/products', requireVerifiedUser, productRoutes);
 app.use('/api/orders',   requireVerifiedUser, orderRoutes);
