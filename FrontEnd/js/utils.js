@@ -1,6 +1,3 @@
-/* CAMPUSMART - Core Helper Utilities & UI Engine */
-
-// LocalStorage Engine Wrappers
 function dbGet(key) {
     try {
         const item = localStorage.getItem('cm_' + key);
@@ -19,7 +16,6 @@ function dbSet(key, value) {
     }
 }
 
-// Session Management
 function getCurrentUser() {
     try {
         const session = sessionStorage.getItem('cm_session');
@@ -51,7 +47,6 @@ function logoutUser() {
     }, 1000);
 }
 
-// Page Guard: Ensure user is logged in on protected pages
 function checkAuthGuard() {
     const protectedPages = ['buyer-dashboard.html', 'seller-dashboard.html', 'create-listing.html', 'my-listings.html', 'profile.html'];
     const currentPath = window.location.pathname;
@@ -72,12 +67,10 @@ function checkAuthGuard() {
 
 document.addEventListener('DOMContentLoaded', checkAuthGuard);
 
-// Currency Formatter
 function formatCurrency(amount) {
     return '₹' + Number(amount).toLocaleString('en-IN');
 }
 
-// WhatsApp Link Generator Requirement
 function buildWhatsAppLink(phone, customMessage) {
     const cleanedPhone = String(phone).replace(/\D/g, '');
     const validPhone = cleanedPhone.length === 10 ? '91' + cleanedPhone : cleanedPhone;
@@ -85,14 +78,12 @@ function buildWhatsAppLink(phone, customMessage) {
     return `https://wa.me/${validPhone}?text=${encodedMsg}`;
 }
 
-// Trust Score Calculation Algorithm
 function calculateTrustScore(rating = 4.5, completedTx = 5) {
-    const baseScore = rating * 18; // Up to 90
-    const txBonus = Math.min(completedTx * 1.5, 10); // Up to 10 bonus
+    const baseScore = rating * 18;
+    const txBonus = Math.min(completedTx * 1.5, 10);
     return Math.min(Math.round(baseScore + txBonus), 100);
 }
 
-// Star Rating Renderer
 function renderStars(rating) {
     const fullStars = Math.floor(rating);
     const hasHalf = rating % 1 >= 0.5;
@@ -110,7 +101,6 @@ function renderStars(rating) {
     return `<span class="star-rating">${starsHtml} <small>(${rating})</small></span>`;
 }
 
-// Universal Toast Notification System
 function showToast(message, type = 'info') {
     let container = document.getElementById('toast-container');
     if (!container) {
@@ -140,7 +130,6 @@ function showToast(message, type = 'info') {
     }, 3500);
 }
 
-// Universal Modal Controller
 function openModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
@@ -157,7 +146,6 @@ function closeModal(modalId) {
     }
 }
 
-// Update Dynamic Badge Counts on Navbar
 function updateNavBadges() {
     const cart = dbGet('cart');
     const wishlist = dbGet('wishlist');
@@ -177,7 +165,6 @@ function updateNavBadges() {
     }
 }
 
-// Document Escape Listener for Modals
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
         const activeModals = document.querySelectorAll('.modal-overlay.active');
@@ -186,7 +173,6 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
-// Resolve relative image paths for nested subpages (for local/offline compatibility)
 function resolveImagePath(path) {
     if (!path) return '';
     if (path.startsWith('http://') || path.startsWith('https://') || path.startsWith('data:')) {

@@ -1,19 +1,12 @@
-/* ==========================================================================
-   CAMPUSMART - Authentication Engine (Production Email OTP & 2FA)
-   Handles registration OTP, login 2FA, OTP sanitization, paste, and navigation
-   ========================================================================== */
-
 const AUTH_API_BASE = (window.location.origin.includes('localhost'))
     ? (window.location.port === '5000' ? '/api/auth' : 'http://localhost:5000/api/auth')
     : '/api/auth';
 
-// In-memory verification challenge state (NEVER stored in localStorage or persisted)
 let activeRegChallenge = null;
 let activeLoginChallenge = null;
 let regCooldownTimer = null;
 let loginCooldownTimer = null;
 
-// Ensure clearCurrentUser exists in scope
 if (typeof clearCurrentUser !== 'function') {
     window.clearCurrentUser = function() {
         try {
@@ -22,7 +15,6 @@ if (typeof clearCurrentUser !== 'function') {
     };
 }
 
-// Initialize when DOM is ready (guard against duplicate initialization)
 document.addEventListener('DOMContentLoaded', function() {
     if (window._cmAuthInitialized) return;
     window._cmAuthInitialized = true;
@@ -30,7 +22,6 @@ document.addEventListener('DOMContentLoaded', function() {
     updateUserNavUI();
 });
 
-// Password strength validator
 function validatePasswordRequirements(password) {
     if (!password || typeof password !== 'string') {
         return { valid: false, message: 'Password is required.' };
@@ -53,31 +44,24 @@ function validatePasswordRequirements(password) {
     return { valid: true };
 }
 
-/**
- * Setup input and paste handlers on 6-digit OTP fields
- */
 function setupOtpInputHandlers(inputEl, formEl) {
     if (!inputEl) return;
 
-    // Filter keyboard entry to only digits (max 6)
     inputEl.addEventListener('input', function() {
         const cleaned = this.value.replace(/\D/g, '').slice(0, 6);
         this.value = cleaned;
     });
 
-    // Support pasting complete OTP (strips spaces, dashes, newlines)
     inputEl.addEventListener('paste', function(e) {
         e.preventDefault();
         const pasteData = (e.clipboardData || window.clipboardData).getData('text');
         const digits = pasteData.replace(/\D/g, '').slice(0, 6);
         this.value = digits;
         if (digits.length === 6 && formEl) {
-            // Optional micro-animation: flash border
             inputEl.style.borderColor = 'var(--accent-red, #ef493c)';
         }
     });
 
-    // Handle Enter keypress cleanly
     inputEl.addEventListener('keydown', function(e) {
         if (e.key === 'Enter' && this.value.length === 6 && formEl) {
             e.preventDefault();
@@ -86,13 +70,7 @@ function setupOtpInputHandlers(inputEl, formEl) {
     });
 }
 
-// ---------------------------------------------------------------------------
-// 1. Core Form Handlers (Signup & Login with OTP Verification)
-// ---------------------------------------------------------------------------
 function initAuthForms() {
-    // -----------------------------------------------------------------------
-    // A. Signup Form & Registration OTP Verification
-    // -----------------------------------------------------------------------
     const signupForm = document.getElementById('signup-form');
     const signupFormSection = document.getElementById('signup-form-section');
     const signupOtpSection = document.getElementById('signup-otp-section');
@@ -163,7 +141,6 @@ function initAuthForms() {
                         challengeId: data.challengeId
                     };
 
-                    // Switch view to OTP verification panel
                     if (signupFormSection && signupOtpSection) {
                         signupFormSection.style.display = 'none';
                         signupOtpSection.style.display = 'block';
@@ -193,7 +170,6 @@ function initAuthForms() {
         });
     }
 
-    // Submit Registration OTP
     if (signupOtpForm) {
         signupOtpForm.addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -232,7 +208,6 @@ function initAuthForms() {
                 if (response.ok && data.success) {
                     showToast('🎉 ' + data.message, 'success');
 
-                    // If a verified user session is issued, store it and proceed to their dashboard
                     if (data.user) {
                         setCurrentUser(data.user);
                         const redirectPath = data.user.role === 'seller' ? 'seller-dashboard.html' : 'buyer-dashboard.html';
@@ -262,7 +237,6 @@ function initAuthForms() {
         });
     }
 
-    // Resend Registration OTP
     if (signupResendBtn) {
         signupResendBtn.addEventListener('click', async function() {
             if (!activeRegChallenge) return;
@@ -281,7 +255,6 @@ function initAuthForms() {
 
                 const data = await response.json();
                 if (response.ok && data.success) {
-                    // Update challenge ID with the fresh replacement challenge
                     activeRegChallenge.challengeId = data.challengeId;
                     if (signupOtpInput) {
                         signupOtpInput.value = '';
@@ -307,7 +280,6 @@ function initAuthForms() {
         });
     }
 
-    // Back to Signup Form
     if (signupBackBtn) {
         signupBackBtn.addEventListener('click', function() {
             if (signupFormSection && signupOtpSection) {
@@ -318,9 +290,6 @@ function initAuthForms() {
         });
     }
 
-    // -----------------------------------------------------------------------
-    // B. Login Form & Two-Factor OTP Verification
-    // -----------------------------------------------------------------------
     const loginForm = document.getElementById('login-form');
     const loginFormSection = document.getElementById('login-form-section');
     const loginOtpSection = document.getElementById('login-otp-section');
@@ -374,7 +343,6 @@ function initAuthForms() {
                 const data = await response.json();
 
                 if (response.ok && data.success && data.requireOtp) {
-                    // Credentials validated! Transition to 2FA OTP verification panel
                     activeLoginChallenge = {
                         email: data.email || identifier,
                         challengeId: data.challengeId,
@@ -412,7 +380,6 @@ function initAuthForms() {
         });
     }
 
-    // Submit Login 2FA OTP
     if (loginOtpForm) {
         loginOtpForm.addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -450,7 +417,6 @@ function initAuthForms() {
                 const data = await response.json();
 
                 if (response.ok && data.success && data.user) {
-                    // Two-factor verified: Persist session and redirect
                     setCurrentUser(data.user);
                     showToast('🎉 Login successful! Welcome back.', 'success');
 
@@ -476,7 +442,6 @@ function initAuthForms() {
         });
     }
 
-    // Resend Login OTP
     if (loginResendBtn) {
         loginResendBtn.addEventListener('click', async function() {
             if (!activeLoginChallenge) return;
@@ -520,7 +485,6 @@ function initAuthForms() {
         });
     }
 
-    // Back to Login Credentials Form
     if (loginBackBtn) {
         loginBackBtn.addEventListener('click', function() {
             if (loginFormSection && loginOtpSection) {
@@ -532,9 +496,6 @@ function initAuthForms() {
     }
 }
 
-// ---------------------------------------------------------------------------
-// 2. Cooldown Timer Helper
-// ---------------------------------------------------------------------------
 function startResendCooldown(type, seconds) {
     let remaining = seconds;
     const btn = type === 'signup' 
@@ -564,9 +525,6 @@ function startResendCooldown(type, seconds) {
     if (type === 'login') loginCooldownTimer = timer;
 }
 
-// ---------------------------------------------------------------------------
-// 3. Navigation & User Helpers
-// ---------------------------------------------------------------------------
 function logoutUser() {
     clearCurrentUser();
     showToast('Logged out successfully.', 'info');
