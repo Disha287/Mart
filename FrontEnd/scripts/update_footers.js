@@ -4,14 +4,12 @@ const path = require('path');
 const basePath = path.resolve(__dirname, '..');
 const filesToProcess = [];
 
-// Get root html
 fs.readdirSync(basePath).forEach(file => {
     if (file.endsWith('.html')) {
         filesToProcess.push(path.join(basePath, file));
     }
 });
 
-// Get pages html
 const pagesDir = path.join(basePath, 'pages');
 if (fs.existsSync(pagesDir)) {
     fs.readdirSync(pagesDir).forEach(file => {
@@ -129,7 +127,7 @@ const getFooterTemplate = (isRoot, fileName) => {
 filesToProcess.forEach(file => {
     const fileName = path.basename(file);
     if (fileName === 'login.html' || fileName === 'signup.html') {
-        return; // Don't add footer to auth screens
+        return;
     }
 
     let content = fs.readFileSync(file, 'utf8');

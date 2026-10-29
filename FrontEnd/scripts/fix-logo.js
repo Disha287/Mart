@@ -13,13 +13,11 @@ files.forEach(f => {
     const fp = path.join(dir, f);
     let content = fs.readFileSync(fp, 'utf8');
     
-    // Replace anchor with logo img
     let updated = content.replace(
         /<a href="\.\.\/index\.html" class="logo">\s*<img src="\.\.\/assets\/images\/logo\.png"[^>]*>\s*<\/a>/gi,
         '<a href="../index.html" class="logo nav-brand">CAMPUS MART<span class="brand-red">.</span></a>'
     );
 
-    // Replace any remaining standalone logo.png
     updated = updated.replace(
         /<img src="\.\.\/assets\/images\/logo\.png"[^>]*>/gi,
         '<a href="../index.html" class="logo nav-brand">CAMPUS MART<span class="brand-red">.</span></a>'

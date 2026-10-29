@@ -1,12 +1,7 @@
-/* ==========================================================================
-   CAMPUS MART — WARM PRINT EDITORIAL DESIGN SYSTEM & CHOREOGRAPHY
-   ========================================================================== */
-
 @import url('https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&family=Martian+Mono:wght@400;500;700&display=swap');
 
-/* --- 1. DESIGN TOKENS (WARM PRINT REGISTER) --- */
 :root {
-    /* Palette */
+
     --bg-cream: #e7e2d8;
     --ink-primary: #171717;
     --accent-red: #ef493c;
@@ -15,7 +10,6 @@
     --dark-loam: #241a12;
     --dark-loam-surface: #2e2218;
 
-    /* Hairlines & Muted Text */
     --ink-hairline: rgba(23, 23, 23, 0.16);
     --ink-hairline-subtle: rgba(23, 23, 23, 0.08);
     --ink-muted: rgba(23, 23, 23, 0.56);
@@ -23,29 +17,23 @@
     --dark-loam-hairline-subtle: rgba(255, 253, 248, 0.08);
     --paper-muted: rgba(255, 253, 248, 0.65);
 
-    /* Typography */
     --font-display: 'Anton', sans-serif;
     --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     --font-mono: 'Martian Mono', monospace;
 
-    /* Easing */
     --ease-general: cubic-bezier(.22, 1, .36, 1);
     --ease-cinematic: cubic-bezier(.65, 0, .35, 1);
 
-    /* Stage 1: Poster Hero Variables */
     --hero-type-y: 0px;
     --hero-type-scale: 1;
     --hero-type-alpha: 1;
 
-    /* Stage 2: Manifesto Variables */
     --manifesto-wipe: 100%;
     --manifesto-scale: 1;
 
-    /* Stage 3: Horizontal Card Rail Variables */
     --rail-x: 0px;
     --rail-progress: 100%;
 
-    /* Stage 4: Printed Artifact Variables */
     --packet-alpha: 1;
     --packet-enter: 0px;
     --packet-scale: 1;
@@ -53,17 +41,15 @@
     --packet-meter: 100%;
     --packet-copy-x: 0px;
 
-    /* Stage 5: Parallax Season Band Variables */
     --season-y: 0%;
     --season-scale: 1;
 }
 
-/* --- 2. GLOBAL RESET & ZERO RADII MANDATE --- */
 *, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    border-radius: 0 !important; /* Strict design mandate: zero radii everywhere */
+    border-radius: 0 !important;
 }
 
 html {
@@ -104,7 +90,6 @@ button {
     border: none;
 }
 
-/* --- 3. TYPOGRAPHY SYSTEM --- */
 .font-display {
     font-family: var(--font-display);
     text-transform: uppercase;
@@ -144,7 +129,6 @@ button {
     color: var(--accent-red);
 }
 
-/* --- 4. PER-ATOM MOTION BUDGET (STAGGERED PER-WORD & PER-ROW REVEALS) --- */
 .word-span {
     display: inline-block;
     opacity: 0;
@@ -174,7 +158,6 @@ button {
     transform: translateY(0);
 }
 
-/* --- 5. EDITORIAL NAVIGATION --- */
 .editorial-nav {
     position: fixed;
     top: 0;
@@ -312,7 +295,6 @@ button {
     border-color: var(--accent-red);
 }
 
-/* User Account Badge & Logout (High Visibility on Dark & Light Nav) */
 #nav-user-btn {
     display: inline-flex;
     align-items: center;
@@ -377,7 +359,6 @@ button {
     color: #ffffff !important;
 }
 
-/* Toast container */
 #toast-container {
     position: fixed;
     bottom: 2rem;
@@ -407,9 +388,6 @@ button {
     color: var(--accent-red);
 }
 
-/* ==========================================================================
-   STAGE ARCHITECTURE (CLEAN NATURAL FLOW)
-   ========================================================================== */
 .scroll-stage {
     position: relative;
     width: 100%;
@@ -422,9 +400,6 @@ button {
     overflow: visible;
 }
 
-/* ==========================================================================
-   STAGE 1 — POSTER HERO (Full Viewport, Dark Loam #241a12)
-   ========================================================================== */
 .stage-hero {
     min-height: 100svh;
     background-color: var(--dark-loam);
@@ -544,9 +519,6 @@ button {
     opacity: calc(1 - var(--hero-type-alpha) * -0.5);
 }
 
-/* ==========================================================================
-   STAGE 2 — MANIFESTO (Cream #e7e2d8)
-   ========================================================================== */
 .stage-manifesto {
     height: auto;
     background-color: var(--bg-cream);
@@ -644,9 +616,6 @@ button {
     line-height: 1.5;
 }
 
-/* ==========================================================================
-   STAGE 3 — HORIZONTAL CARD RAIL (Cream #e7e2d8)
-   ========================================================================== */
 .stage-rail {
     height: auto;
     background-color: var(--bg-cream);
@@ -713,7 +682,6 @@ button {
     will-change: auto;
 }
 
-/* 6 Editorial Product Cards (1.5px ink border, paper fill, 3/4 aspect plate) */
 .catalog-card {
     flex: 0 0 clamp(230px, 26vw, 330px);
     background: var(--paper-white);
@@ -872,9 +840,6 @@ button {
     will-change: width;
 }
 
-/* ==========================================================================
-   STAGE 4 — THE PRINTED ARTIFACT (Dark Loam #241a12)
-   ========================================================================== */
 .stage-artifact {
     height: auto;
     background-color: var(--dark-loam);
@@ -926,7 +891,6 @@ button {
     max-width: 480px;
 }
 
-/* The Paper Ticket Artifact (3/4 aspect, 1.5px ink border, off-white fill) */
 .listing-ticket {
     background: var(--paper-white);
     color: var(--ink-primary);
@@ -1027,7 +991,6 @@ button {
     border-color: var(--accent-red);
 }
 
-/* Progress Meter Bar */
 .ticket-meter-track {
     width: 100%;
     height: 3px;
@@ -1047,7 +1010,6 @@ button {
     will-change: width;
 }
 
-/* Dashed 2px Perforation Opening */
 .ticket-perforation {
     border-top: 2px dashed var(--ink-primary);
     margin: 0.5rem 0;
@@ -1056,7 +1018,6 @@ button {
     opacity: 1;
 }
 
-/* Three Mono Rows at the Foot */
 .ticket-foot-rows {
     border-top: 1px solid var(--ink-hairline);
     padding-top: 0.75rem;
@@ -1106,9 +1067,6 @@ button {
     letter-spacing: 0.18em;
 }
 
-/* ==========================================================================
-   STAGE 5 — PARALLAX SEASON BAND (Cream #e7e2d8)
-   ========================================================================== */
 .stage-seasons {
     height: auto;
     background-color: var(--bg-cream);
@@ -1203,9 +1161,6 @@ button {
     color: var(--ink-muted);
 }
 
-/* ==========================================================================
-   BELOW-THE-FOLD CONTENT (NORMAL FLOW SECTIONS)
-   ========================================================================== */
 .normal-flow-section {
     position: relative;
     padding: 6rem 3.5rem;
@@ -1230,7 +1185,6 @@ button {
     text-transform: uppercase;
 }
 
-/* Category Directory Grid */
 .category-tiles-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -1295,7 +1249,6 @@ button {
     font-weight: 700;
 }
 
-/* Ruled Price Table: Fresh on Campus */
 .editorial-table-container {
     width: 100%;
     overflow-x: auto;
@@ -1376,7 +1329,6 @@ button {
     border-color: var(--accent-red);
 }
 
-/* Native Details FAQ */
 .faq-accordion {
     display: flex;
     flex-direction: column;
@@ -1432,7 +1384,6 @@ button {
     padding-top: 1.25rem;
 }
 
-/* Editorial Dark Footer (Dark Loam #241a12) */
 .editorial-footer {
     background-color: var(--dark-loam);
     color: var(--paper-white);
@@ -1504,9 +1455,6 @@ button {
     color: var(--paper-muted);
 }
 
-/* ==========================================================================
-   RESPONSIVENESS & REDUCED MOTION SPECIFICATION
-   ========================================================================= */
 @media (max-width: 1024px) {
     .editorial-nav { padding: 1rem 2rem; }
     .hero-viewport, .manifesto-viewport, .artifact-viewport, .seasons-viewport { padding: 5rem 2rem 2.5rem 2rem; }
@@ -1525,10 +1473,6 @@ button {
     .footer-top { grid-template-columns: 1fr; gap: 2rem; }
 }
 
-/* Strict prefers-reduced-motion:
-   Flatten .scroll-stage heights to auto, make pins static, force all word spans
-   and data-rev elements visible, remove every clip-path, wrap horizontal rail,
-   and fill the progress meters. */
 @media (prefers-reduced-motion: reduce) {
     .scroll-stage {
         height: auto !important;
