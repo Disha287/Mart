@@ -1,5 +1,3 @@
-/* CAMPUSMART - Seller Management & Dashboard Controller */
-
 document.addEventListener('DOMContentLoaded', function() {
     initSellerDashboard();
     initCreateListingForm();
@@ -42,7 +40,6 @@ function initCreateListingForm() {
     const form = document.getElementById('create-listing-form');
     if (!form) return;
 
-    // FileReader image preview logic
     const imgInput = document.getElementById('list-image-file');
     const imgPreview = document.getElementById('image-preview');
 
@@ -291,7 +288,6 @@ function initOffersPage() {
     const container = document.getElementById('offers-list-container');
     if (!container) return;
 
-    // Detect view mode from URL query parameter or current user role
     const urlParams = new URLSearchParams(window.location.search);
     const viewParam = urlParams.get('view') || urlParams.get('tab');
     const user = getCurrentUser();
@@ -306,7 +302,6 @@ function initOffersPage() {
         currentOffersTab = 'buyer';
     }
 
-    // Display current user identity label
     const roleLabel = document.getElementById('current-user-role-label');
     if (roleLabel) {
         if (user) {
@@ -363,7 +358,6 @@ function renderOffersTabsUI() {
     const products = dbGet('products');
     const user = getCurrentUser();
 
-    // Calculate seller offers
     let sellerProds = products;
     if (user && user.role === 'seller') {
         sellerProds = products.filter(p => p.sellerId === user.id || p.sellerName === user.name);
@@ -375,7 +369,6 @@ function renderOffersTabsUI() {
         if (p.offers) sellerOffersCount += p.offers.length;
     });
 
-    // Calculate buyer offers
     let buyerOffersCount = 0;
     products.forEach(p => {
         if (p.offers) {
@@ -420,7 +413,6 @@ function renderOffersList() {
     const products = dbGet('products');
 
     if (currentOffersTab === 'seller') {
-        // --- SELLER VIEW ---
         let sellerProds = products;
         if (user && user.role === 'seller') {
             sellerProds = products.filter(p => p.sellerId === user.id || p.sellerName === user.name);
@@ -530,7 +522,6 @@ function renderOffersList() {
         container.innerHTML = html;
 
     } else {
-        // --- BUYER VIEW ("Offers Made / Bargained Items") ---
         let allBuyerOffers = [];
         products.forEach(p => {
             if (p.offers && p.offers.length > 0) {

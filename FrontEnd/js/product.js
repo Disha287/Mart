@@ -1,5 +1,3 @@
-/* CAMPUSKART - Product Details & Action Engine */
-
 let currentProduct = null;
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -10,12 +8,10 @@ function initProductDetails() {
     const urlParams = new URLSearchParams(window.location.search);
     let prodId = urlParams.get('id');
     
-    // Fallback for file:// protocol where search might be empty
     if (!prodId && window.location.href.includes('?id=')) {
         prodId = window.location.href.split('?id=')[1].split('&')[0];
     }
     
-    // Fallback for localStorage if redirect dropped the query param
     if (!prodId) {
         prodId = localStorage.getItem('current_product_id');
     }
@@ -52,7 +48,6 @@ function initProductDetails() {
         return;
     }
 
-    // Save it for future reloads on this page if it came from URL
     localStorage.setItem('current_product_id', currentProduct.id);
 
     renderProductUI();
@@ -67,7 +62,6 @@ function renderProductUI() {
     const isWishlist = wishlist.includes(currentProduct.id);
     const user = getCurrentUser();
 
-    // Prepare WhatsApp Message
     const defaultMsg = `Hi, I found your listing "${currentProduct.name}" on CampusKart and I'm interested in buying it for ${formatCurrency(currentProduct.price)}. Is it still available?`;
     const whatsappUrl = buildWhatsAppLink(currentProduct.sellerPhone || '9123456789', defaultMsg);
 
@@ -254,10 +248,8 @@ function handleBuyNow() {
 
     showToast('Order placed successfully! Opening WhatsApp chat...', 'success');
 
-    // Open WhatsApp Chat directly
     window.open(waUrl, '_blank');
 
-    // Populate Order Modal Content
     document.getElementById('order-modal-details').innerHTML = `
         <div style="text-align: center; padding: 1rem 0;">
             <div style="font-size: 3rem; margin-bottom: 0.5rem;">🎉</div>
@@ -364,15 +356,12 @@ function renderRecommendations() {
 
     const products = dbGet('products');
     
-    // Find products in the same category, exclude the current product
     let recommendations = products.filter(p => p.category === currentProduct.category && p.id !== currentProduct.id && (p.stock === undefined || p.stock > 0));
     
-    // If not enough products in same category, pad with random products
     if (recommendations.length < 4) {
         const otherProducts = products.filter(p => p.category !== currentProduct.category && p.id !== currentProduct.id && (p.stock === undefined || p.stock > 0));
         recommendations = recommendations.concat(otherProducts).slice(0, 4);
     } else {
-        // Just take up to 4
         recommendations = recommendations.slice(0, 4);
     }
 
