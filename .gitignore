@@ -59,3 +59,8 @@ __pycache__/
 .agents/
 skills-lock.json
 
+# Local root convenience files (kept ignored so GitHub maintains strictly the 4 items: Backend, FrontEnd, .gitignore, README.md)
+/package.json
+/package-lock.json
+/vite.config.mjs
+
