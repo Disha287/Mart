@@ -1,5 +1,3 @@
-/* CAMPUSMART - Orders & Rating Engine */
-
 let currentOrderTab = 'active';
 
 document.addEventListener('DOMContentLoaded', function() {

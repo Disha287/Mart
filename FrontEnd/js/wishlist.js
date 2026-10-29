@@ -1,5 +1,3 @@
-/* CAMPUSMART - Wishlist Management Engine */
-
 document.addEventListener('DOMContentLoaded', function() {
     renderWishlist();
 });

@@ -1,5 +1,3 @@
-/* CAMPUSMART - Shopping Cart Engine */
-
 document.addEventListener('DOMContentLoaded', function() {
     renderCart();
 });
@@ -32,7 +30,7 @@ function renderCart() {
 
     let cartDetailedItems = [];
     cart.forEach(item => {
-        const isSelected = item.selected !== false; // Default to true
+        const isSelected = item.selected !== false;
         if (item.isTuck) {
             cartDetailedItems.push({
                 id: item.productId,
@@ -94,7 +92,6 @@ function renderCart() {
     });
     container.innerHTML = itemsHtml;
 
-    // Use reduce() for array calculation requirement, filter by selected
     const grandTotal = cartDetailedItems.filter(curr => curr.selected).reduce((acc, curr) => acc + (curr.price * curr.quantity), 0);
 
     const grandTotalEl = document.getElementById('cart-grand-total');
@@ -173,7 +170,6 @@ function checkoutCart() {
                 sellerName = p.sellerName;
                 sellerPhone = p.sellerPhone || '9123456789';
                 
-                // Decrement stock
                 if (p.stock !== undefined) {
                     p.stock = Math.max(0, p.stock - item.quantity);
                 }
@@ -201,7 +197,6 @@ function checkoutCart() {
     dbSet('orders', orders);
     dbSet('products', products);
     
-    // Keep only unselected items in the cart
     const remainingItems = cart.filter(item => item.selected === false);
     dbSet('cart', remainingItems);
     updateNavBadges();
