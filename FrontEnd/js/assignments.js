@@ -1,5 +1,3 @@
-/* CAMPUSMART - Academic Assistance & Mentor Rating Engine */
-
 document.addEventListener('DOMContentLoaded', function() {
     initAcademicPage();
 });
@@ -255,21 +253,17 @@ function setupRateMentorForm() {
             const currentCount = mentor.completedCount || 0;
             const currentRating = mentor.rating || 5.0;
 
-            // Recalculate Average Rating
             const updatedRating = Number((((currentRating * currentCount) + givenStars) / (currentCount + 1)).toFixed(1));
             mentor.rating = updatedRating;
             mentor.completedCount = currentCount + 1;
 
-            // Initialize reviews if not present
             if (!mentor.reviews) {
                 mentor.reviews = [];
             }
 
-            // Get logged in student name or default
             const currentUser = getCurrentUser();
             const reviewerName = currentUser ? (currentUser.name || currentUser.username) : 'Anonymous Student';
 
-            // Add new review
             mentor.reviews.unshift({
                 reviewerName: reviewerName,
                 rating: givenStars,
@@ -283,7 +277,6 @@ function setupRateMentorForm() {
             showToast(`⭐ Review submitted successfully for ${mentor.name}!`, 'success');
             renderAcademicHelpers();
             
-            // Clear feedback textarea
             document.getElementById('rate-mentor-feedback').value = '';
         }
     });
@@ -304,7 +297,6 @@ function openMentorDetailsModal(mentorId) {
     const waMsg = `Hi ${mentor.name}, I found your mentor profile on CampusMart. I would like to book an academic assistance session with you.`;
     const waUrl = buildWhatsAppLink(mentor.phone || '9876543210', waMsg);
 
-    // Reviews list
     let reviewsHtml = '';
     const reviews = mentor.reviews || [];
     if (reviews.length === 0) {

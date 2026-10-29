@@ -1,5 +1,3 @@
-/* CAMPUSMART - Services Marketplace & Provider Engine */
-
 let activeServiceCategory = 'all';
 
 document.addEventListener('DOMContentLoaded', function() {

@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // If not initialized in localStorage, initDatabase from data.js does it
     renderDonations();
 
     const donationForm = document.getElementById('donation-form');
@@ -11,7 +10,6 @@ document.addEventListener('DOMContentLoaded', function() {
 function renderDonations() {
     let donations = dbGet('donations') || [];
     
-    // Only show available items
     donations = donations.filter(d => d.status === 'Available');
 
     const container = document.getElementById('donations-grid');
@@ -24,7 +22,6 @@ function renderDonations() {
 
     let html = '';
     
-    // Sort so available is first, then newest
     donations.sort((a, b) => {
         if (a.status === 'Available' && b.status !== 'Available') return -1;
         if (a.status !== 'Available' && b.status === 'Available') return 1;
@@ -33,7 +30,7 @@ function renderDonations() {
 
     donations.forEach(d => {
         const isAvailable = d.status === 'Available';
-        const badgeClass = isAvailable ? 'badge-fixed' : 'badge-bidding'; // Reuse existing classes: green for available, gray/orange for claimed
+        const badgeClass = isAvailable ? 'badge-fixed' : 'badge-bidding';
 
         html += `
             <div class="card product-card">
@@ -139,11 +136,8 @@ function claimDonation(donationId) {
         showToast('Item successfully claimed! Redirecting to WhatsApp...', 'success');
         renderDonations();
 
-        // Redirect to WhatsApp
         const message = `Hi ${claimedItem.donorName}, I am ${receiverName}. I would like to collect your donated item: "${claimedItem.itemName}". Please let me know when and where we can meet!`;
-        // Remove spaces or non-digit chars from phone just in case, though keeping it simple is fine
         const phoneStr = claimedItem.donorPhone.replace(/\D/g, '');
-        // Prefix with 91 if it's a 10 digit Indian number and doesn't have it
         const finalPhone = phoneStr.length === 10 ? '91' + phoneStr : phoneStr;
         const waUrl = `https://wa.me/${finalPhone}?text=${encodeURIComponent(message)}`;
         
