@@ -1,11 +1,5 @@
-// ============================================================
-// USERS CONTROLLER — MVC Controller Layer
-// Handles HTTP Requests and delegates to UserModel
-// ============================================================
-
 const UserModel = require('../models/userModel');
 
-// GET /api/users — Get all users (supports ?role=buyer|seller)
 const getAllUsers = async (req, res) => {
     try {
         const { role } = req.query;
@@ -20,7 +14,6 @@ const getAllUsers = async (req, res) => {
     }
 };
 
-// GET /api/users/:id — Get single user by ID
 const getUserById = async (req, res) => {
     try {
         const user = await UserModel.findById(req.params.id);
@@ -33,12 +26,10 @@ const getUserById = async (req, res) => {
     }
 };
 
-// POST /api/users — Create new user
 const createUser = async (req, res) => {
     try {
         const { name, email, phone, role, college, hostel } = req.body;
 
-        // Basic validation
         if (!name || !email || !role) {
             return res.status(400).json({ success: false, message: 'name, email and role are required fields' });
         }
@@ -46,7 +37,6 @@ const createUser = async (req, res) => {
             return res.status(400).json({ success: false, message: "role must be either 'buyer' or 'seller'" });
         }
 
-        // Check duplicate email
         const exists = await UserModel.findByEmail(email);
         if (exists) {
             return res.status(409).json({ success: false, message: 'A user with this email already exists' });
@@ -59,7 +49,6 @@ const createUser = async (req, res) => {
     }
 };
 
-// PUT /api/users/:id — Update user
 const updateUser = async (req, res) => {
     try {
         const updated = await UserModel.findByIdAndUpdate(req.params.id, req.body);
@@ -72,7 +61,6 @@ const updateUser = async (req, res) => {
     }
 };
 
-// DELETE /api/users/:id — Delete user
 const deleteUser = async (req, res) => {
     try {
         const deleted = await UserModel.findByIdAndDelete(req.params.id);

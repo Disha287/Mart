@@ -1,12 +1,5 @@
-// ============================================================
-// PRODUCTS CONTROLLER — MVC Controller Layer
-// Handles HTTP Requests and delegates to ProductModel
-// ============================================================
-
 const ProductModel = require('../models/productModel');
 
-// GET /api/products — Get all products
-// Query params: ?category=Academic, ?listingType=bidding, ?sellerId=usr_seller_1, ?search=xxx
 const getAllProducts = async (req, res) => {
     try {
         const { category, listingType, sellerId, search } = req.query;
@@ -21,7 +14,6 @@ const getAllProducts = async (req, res) => {
     }
 };
 
-// GET /api/products/:id — Get single product
 const getProductById = async (req, res) => {
     try {
         const product = await ProductModel.findById(req.params.id);
@@ -35,7 +27,6 @@ const getProductById = async (req, res) => {
     }
 };
 
-// POST /api/products — Create new product listing
 const createProduct = async (req, res) => {
     try {
         const { name, category, price, condition, listingType, location, description, sellerId, sellerName, sellerPhone, stock, image } = req.body;
@@ -58,7 +49,6 @@ const createProduct = async (req, res) => {
     }
 };
 
-// PUT /api/products/:id — Update product
 const updateProduct = async (req, res) => {
     try {
         const updated = await ProductModel.findByIdAndUpdate(req.params.id, req.body);
@@ -71,7 +61,6 @@ const updateProduct = async (req, res) => {
     }
 };
 
-// DELETE /api/products/:id — Delete product
 const deleteProduct = async (req, res) => {
     try {
         const deleted = await ProductModel.findByIdAndDelete(req.params.id);
@@ -84,11 +73,6 @@ const deleteProduct = async (req, res) => {
     }
 };
 
-// ============================================================
-// NESTED: OFFERS on a Product
-// ============================================================
-
-// GET /api/products/:id/offers — Get all offers on a product
 const getProductOffers = async (req, res) => {
     try {
         const product = await ProductModel.findById(req.params.id);
@@ -108,7 +92,6 @@ const getProductOffers = async (req, res) => {
     }
 };
 
-// POST /api/products/:id/offers — Submit an offer on a product
 const createOffer = async (req, res) => {
     try {
         const product = await ProductModel.findById(req.params.id);
@@ -131,7 +114,6 @@ const createOffer = async (req, res) => {
     }
 };
 
-// PATCH /api/products/:id/offers/:offerId — Update offer status (Accept/Reject)
 const updateOfferStatus = async (req, res) => {
     try {
         const { status } = req.body;
@@ -153,7 +135,6 @@ const updateOfferStatus = async (req, res) => {
     }
 };
 
-// DELETE /api/products/:id/offers/:offerId — Cancel/delete an offer
 const deleteOffer = async (req, res) => {
     try {
         const result = await ProductModel.deleteOffer(req.params.id, req.params.offerId);
@@ -170,11 +151,6 @@ const deleteOffer = async (req, res) => {
     }
 };
 
-// ============================================================
-// NESTED: BIDS on a Product
-// ============================================================
-
-// GET /api/products/:id/bids — Get all bids
 const getProductBids = async (req, res) => {
     try {
         const product = await ProductModel.findById(req.params.id);
@@ -199,7 +175,6 @@ const getProductBids = async (req, res) => {
     }
 };
 
-// POST /api/products/:id/bids — Place a bid
 const placeBid = async (req, res) => {
     try {
         const product = await ProductModel.findById(req.params.id);

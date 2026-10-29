@@ -1,8 +1,3 @@
-// ============================================================
-// ORDER MODEL — MVC Model Layer
-// Manages Order schema and operations
-// ============================================================
-
 const { orders } = require('../config/seedData');
 
 class OrderModel {
@@ -10,7 +5,6 @@ class OrderModel {
         this.collection = orders;
     }
 
-    // Find orders with optional filters
     async find(filters = {}) {
         let results = [...this.collection];
 
@@ -27,12 +21,10 @@ class OrderModel {
         return results;
     }
 
-    // Find order by ID
     async findById(id) {
         return this.collection.find(o => o.id === id) || null;
     }
 
-    // Create a new order
     async create(orderData) {
         const {
             productId, productName, price, quantity,
@@ -65,7 +57,6 @@ class OrderModel {
         return newOrder;
     }
 
-    // Update order by ID
     async findByIdAndUpdate(id, updates = {}) {
         const index = this.collection.findIndex(o => o.id === id);
         if (index === -1) return null;
@@ -80,7 +71,6 @@ class OrderModel {
         return this.collection[index];
     }
 
-    // Delete order by ID
     async findByIdAndDelete(id) {
         const index = this.collection.findIndex(o => o.id === id);
         if (index === -1) return null;

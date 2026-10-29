@@ -1,8 +1,3 @@
-// ============================================================
-// CAMPUSMART BACKEND — Authentication Controller
-// Production-Ready Email OTP Verification, Login 2FA & Welcome Email
-// ============================================================
-
 const UserModel = require('../models/userModel');
 const config = require('../config/config');
 const otpService = require('../services/otpService');
@@ -36,11 +31,6 @@ const {
     validatePasswordStrength
 } = require('../utils/securityUtils');
 
-// ============================================================
-// 1. POST /api/auth/register
-// Initiate registration, create unverified user, issue OTP challenge
-// Security: Never issue or persist a session token before verification!
-// ============================================================
 const register = async (req, res) => {
     try {
         const { name, email, password, phone, role, college, hostel } = req.body;
@@ -60,7 +50,6 @@ const register = async (req, res) => {
             });
         }
 
-        // Educational domain policy check
         const eduCheck = isEducationalEmail(sanitizedEmail);
         if (!eduCheck.valid) {
             console.log(`[Register] Rejected non-educational email: ${sanitizedEmail}`);
@@ -81,7 +70,6 @@ const register = async (req, res) => {
         const userRole = ['buyer', 'seller'].includes(role) ? role : 'buyer';
         const existingUser = await UserModel.findByEmail(sanitizedEmail);
 
-        // Check if verified account already exists
         if (existingUser && existingUser.isVerified) {
             return res.status(409).json({
                 success: false,
@@ -89,12 +77,10 @@ const register = async (req, res) => {
             });
         }
 
-        // Hash password securely
         const hashedPassword = await hashPassword(password);
         let userRecord = null;
 
         if (existingUser && !existingUser.isVerified) {
-            // Update unverified user record without duplicating
             userRecord = await UserModel.findByEmailAndUpdate(sanitizedEmail, {
                 name: name.trim(),
                 password: hashedPassword,
@@ -104,7 +90,6 @@ const register = async (req, res) => {
                 hostel: hostel ? hostel.trim() : null
             });
         } else {
-            // Create brand new unverified user
             userRecord = await UserModel.create({
                 name: name.trim(),
                 email: sanitizedEmail,
@@ -118,7 +103,6 @@ const register = async (req, res) => {
             });
         }
 
-        // Create OTP challenge
         const challenge = await otpService.createChallenge({
             email: sanitizedEmail,
             userId: userRecord.id,
@@ -126,7 +110,6 @@ const register = async (req, res) => {
             metadata: { role: userRole }
         });
 
-        // Dispatch OTP email
         try {
             await sendRegistrationOtpEmail(
                 sanitizedEmail,
@@ -156,7 +139,6 @@ const register = async (req, res) => {
             });
         }
 
-        // Success: Only challenge metadata returned (NO session token before verification!)
         const regResponse = {
             success: true,
             message: 'Registration initiated. Verification code sent to your campus email.',
@@ -184,10 +166,6 @@ const register = async (req, res) => {
     }
 };
 
-// ============================================================
-// 2. POST /api/auth/verify-registration-otp
-// Verify registration OTP, activate user account, and issue session
-// ============================================================
 const verifyRegistrationOtp = async (req, res) => {
     try {
         const { email, challengeId, otp } = req.body;
@@ -207,7 +185,6 @@ const verifyRegistrationOtp = async (req, res) => {
             });
         }
 
-        // Verify challenge
         const result = await otpService.verifyOtp({
             challengeId,
             email: sanitizedEmail,
@@ -224,7 +201,6 @@ const verifyRegistrationOtp = async (req, res) => {
             });
         }
 
-        // Activate user in database
         const updatedUser = await UserModel.findByEmailAndUpdate(sanitizedEmail, {
             isVerified: true,
             verifiedAt: new Date()
@@ -237,7 +213,6 @@ const verifyRegistrationOtp = async (req, res) => {
             });
         }
 
-        // Dispatch Welcome Email (idempotent, only if not previously sent)
         if (!updatedUser.welcomeEmailSent) {
             try {
                 await sendWelcomeEmail(updatedUser.email, updatedUser.name, updatedUser.role);
@@ -248,13 +223,11 @@ const verifyRegistrationOtp = async (req, res) => {
                 console.log(`[Welcome Email] ✅ Dispatched to ${sanitizedEmail}`);
             } catch (wErr) {
                 console.warn(`[Welcome Email Warning] Could not dispatch welcome email to ${sanitizedEmail}:`, wErr.message);
-                // Non-blocking: Do not fail registration verification if welcome email is deferred
             }
         }
 
         console.log(`[Register Verification] ✅ Account activated for ${sanitizedEmail}`);
 
-        // Issue authenticated session token ONLY AFTER successful verification
         const token = generateToken(updatedUser, updatedUser.role);
 
         return res.status(200).json({
@@ -283,10 +256,6 @@ const verifyRegistrationOtp = async (req, res) => {
     }
 };
 
-// ============================================================
-// 3. POST /api/auth/resend-registration-otp
-// Resend registration OTP with cooldown enforcement
-// ============================================================
 const resendRegistrationOtp = async (req, res) => {
     try {
         const { email, challengeId } = req.body;
@@ -380,11 +349,6 @@ const resendRegistrationOtp = async (req, res) => {
     }
 };
 
-// ============================================================
-// 4. POST /api/auth/login
-// Validate password credentials and trigger Login OTP
-// Security: Never issue a session token before 2FA verification!
-// ============================================================
 const login = async (req, res) => {
     try {
         const { email, password, role } = req.body;
@@ -420,7 +384,6 @@ const login = async (req, res) => {
             });
         }
 
-        // Check if account email is verified
         if (!user.isVerified) {
             return res.status(403).json({
                 success: false,
@@ -430,7 +393,6 @@ const login = async (req, res) => {
             });
         }
 
-        // Credentials valid & verified: Issue Login 2FA Challenge
         const challenge = await otpService.createChallenge({
             email: sanitizedEmail,
             userId: user.id,
@@ -438,7 +400,6 @@ const login = async (req, res) => {
             metadata: { requestedRole: role || user.role }
         });
 
-        // Dispatch 2FA OTP Email
         try {
             await sendLoginOtpEmail(sanitizedEmail, user.name, challenge.otp, config.OTP_EXPIRY_MINUTES);
             console.log(`[Login] ✅ 2FA OTP dispatched to ${sanitizedEmail}`);
@@ -463,7 +424,6 @@ const login = async (req, res) => {
             });
         }
 
-        // Success: Only challenge metadata returned (NO session token before 2FA verification!)
         const loginResponse = {
             success: true,
             message: 'Credentials accepted. Verification code sent to your campus email.',
@@ -491,10 +451,6 @@ const login = async (req, res) => {
     }
 };
 
-// ============================================================
-// 5. POST /api/auth/verify-login-otp
-// Verify Login OTP and issue full authenticated user session
-// ============================================================
 const verifyLoginOtp = async (req, res) => {
     try {
         const { email, challengeId, otp, role } = req.body;
@@ -514,7 +470,6 @@ const verifyLoginOtp = async (req, res) => {
             });
         }
 
-        // Verify challenge
         const result = await otpService.verifyOtp({
             challengeId,
             email: sanitizedEmail,
@@ -539,12 +494,10 @@ const verifyLoginOtp = async (req, res) => {
             });
         }
 
-        // Determine authoritative role
         const finalRole = ['buyer', 'seller'].includes(role) ? role : user.role;
 
         console.log(`[Login] ✅ 2FA Verified. User session created for: ${sanitizedEmail} (${finalRole})`);
 
-        // Issue authenticated session token ONLY AFTER successful 2FA
         const token = generateToken(user, finalRole);
 
         return res.status(200).json({
@@ -573,9 +526,6 @@ const verifyLoginOtp = async (req, res) => {
     }
 };
 
-// ============================================================
-// 6. POST /api/auth/resend-login-otp
-// ============================================================
 const resendLoginOtp = async (req, res) => {
     try {
         const { email, challengeId } = req.body;
@@ -662,10 +612,6 @@ const resendLoginOtp = async (req, res) => {
     }
 };
 
-// ============================================================
-// 7. GET /api/auth/smtp-status
-// Safe operational diagnostic check
-// ============================================================
 const getSmtpStatus = async (req, res) => {
     try {
         const status = await getSmtpDiagnosticStatus();

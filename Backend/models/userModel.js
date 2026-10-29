@@ -1,12 +1,6 @@
-// ============================================================
-// USER MODEL — MVC Model Layer with Mongoose & In-Memory Fallback
-// Manages User schema and credentials (OTP-free)
-// ============================================================
-
 const mongoose = require('mongoose');
 const { users: initialSeedUsers } = require('../config/seedData');
 
-// Prepare seed users with defaults
 const preparedSeedUsers = initialSeedUsers.map(u => ({
     ...u,
     password: u.password || 'password123',
@@ -16,7 +10,6 @@ const preparedSeedUsers = initialSeedUsers.map(u => ({
     welcomeEmailSentAt: new Date()
 }));
 
-// Mongoose Schema Definition
 const userSchema = new mongoose.Schema({
     id: { type: String, required: true, unique: true, index: true },
     name: { type: String, required: true },
@@ -44,9 +37,6 @@ class UserModel {
         this.isSeeded = false;
     }
 
-    /**
-     * Seed initial demo users into MongoDB if empty
-     */
     async ensureSeeded() {
         if (this.isSeeded || mongoose.connection.readyState !== 1) return;
         try {
@@ -61,9 +51,6 @@ class UserModel {
         }
     }
 
-    /**
-     * Find all users with optional filters
-     */
     async find(filters = {}) {
         await this.ensureSeeded();
 
@@ -80,9 +67,6 @@ class UserModel {
         return results;
     }
 
-    /**
-     * Find user by unique ID
-     */
     async findById(id) {
         await this.ensureSeeded();
 
@@ -92,9 +76,6 @@ class UserModel {
         return this.collection.find(u => u.id === id) || null;
     }
 
-    /**
-     * Find user by email (case-insensitive)
-     */
     async findByEmail(email) {
         if (!email) return null;
         await this.ensureSeeded();
@@ -106,9 +87,6 @@ class UserModel {
         return this.collection.find(u => u.email.toLowerCase() === cleanEmail) || null;
     }
 
-    /**
-     * Create a new user (active upon creation)
-     */
     async create(userData) {
         const {
             name,
@@ -153,9 +131,6 @@ class UserModel {
         return { ...newUserObj };
     }
 
-    /**
-     * Update user by ID
-     */
     async findByIdAndUpdate(id, updates = {}) {
         if (mongoose.connection.readyState === 1) {
             return await User.findOneAndUpdate(
@@ -171,9 +146,6 @@ class UserModel {
         return this.collection[index];
     }
 
-    /**
-     * Update user by Email
-     */
     async findByEmailAndUpdate(email, updates = {}) {
         if (!email) return null;
         const cleanEmail = email.toLowerCase().trim();
@@ -192,9 +164,6 @@ class UserModel {
         return this.collection[index];
     }
 
-    /**
-     * Delete user by ID
-     */
     async findByIdAndDelete(id) {
         if (mongoose.connection.readyState === 1) {
             return await User.findOneAndDelete({ id }).lean();

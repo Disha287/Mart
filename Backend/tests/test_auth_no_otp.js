@@ -1,8 +1,3 @@
-// ============================================================
-// CAMPUSMART BACKEND — AUTH SECURITY & NO-BYPASS TEST SUITE
-// Verifies that OTP cannot be bypassed and direct token leaks are prevented
-// ============================================================
-
 const dns = require('dns');
 try {
     dns.setServers(['8.8.8.8', '8.8.4.4']);
@@ -20,7 +15,6 @@ async function runAuthSecurityTests() {
     console.log('║  VERIFYING OTP ENFORCEMENT & STRICT ANTI-BYPASS SECURITY         ║');
     console.log('╚══════════════════════════════════════════════════════════════════╝\n');
 
-    // Ensure server is reachable
     try {
         await fetch('http://localhost:5000/', { signal: AbortSignal.timeout(2000) });
     } catch (e) {
@@ -38,7 +32,6 @@ async function runAuthSecurityTests() {
     const testEmail = `student.nobypass.${Date.now()}@chitkara.edu.in`;
     const testPassword = 'CampusPassword123!';
 
-    // TEST 1: Registration requires OTP and yields NO session token
     console.log('--- [TEST 1] Register Requires OTP and Does Not Issue Session Token ---');
     const regRes = await fetch(`${baseUrl}/register`, {
         method: 'POST',
@@ -63,7 +56,6 @@ async function runAuthSecurityTests() {
     }
     console.log('  ✅ PASS: Registration requires OTP verification; no token issued.\n');
 
-    // TEST 2: Register with personal email (MUST BE REJECTED)
     console.log('--- [TEST 2] Register with Personal Email (@gmail.com) Rejected ---');
     const pEmail = `test.${Date.now()}@gmail.com`;
     const pRes = await fetch(`${baseUrl}/register`, {
@@ -85,7 +77,6 @@ async function runAuthSecurityTests() {
     }
     console.log('  ✅ PASS: Personal email correctly rejected by educational email policy.\n');
 
-    // TEST 3: Unverified user cannot log in directly
     console.log('--- [TEST 3] Unverified Account Cannot Log In ---');
     const loginRes = await fetch(`${baseUrl}/login`, {
         method: 'POST',
@@ -103,7 +94,6 @@ async function runAuthSecurityTests() {
     }
     console.log('  ✅ PASS: Unverified account strictly forbidden from logging in.\n');
 
-    // TEST 4: Duplicate Account Prevention
     console.log('--- [TEST 4] Duplicate Account Re-registration Safety ---');
     const dupRes = await fetch(`${baseUrl}/register`, {
         method: 'POST',
@@ -120,13 +110,11 @@ async function runAuthSecurityTests() {
     const dupData = await dupRes.json();
     console.log('  Status:', dupRes.status, 'requireOtp:', dupData.requireOtp);
 
-    // Should update unverified user and issue new challenge without duplicate records
     if (dupRes.status !== 201 || !dupData.requireOtp) {
         throw new Error(`TEST 4 Failed: Expected 201 with requireOtp for unverified re-registration, got ${dupRes.status}`);
     }
     console.log('  ✅ PASS: Unverified user re-registration handled safely without duplicating.\n');
 
-    // Cleanup
     if (mongoose.connection.readyState === 1) {
         await mongoose.connection.collection('users').deleteOne({ email: testEmail });
         await mongoose.connection.collection('otpchallenges').deleteMany({ email: testEmail });

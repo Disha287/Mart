@@ -2,7 +2,6 @@ const dns = require('dns');
 const config = require("./config");
 const mongoose = require("mongoose");
 
-// Fix for Windows / ISP DNS servers that reject SRV querySrv lookups for MongoDB Atlas
 try {
     dns.setServers(['8.8.8.8', '8.8.4.4', '1.1.1.1']);
 } catch (e) {

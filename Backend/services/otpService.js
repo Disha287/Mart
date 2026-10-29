@@ -1,9 +1,3 @@
-// ============================================================
-// CAMPUSMART BACKEND — Centralized OTP Service
-// Manages challenge generation, secure hashing, single-use verification,
-// attempt limits, and resend cooldowns
-// ============================================================
-
 const config = require('../config/config');
 const OtpChallengeModel = require('../models/otpChallengeModel');
 const {
@@ -14,23 +8,12 @@ const {
 } = require('../utils/securityUtils');
 
 class OtpService {
-    /**
-     * Create a new OTP verification challenge
-     * @param {Object} params
-     * @param {string} params.email
-     * @param {string} [params.userId]
-     * @param {'registration'|'login'} params.purpose
-     * @param {Object} [params.metadata]
-     * @returns {Promise<{ challengeId: string, otp: string, expiresAt: Date, cooldownSeconds: number }>}
-     */
     async createChallenge({ email, userId = null, purpose, metadata = {} }) {
         const cleanEmail = email.toLowerCase().trim();
         const now = new Date();
 
-        // 1. Invalidate any existing active challenges for this email and purpose
         await OtpChallengeModel.invalidatePending(cleanEmail, purpose);
 
-        // 2. Generate secure numeric 6-digit OTP and hash it
         const otp = generateSecureOtp();
         const { hash, salt } = hashOtp(otp);
 
@@ -41,7 +24,6 @@ class OtpService {
         const expiresAt = new Date(now.getTime() + expiryMs);
         const resendCooldownUntil = new Date(now.getTime() + cooldownMs);
 
-        // 3. Persist the challenge record
         await OtpChallengeModel.create({
             id: challengeId,
             email: cleanEmail,
@@ -58,21 +40,12 @@ class OtpService {
 
         return {
             challengeId,
-            otp, // Only returned to caller (controller) for email sending; never sent in API responses
+            otp,
             expiresAt,
             cooldownSeconds: config.OTP_COOLDOWN_SECONDS || 60
         };
     }
 
-    /**
-     * Verify an entered OTP against an active challenge
-     * @param {Object} params
-     * @param {string} params.challengeId
-     * @param {string} params.email
-     * @param {string} params.otp
-     * @param {'registration'|'login'} params.purpose
-     * @returns {Promise<{ valid: boolean, error?: string, code?: string, remainingAttempts?: number, challenge?: Object }>}
-     */
     async verifyOtp({ challengeId, email, otp, purpose }) {
         if (!email || !otp || !purpose) {
             return { valid: false, error: 'Email, OTP, and purpose are required.', code: 'MISSING_FIELDS' };
@@ -86,7 +59,6 @@ class OtpService {
             challenge = await OtpChallengeModel.findById(challengeId);
         }
 
-        // Graceful fallback for API testing if placeholder was sent or omitted
         if (!challenge && cleanEmail && (!challengeId || challengeId.startsWith('<') || challengeId === 'auto' || challengeId === 'latest')) {
             challenge = await OtpChallengeModel.findLatestPending(cleanEmail, purpose);
             if (challenge) effectiveChallengeId = challenge.id;
@@ -117,11 +89,9 @@ class OtpService {
             return { valid: false, error: 'Maximum verification attempts exceeded. Please request a new code.', code: 'MAX_ATTEMPTS_EXCEEDED' };
         }
 
-        // Increment attempts count
         const updatedChallenge = await OtpChallengeModel.incrementAttempts(effectiveChallengeId);
         const currentAttempts = updatedChallenge ? updatedChallenge.attempts : challenge.attempts + 1;
 
-        // Timing-safe hash check
         const isMatch = verifyOtpHash(otp, challenge.otpHash, challenge.salt);
 
         if (!isMatch) {
@@ -142,7 +112,6 @@ class OtpService {
             };
         }
 
-        // Mark as used atomically
         const consumed = await OtpChallengeModel.markAsUsed(effectiveChallengeId);
         if (!consumed) {
             return {
@@ -158,14 +127,6 @@ class OtpService {
         };
     }
 
-    /**
-     * Resend an OTP challenge with cooldown check
-     * @param {Object} params
-     * @param {string} [params.challengeId]
-     * @param {string} params.email
-     * @param {'registration'|'login'} params.purpose
-     * @returns {Promise<{ success: boolean, error?: string, code?: string, newChallenge?: Object, waitSeconds?: number }>}
-     */
     async resendOtp({ challengeId, email, purpose }) {
         if (!email || !purpose) {
             return { success: false, error: 'Email and purpose are required.', code: 'MISSING_FIELDS' };
@@ -178,12 +139,10 @@ class OtpService {
             existing = await OtpChallengeModel.findById(challengeId);
         }
 
-        // Prevent cooldown bypass: if challengeId is missing or invalid, check the latest active challenge for email & purpose
         if (!existing) {
             existing = await OtpChallengeModel.findLatestPending(cleanEmail, purpose);
         }
 
-        // Check cooldown BEFORE invalidating any active challenge
         if (existing && existing.resendCooldownUntil) {
             const now = new Date();
             const cooldownUntil = new Date(existing.resendCooldownUntil);

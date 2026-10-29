@@ -1,8 +1,3 @@
-// ============================================================
-// QUICK SMTP VERIFICATION TOOL
-// Run with: node tests/test_email_dispatch.js [optional_recipient_email]
-// ============================================================
-
 require('dotenv').config();
 const nodemailer = require('nodemailer');
 
@@ -28,7 +23,7 @@ async function testConnection() {
     const transporter = nodemailer.createTransport({
         host: process.env.SMTP_HOST || 'smtp.gmail.com',
         port: parseInt(process.env.SMTP_PORT, 10) || 587,
-        secure: process.env.SMTP_SECURE === 'true', // false for STARTTLS on port 587
+        secure: process.env.SMTP_SECURE === 'true',
         auth: {
             user: process.env.SMTP_USER,
             pass: cleanPass

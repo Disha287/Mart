@@ -1,17 +1,8 @@
-// ============================================================
-// CAMPUSMART BACKEND — Email Delivery & Validation Engine
-// SMTP Transporter, Security Diagnostics & Editorial Email Templates
-// ============================================================
-
 const nodemailer = require('nodemailer');
 const config = require('../config/config');
 
-// In-memory test mailbox for automated verification
 const mockMailbox = [];
 
-/**
- * Disallowed personal/commercial email providers.
- */
 const BLOCKED_PERSONAL_DOMAINS = new Set([
     'gmail.com', 'googlemail.com',
     'yahoo.com', 'yahoo.co.in', 'yahoo.co.uk', 'yahoo.com.au', 'ymail.com', 'rocketmail.com',
@@ -28,9 +19,6 @@ const BLOCKED_PERSONAL_DOMAINS = new Set([
     'fastmail.com', 'fastmail.fm'
 ]);
 
-/**
- * Recognized educational TLD patterns.
- */
 const EDUCATIONAL_TLD_PATTERNS = [
     /\.edu$/,
     /\.edu\.\w{2}$/,
@@ -46,9 +34,6 @@ const EDUCATIONAL_TLD_PATTERNS = [
     /\.k12\.\w{2,3}$/
 ];
 
-/**
- * Validate and sanitize email string.
- */
 function sanitizeAndValidateEmail(email) {
     if (!email || typeof email !== 'string') return null;
     const trimmed = email.trim().toLowerCase();
@@ -59,9 +44,6 @@ function sanitizeAndValidateEmail(email) {
     return trimmed;
 }
 
-/**
- * Validates that an email belongs to an educational/institutional domain.
- */
 function isEducationalEmail(email) {
     if (!email || typeof email !== 'string') {
         return { valid: false, reason: 'Invalid email input.' };
@@ -74,7 +56,6 @@ function isEducationalEmail(email) {
 
     const domain = email.slice(atIndex + 1).toLowerCase();
 
-    // Check custom configured domain allowlist first if provided
     if (config.EDUCATIONAL_EMAIL_DOMAINS) {
         const allowedDomains = config.EDUCATIONAL_EMAIL_DOMAINS.split(',')
             .map(d => d.trim().toLowerCase())
@@ -94,7 +75,6 @@ function isEducationalEmail(email) {
         }
     }
 
-    // Step 1: Reject known personal/commercial providers
     if (BLOCKED_PERSONAL_DOMAINS.has(domain)) {
         return {
             valid: false,
@@ -102,7 +82,6 @@ function isEducationalEmail(email) {
         };
     }
 
-    // Step 2: Accept recognised educational TLD patterns
     const matchesEducational = EDUCATIONAL_TLD_PATTERNS.some(pattern => pattern.test(domain));
     if (!matchesEducational) {
         return {
@@ -114,9 +93,6 @@ function isEducationalEmail(email) {
     return { valid: true, reason: 'Educational email verified.' };
 }
 
-/**
- * Create SMTP Transporter with connection diagnostics
- */
 let transporter = null;
 
 function resetTransporter() {
@@ -160,7 +136,6 @@ function getTransporter() {
         if (!config.SMTP_USER) missing.push('SMTP_USER');
         if (!cleanPass) missing.push('SMTP_PASS');
 
-        // Return a transporter that yields a structured diagnostic error
         return {
             sendMail: async () => {
                 const err = new Error(`SMTP credentials are not configured in environment variables. Missing: ${missing.join(', ')}`);
@@ -178,12 +153,11 @@ function getTransporter() {
     const transportConfig = {
         host: config.SMTP_HOST || 'smtp.gmail.com',
         port: config.SMTP_PORT || 587,
-        secure: config.SMTP_SECURE, // false for 587 (STARTTLS)
+        secure: config.SMTP_SECURE,
         auth: {
             user: config.SMTP_USER,
             pass: cleanPass
         },
-        // Secure TLS defaults: Do NOT disable certificate validation
         connectionTimeout: 15000,
         greetingTimeout: 10000,
         socketTimeout: 20000
@@ -194,9 +168,6 @@ function getTransporter() {
     return transporter;
 }
 
-/**
- * Diagnostic status checker for SMTP service
- */
 async function getSmtpDiagnosticStatus() {
     const cleanPass = config.SMTP_PASS ? String(config.SMTP_PASS).trim().replace(/\s+/g, '') : '';
     const isConfigured = Boolean(config.SMTP_HOST && config.SMTP_USER && cleanPass);
@@ -252,10 +223,6 @@ async function getSmtpDiagnosticStatus() {
 
     return status;
 }
-
-// ============================================================
-// EDITORIAL EMAIL TEMPLATES (Campus Mart Brand Identity)
-// ============================================================
 
 function getEmailWrapper(title, contentHtml) {
     return `<!DOCTYPE html>
@@ -416,9 +383,6 @@ function getEmailWrapper(title, contentHtml) {
 </html>`;
 }
 
-/**
- * Send Registration Verification OTP Email
- */
 async function sendRegistrationOtpEmail(toEmail, recipientName, otp, expiryMinutes = 5) {
     const title = 'Verify your Campus Mart account';
     const client = getTransporter();
@@ -464,9 +428,6 @@ async function sendRegistrationOtpEmail(toEmail, recipientName, otp, expiryMinut
     return result;
 }
 
-/**
- * Send Login Verification OTP Email
- */
 async function sendLoginOtpEmail(toEmail, recipientName, otp, expiryMinutes = 5) {
     const title = 'Your Campus Mart login verification code';
     const client = getTransporter();
@@ -512,9 +473,6 @@ async function sendLoginOtpEmail(toEmail, recipientName, otp, expiryMinutes = 5)
     return result;
 }
 
-/**
- * Send Welcome Email after successful registration verification
- */
 async function sendWelcomeEmail(toEmail, recipientName, role = 'buyer') {
     const title = 'Welcome to Campus Mart — Your Campus Marketplace';
     const client = getTransporter();

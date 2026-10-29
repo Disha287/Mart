@@ -1,13 +1,6 @@
-// ============================================================
-// ORDERS CONTROLLER — MVC Controller Layer
-// Handles HTTP Requests and delegates to OrderModel & ProductModel
-// ============================================================
-
 const OrderModel = require('../models/orderModel');
 const ProductModel = require('../models/productModel');
 
-// GET /api/orders — Get all orders
-// Query params: ?buyerId=usr_buyer_1, ?sellerId=usr_seller_1, ?status=Confirmed
 const getAllOrders = async (req, res) => {
     try {
         const { buyerId, sellerId, status } = req.query;
@@ -22,7 +15,6 @@ const getAllOrders = async (req, res) => {
     }
 };
 
-// GET /api/orders/:id — Get single order
 const getOrderById = async (req, res) => {
     try {
         const order = await OrderModel.findById(req.params.id);
@@ -35,7 +27,6 @@ const getOrderById = async (req, res) => {
     }
 };
 
-// POST /api/orders — Create new order
 const createOrder = async (req, res) => {
     try {
         const { productId, quantity, buyerId, buyerName, buyerPhone, paymentMethod } = req.body;
@@ -68,7 +59,6 @@ const createOrder = async (req, res) => {
             paymentMethod
         });
 
-        // Deduct stock via product model
         await ProductModel.adjustStock(product.id, -qty);
 
         res.status(201).json({ success: true, message: 'Order placed successfully', data: newOrder });
@@ -77,7 +67,6 @@ const createOrder = async (req, res) => {
     }
 };
 
-// PUT /api/orders/:id — Update order status or payment
 const updateOrder = async (req, res) => {
     try {
         const allowedStatuses = ['Confirmed', 'Processing', 'Out for Delivery', 'Delivered', 'Completed', 'Cancelled'];
@@ -98,7 +87,6 @@ const updateOrder = async (req, res) => {
     }
 };
 
-// DELETE /api/orders/:id — Cancel and delete order
 const deleteOrder = async (req, res) => {
     try {
         const order = await OrderModel.findById(req.params.id);
@@ -110,7 +98,6 @@ const deleteOrder = async (req, res) => {
             return res.status(400).json({ success: false, message: 'Cannot delete a completed order' });
         }
 
-        // Restore stock via ProductModel
         await ProductModel.adjustStock(order.productId, order.quantity);
 
         const deleted = await OrderModel.findByIdAndDelete(req.params.id);

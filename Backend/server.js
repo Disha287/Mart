@@ -1,48 +1,29 @@
-// ============================================================
-// CAMPUSMART BACKEND — Express API Server (MVC Architecture)
-// Port: 5000 (Configured via config/config.js)
-// Architecture: Model - View (FrontEnd) - Controller (Backend)
-// ============================================================
-
 const express = require('express');
 const cors = require('cors');
 
-// Configuration & Database
 const config = require('./config/config');
 const { connectDB } = require('./config/db');
 
-// Route imports
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 
-// Middleware imports
 const { errorHandler, notFound } = require('./middleware/errorHandler');
 const { requireVerifiedUser } = require('./middleware/authMiddleware');
 
 const app = express();
 const PORT = config.PORT;
 
-// // Initialize Database connection (graceful fallback to in-memory)
-// connectDB();
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// ============================================================
-// GLOBAL MIDDLEWARE
-// ============================================================
-app.use(cors()); // Allow cross-origin requests
-app.use(express.json()); // Parse JSON request bodies
-app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
-
-// Request logger (for development)
 app.use((req, res, next) => {
     console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
     next();
 });
 
-// ============================================================
-// HEALTH CHECK & API INFO
-// ============================================================
 app.get('/', (req, res) => {
     res.json({
         success: true,
@@ -66,27 +47,22 @@ app.get('/api', (req, res) => {
         message: 'CampusMart REST API v1.0',
         architecture: 'Model-View-Controller (MVC)',
         availableRoutes: [
-            // Users
             { method: 'GET',    path: '/api/users',                          desc: 'Get all users' },
             { method: 'GET',    path: '/api/users/:id',                      desc: 'Get user by ID' },
             { method: 'POST',   path: '/api/users',                          desc: 'Create new user' },
             { method: 'PUT',    path: '/api/users/:id',                      desc: 'Update user' },
             { method: 'DELETE', path: '/api/users/:id',                      desc: 'Delete user' },
-            // Products
             { method: 'GET',    path: '/api/products',                       desc: 'Get all products (supports ?category, ?listingType, ?sellerId, ?search)' },
             { method: 'GET',    path: '/api/products/:id',                   desc: 'Get product by ID' },
             { method: 'POST',   path: '/api/products',                       desc: 'Create product listing' },
             { method: 'PUT',    path: '/api/products/:id',                   desc: 'Update product' },
             { method: 'DELETE', path: '/api/products/:id',                   desc: 'Delete product' },
-            // Offers
             { method: 'GET',    path: '/api/products/:id/offers',            desc: 'Get all offers on a product' },
             { method: 'POST',   path: '/api/products/:id/offers',            desc: 'Submit a price offer' },
             { method: 'PATCH',  path: '/api/products/:id/offers/:offerId',   desc: 'Accept/Reject offer' },
             { method: 'DELETE', path: '/api/products/:id/offers/:offerId',   desc: 'Cancel an offer' },
-            // Bids
             { method: 'GET',    path: '/api/products/:id/bids',              desc: 'Get all bids on auction' },
             { method: 'POST',   path: '/api/products/:id/bids',              desc: 'Place a bid' },
-            // Orders
             { method: 'GET',    path: '/api/orders',                         desc: 'Get all orders (supports ?buyerId, ?sellerId, ?status)' },
             { method: 'GET',    path: '/api/orders/:id',                     desc: 'Get order by ID' },
             { method: 'POST',   path: '/api/orders',                         desc: 'Create new order' },
@@ -96,25 +72,14 @@ app.get('/api', (req, res) => {
     });
 });
 
-// ============================================================
-// API ROUTES
-// ============================================================
 app.use('/api/auth',     authRoutes);
-app.use('/api',          authRoutes); // Alias: allows /api/login, /api/register directly
+app.use('/api',          authRoutes);
 app.use('/api/users',    userRoutes);
 app.use('/api/products', requireVerifiedUser, productRoutes);
 app.use('/api/orders',   requireVerifiedUser, orderRoutes);
 
-// ============================================================
-// ERROR HANDLING (must be last)
-// ============================================================
 app.use(notFound);
 app.use(errorHandler);
-
-// ============================================================
-// START SERVER
-// ============================================================
-
 
 async function startServer() {
     try {

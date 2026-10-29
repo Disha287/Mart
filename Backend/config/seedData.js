@@ -1,8 +1,3 @@
-// ============================================================
-// CAMPUSMART — Initial Seed Data
-// Used to initialize Models in in-memory mode
-// ============================================================
-
 const users = [
     {
         id: 'usr_seller_1',

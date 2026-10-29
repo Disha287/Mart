@@ -1,8 +1,3 @@
-// ============================================================
-// OTP CHALLENGE MODEL — Secure Storage for Verification Challenges
-// Mongoose Schema with In-Memory fallback and TTL index
-// ============================================================
-
 const mongoose = require('mongoose');
 
 const otpChallengeSchema = new mongoose.Schema({
@@ -16,7 +11,7 @@ const otpChallengeSchema = new mongoose.Schema({
     maxAttempts: { type: Number, default: 5 },
     isUsed: { type: Boolean, default: false },
     usedAt: { type: Date, default: null },
-    expiresAt: { type: Date, required: true, index: { expires: 0 } }, // MongoDB TTL cleanup
+    expiresAt: { type: Date, required: true, index: { expires: 0 } },
     resendCooldownUntil: { type: Date, required: true },
     metadata: { type: mongoose.Schema.Types.Mixed, default: {} }
 }, { timestamps: true });
@@ -28,9 +23,6 @@ class OtpChallengeModel {
         this.collection = [];
     }
 
-    /**
-     * Create and store an OTP challenge
-     */
     async create(challengeData) {
         const data = {
             ...challengeData,
@@ -50,9 +42,6 @@ class OtpChallengeModel {
         return { ...data };
     }
 
-    /**
-     * Find challenge by its unique ID
-     */
     async findById(id) {
         if (!id) return null;
         if (mongoose.connection.readyState === 1) {
@@ -61,9 +50,6 @@ class OtpChallengeModel {
         return this.collection.find(c => c.id === id) || null;
     }
 
-    /**
-     * Invalidate any previous pending challenges for an email and purpose
-     */
     async invalidatePending(email, purpose) {
         const cleanEmail = email.toLowerCase().trim();
         const now = new Date();
@@ -84,9 +70,6 @@ class OtpChallengeModel {
         });
     }
 
-    /**
-     * Increment attempt counter atomically
-     */
     async incrementAttempts(id) {
         if (mongoose.connection.readyState === 1) {
             return await OtpChallenge.findOneAndUpdate(
@@ -104,9 +87,6 @@ class OtpChallengeModel {
         return null;
     }
 
-    /**
-     * Find latest pending challenge for email and purpose
-     */
     async findLatestPending(email, purpose) {
         if (!email) return null;
         const cleanEmail = email.toLowerCase().trim();
@@ -131,9 +111,6 @@ class OtpChallengeModel {
         return matches[matches.length - 1];
     }
 
-    /**
-     * Mark challenge as successfully used (atomic single-use transition)
-     */
     async markAsUsed(id) {
         const now = new Date();
         if (mongoose.connection.readyState === 1) {

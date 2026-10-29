@@ -1,22 +1,12 @@
-// ============================================================
-// AUTH MIDDLEWARE
-// Validates requesting user context and verified status for protected APIs
-// ============================================================
-
 const jwt = require('jsonwebtoken');
 const UserModel = require('../models/userModel');
 const JWT_SECRET = process.env.JWT_SECRET || 'campusmart_jwt_secret_key_2026';
 
-/**
- * Middleware to check whether the requesting user exists and is verified.
- * Inspects 'Authorization: Bearer <token>', 'x-user-id' / 'x-user-email' headers, or body user identifiers.
- */
 const requireVerifiedUser = async (req, res, next) => {
     try {
         let userId = req.headers['x-user-id'] || req.body.sellerId || req.body.buyerId || req.body.userId;
         let userEmail = req.headers['x-user-email'] || req.body.email;
 
-        // Check for Bearer JWT token in Authorization header
         const authHeader = req.headers['authorization'];
         if (authHeader && authHeader.startsWith('Bearer ')) {
             const token = authHeader.split(' ')[1];
@@ -32,7 +22,6 @@ const requireVerifiedUser = async (req, res, next) => {
             }
         }
 
-        // Pass through if not specified on open endpoints
         if (!userId && !userEmail) {
             return next();
         }

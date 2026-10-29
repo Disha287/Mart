@@ -1,8 +1,3 @@
-// ============================================================
-// EMAIL DELIVERY & TEMPLATES UNIT TEST SUITE
-// Verifies SMTP configuration diagnostics, templates, and mock delivery
-// ============================================================
-
 const assert = require('assert');
 const config = require('../config/config');
 const {
@@ -22,9 +17,6 @@ async function runEmailUnitTests() {
 
     let passed = 0;
 
-    // ------------------------------------------------------------
-    // TEST 1: Mock Delivery captures emails with correct OTP
-    // ------------------------------------------------------------
     console.log('--- [TEST 1] Mock Delivery Captures Registration OTP ---');
     config.SMTP_MOCK = true;
     resetTransporter();
@@ -44,9 +36,6 @@ async function runEmailUnitTests() {
     console.log('  ✅ PASS: Mock delivery captured registration email with exact OTP and expiry.\n');
     passed++;
 
-    // ------------------------------------------------------------
-    // TEST 2: Login OTP Email Template
-    // ------------------------------------------------------------
     console.log('--- [TEST 2] Login 2FA Email Template ---');
     mockMailbox.length = 0;
     const loginOtp = '901234';
@@ -61,9 +50,6 @@ async function runEmailUnitTests() {
     console.log('  ✅ PASS: Login 2FA email template formatted with correct OTP and security headers.\n');
     passed++;
 
-    // ------------------------------------------------------------
-    // TEST 3: Welcome Email Template
-    // ------------------------------------------------------------
     console.log('--- [TEST 3] Welcome Email Template ---');
     mockMailbox.length = 0;
     await sendWelcomeEmail(testEmail, 'Rohan Verma', 'seller');
@@ -75,9 +61,6 @@ async function runEmailUnitTests() {
     console.log('  ✅ PASS: Welcome email dispatched with preserved user role.\n');
     passed++;
 
-    // ------------------------------------------------------------
-    // TEST 4: Missing SMTP Configuration Diagnostic Handling
-    // ------------------------------------------------------------
     console.log('--- [TEST 4] Missing SMTP Configuration Diagnostic Handling ---');
     config.SMTP_MOCK = false;
     const origHost = config.SMTP_HOST;
@@ -104,11 +87,7 @@ async function runEmailUnitTests() {
     console.log('  ✅ PASS: Missing SMTP configuration reported with structured diagnostic error.\n');
     passed++;
 
-    // ------------------------------------------------------------
-    // TEST 5: Bad Credentials Diagnostic Hint
-    // ------------------------------------------------------------
     console.log('--- [TEST 5] BadCredentials Diagnostic Reporting ---');
-    // Set invalid credentials to test error detection
     config.SMTP_HOST = 'smtp.gmail.com';
     config.SMTP_USER = 'campusmart044@gmail.com';
     config.SMTP_PASS = 'invalid_not_app_pass';
@@ -126,7 +105,6 @@ async function runEmailUnitTests() {
     console.log('  ✅ PASS: Bad credentials or connection failure diagnosed with actionable guidance.\n');
     passed++;
 
-    // Restore test configuration
     config.SMTP_HOST = origHost;
     config.SMTP_PASS = origPass;
     config.SMTP_MOCK = true;
