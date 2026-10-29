@@ -1,13 +1,7 @@
-/* ==========================================================================
-   CAMPUS MART — MASTER EDITORIAL DESIGN SYSTEM & APPLICATION STYLESHEET
-   Applies across all pages, subpages, dashboards, components & modals
-   ========================================================================== */
-
 @import url('https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&family=Martian+Mono:wght@400;500;600;700&display=swap');
 
-/* --- 1. EDITORIAL DESIGN TOKENS --- */
 :root {
-    /* Pure Editorial Palette */
+
     --bg-cream: #E7E2D8;
     --ink-primary: #171717;
     --ink-muted: rgba(23, 23, 23, 0.55);
@@ -20,13 +14,11 @@
     --dark-loam-hairline: rgba(255, 253, 248, 0.15);
     --paper-muted: rgba(255, 253, 248, 0.7);
 
-    /* Typography Matrix */
     --font-heading: 'Anton', sans-serif;
     --font-display: 'Anton', sans-serif;
     --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     --font-mono: 'Martian Mono', monospace;
 
-    /* Legacy Token Mappings (Seamless Backward Compatibility for All Subpages) */
     --primary: #171717;
     --primary-dark: #241A12;
     --primary-charcoal: #241A12;
@@ -63,7 +55,6 @@
     --danger-red: #EF493C;
     --warning-yellow: #b45309;
 
-    /* STRICT PHYSICAL PRINT RULES: ZERO RADIUS, ZERO SHADOWS */
     --radius-sm: 0px !important;
     --radius-md: 0px !important;
     --radius-lg: 0px !important;
@@ -79,13 +70,12 @@
     --transition-normal: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* --- 2. GLOBAL RESET & ZERO RADIUS MANDATE --- */
 *, *::before, *::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    border-radius: 0 !important; /* Strict design mandate */
-    box-shadow: none !important;  /* No decorative shadows */
+    border-radius: 0 !important;
+    box-shadow: none !important;
 }
 
 html {
@@ -108,7 +98,6 @@ body {
     overflow-x: hidden;
 }
 
-/* Override inline linear-gradients to Dark Loam print blocks */
 [style*="linear-gradient"] {
     background: var(--dark-loam) !important;
 }
@@ -133,7 +122,6 @@ img, video {
     display: block;
 }
 
-/* --- 3. TYPOGRAPHY SYSTEM --- */
 h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
     color: var(--ink-primary);
@@ -166,7 +154,6 @@ p {
     letter-spacing: 0.05em;
 }
 
-/* --- 4. CONTAINERS & LAYOUT --- */
 .container {
     width: 100%;
     max-width: 1280px;
@@ -223,7 +210,6 @@ p {
     line-height: 1.5;
 }
 
-/* --- 5. EDITORIAL HEADER & NAVIGATION (DARK LOAM #241A12) --- */
 .header {
     position: sticky;
     top: 0;
@@ -261,7 +247,7 @@ p {
 }
 
 .logo img {
-    display: none !important; /* Eliminate broken open image boxes */
+    display: none !important;
 }
 
 .logo span, .logo .brand-red, .nav-brand span, .nav-brand .brand-red {
@@ -322,7 +308,6 @@ p {
     background-color: transparent !important;
 }
 
-/* Dropdown Menu */
 .dropdown {
     position: relative;
 }
@@ -414,7 +399,6 @@ p {
     border: 1px solid var(--dark-loam);
 }
 
-/* --- 6. PAGE HERO BANNERS ACROSS SUBPAGES (DARK LOAM) --- */
 div[style*="background-color: var(--primary-charcoal)"],
 div[style*="linear-gradient"] {
     background: var(--dark-loam) !important;
@@ -438,7 +422,6 @@ div[style*="linear-gradient"] p {
     max-width: 700px;
 }
 
-/* --- 7. EDITORIAL BUTTONS --- */
 .btn {
     display: inline-flex;
     align-items: center;
@@ -513,7 +496,6 @@ header .btn-outline span,
     transform: translateY(-2px);
 }
 
-/* User Account Badge & Logout */
 .nav-account-badge {
     background: rgba(255, 253, 248, 0.15) !important;
     border: 1.5px solid var(--accent-red) !important;
@@ -580,7 +562,6 @@ header .btn-outline span,
     width: 100%;
 }
 
-/* --- 8. EDITORIAL FORMS & INPUTS --- */
 .form-group {
     margin-bottom: 1.5rem;
 }
@@ -630,7 +611,6 @@ header .btn-outline span,
     margin-top: 0.35rem;
 }
 
-/* --- 9. EDITORIAL CARDS & PAPER PLATES --- */
 .card, aside.card, .dashboard-card, .profile-card, .order-card {
     background-color: var(--paper-white) !important;
     border: 1.5px solid var(--ink-primary) !important;
@@ -653,7 +633,6 @@ header .btn-outline span,
 .grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
 .grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
 
-/* Product Card */
 .product-card {
     background: var(--paper-white) !important;
     border: 1.5px solid var(--ink-primary) !important;
@@ -803,7 +782,6 @@ header .btn-outline span,
     margin-top: 0.75rem;
 }
 
-/* --- 10. EDITORIAL TABLES (ORDERS, REGISTRY, REVIEWS) --- */
 table, .table, .editorial-table {
     width: 100%;
     border-collapse: collapse;
@@ -840,7 +818,6 @@ tbody tr:hover {
     background-color: #F4EFE6;
 }
 
-/* --- 11. EDITORIAL MODALS --- */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -922,7 +899,6 @@ tbody tr:hover {
     gap: 0.85rem;
 }
 
-/* --- 12. TOAST NOTIFICATIONS (PRINT TICKET STYLE) --- */
 #toast-container {
     position: fixed;
     bottom: 2rem;
@@ -964,7 +940,6 @@ tbody tr:hover {
     to { opacity: 0; transform: translateY(-12px); }
 }
 
-/* --- 13. EDITORIAL FOOTER (DARK LOAM #241A12) --- */
 .footer {
     background-color: var(--dark-loam);
     color: var(--paper-white);
@@ -1030,7 +1005,6 @@ tbody tr:hover {
     color: var(--paper-muted);
 }
 
-/* --- 14. AUTH / LOGIN / SIGNUP TABS --- */
 .login-auth-switch {
     display: flex;
     background: #EFE9DC;
@@ -1084,7 +1058,6 @@ tbody tr:hover {
     border-color: var(--accent-red);
 }
 
-/* --- 15. MOBILE NAVIGATION --- */
 @media (max-width: 768px) {
     .nav-menu {
         background-color: var(--dark-loam) !important;

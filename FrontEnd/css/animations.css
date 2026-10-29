@@ -1,5 +1,3 @@
-/* CAMPUSMART - Subtle Animations & Micro-interactions */
-
 @keyframes toastIn {
     from {
         opacity: 0;
@@ -41,7 +39,6 @@
     animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Skeleton Loading Placeholder */
 @keyframes skeletonPulse {
     0% { background-color: #E2E8F0; }
     50% { background-color: #CBD5E1; }
