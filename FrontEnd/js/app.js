@@ -1,5 +1,3 @@
-/* CAMPUSMART - Master Application Controller */
-
 document.addEventListener('DOMContentLoaded', function() {
     initHeaderScroll();
     initMobileMenu();
@@ -11,7 +9,6 @@ document.addEventListener('DOMContentLoaded', function() {
     initHeroVideo();
 });
 
-// Sticky Navbar Scroll Shadow Effect
 function initHeaderScroll() {
     const header = document.querySelector('.header');
     if (!header) return;
@@ -25,7 +22,6 @@ function initHeaderScroll() {
     });
 }
 
-// Mobile Responsive Drawer Toggle
 function initMobileMenu() {
     const mobileToggle = document.getElementById('mobile-toggle');
     const navMenu = document.getElementById('nav-menu');
@@ -36,7 +32,6 @@ function initMobileMenu() {
             navMenu.classList.toggle('active');
         });
 
-        // Close drawer when clicking outside
         document.addEventListener('click', function(e) {
             if (!navMenu.contains(e.target) && !mobileToggle.contains(e.target) && navMenu.classList.contains('active')) {
                 mobileToggle.classList.remove('active');
@@ -46,7 +41,6 @@ function initMobileMenu() {
     }
 }
 
-// Highlight Current Navigation Item
 function highlightActiveNavLink() {
     const currentPath = window.location.pathname;
     const navLinks = document.querySelectorAll('.nav-link');
@@ -61,8 +55,6 @@ function highlightActiveNavLink() {
     });
 }
 
-// Hero Video Trimmer
-// Dynamically removes the last 5 seconds from the background video loop
 function initHeroVideo() {
     const video = document.getElementById('hero-video');
     if (!video) return;

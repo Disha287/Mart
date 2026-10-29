@@ -1,58 +1,35 @@
-/**
- * CAMPUS MART — WARM PRINT EDITORIAL SCROLL CHOREOGRAPHY ENGINE
- * 
- * Implements the 5 Pinned Stages driven strictly by CSS custom properties on :root
- * 1. Poster Hero: --hero-type-y, --hero-type-scale, --hero-type-alpha, drifting tilled-bed canvas
- * 2. Clip-Wipe Manifesto: --manifesto-wipe, --manifesto-scale, exact bounding rect alignment
- * 3. Horizontal Card Rail: --rail-x (progress * overflowWidth), --rail-progress, 6 verified cards
- * 4. Printed Artifact Ticket: 6 properties, phase index DOM text updates only on change, dashed perforation cut
- * 5. Parallax Season Band: 22 contour lines canvas, --season-y, --season-scale, swapping chapters
- * Per-Atom Motion Budget: Per-word span splitting (38ms stagger), [data-rev] IntersectionObserver at 0.12
- */
-
 (function () {
     'use strict';
 
-    // --- State & References ---
     let scrollTicking = false;
     let viewportHeight = window.innerHeight;
     let viewportWidth = window.innerWidth;
     let prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // Stages
     let stageHero, stageManifesto, stageRail, stageArtifact, stageSeasons;
     let railTrack, railContainer;
     let railOverflow = 0;
 
-    // Artifact phase index tracker (avoids writing DOM text every frame)
     let lastArtifactPhaseIndex = -1;
 
-    // Canvases
     let heroCanvas, heroCtx, heroAnimId;
     let seasonsCanvas, seasonsCtx, seasonsAnimId;
     let ticketCanvas, ticketCtx;
 
-    // Nav element
     let navElement;
 
-    // --- Utility: Clamp ---
     function clamp(val, min, max) {
         return Math.min(Math.max(val, min), max);
     }
 
-    // --- Format Currency (INR) ---
     function formatINR(price) {
         const num = Number(price) || 0;
         return '₹' + num.toLocaleString('en-IN');
     }
 
-    // =========================================================================
-    // 1. PER-ATOM MOTION BUDGET: WORD SPLITTING & INTERSECTION OBSERVER
-    // =========================================================================
     function initWordSplitting() {
         const targets = document.querySelectorAll('.split-words');
         targets.forEach(el => {
-            // Avoid double splitting
             if (el.querySelector('.word-span')) return;
 
             const text = el.innerText.trim();
@@ -68,7 +45,6 @@
     }
 
     function initIntersectionObserver() {
-        // Trigger entrance reveals at threshold 0.12
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -86,16 +62,12 @@
         });
     }
 
-    // =========================================================================
-    // 2. CHARACTER COUNT POSTER LOCKUP VERIFICATION
-    // =========================================================================
     function verifyPosterLockup() {
         const lines = document.querySelectorAll('.poster-line');
         lines.forEach(line => {
             const chars = parseInt(line.getAttribute('data-chars'), 10) || line.innerText.replace(/\s+/g, '').length || 10;
             line.style.setProperty('--chars', chars);
 
-            // Check if scrollWidth overflows clientWidth; if so, scale down slightly
             if (line.scrollWidth > line.clientWidth && line.clientWidth > 0) {
                 const ratio = line.clientWidth / line.scrollWidth;
                 line.style.fontSize = `calc(min(14vw, calc(92vw / (${chars} * 0.44))) * ${ratio.toFixed(2)})`;
@@ -103,24 +75,14 @@
         });
     }
 
-    // =========================================================================
-    // 3. MANIFESTO ALIGNMENT (Clean natural document flow, no duplicate overlay)
     function verifyManifestoAlignment() {
-        // No-op: Single semantic manifesto sentence used
     }
 
-    // =========================================================================
-    // 4. MEASURE RAIL OVERFLOW
-    // =========================================================================
     function measureRailOverflow() {
         if (!railTrack) return;
-        // Overflow is track scrollWidth minus innerWidth so the last card lands flush
         railOverflow = Math.max(0, railTrack.scrollWidth - window.innerWidth + 80);
     }
 
-    // =========================================================================
-    // 5. DATA LOADER: REAL INVENTORY INTO FRESH ON CAMPUS TABLE
-    // =========================================================================
     async function loadEditorialProducts() {
         let products = [];
 
@@ -181,22 +143,16 @@
         });
 
         tbody.innerHTML = html;
-        // Observe new rows
         initIntersectionObserver();
     }
 
-    // =========================================================================
-    // 6. CENTRAL SCROLL & NAVIGATION THEME CHOREOGRAPHY
-    // =========================================================================
     function onScrollUpdate() {
-        // Navigation Color Transition between dark loam and light cream sections
         if (navElement) {
             const heroRect = stageHero ? stageHero.getBoundingClientRect() : null;
             const artifactRect = stageArtifact ? stageArtifact.getBoundingClientRect() : null;
             const footerElem = document.querySelector('.editorial-footer');
             const footerRect = footerElem ? footerElem.getBoundingClientRect() : null;
 
-            // In hero or in artifact stage or in footer = dark ground
             const inHero = heroRect && heroRect.bottom > 70;
             const inArtifact = artifactRect && artifactRect.top <= 70 && artifactRect.bottom >= 70;
             const inFooter = footerRect && footerRect.top <= 70;
@@ -218,9 +174,7 @@
         }
     }
 
-    // Set Artifact DOM Text to Verified Active State
     function updateArtifactStagePhase() {
-        // All 4 cues active
         const cues = document.querySelectorAll('.ticket-cues-list .cue-item');
         cues.forEach(c => c.classList.add('cue-active'));
 
@@ -236,11 +190,6 @@
         }
     }
 
-    // =========================================================================
-    // 7. GENERATIVE CANVASES: HERO TILLED BED, SEASONS CONTOURS, TICKET PLATE
-    // =========================================================================
-
-    // A. Hero Canvas: Drifting Tilled Soil Strokes at 5-19% Alpha
     function initHeroCanvas() {
         heroCanvas = document.getElementById('hero-canvas');
         if (!heroCanvas) return;
@@ -256,7 +205,6 @@
         resizeHero();
         window.addEventListener('resize', resizeHero, { passive: true });
 
-        // Generate grid of drifting strokes
         const numStrokes = 180;
         const strokes = [];
         for (let i = 0; i < numStrokes; i++) {
@@ -267,7 +215,7 @@
                 angle: -0.32 + (Math.random() - 0.5) * 0.25,
                 speed: 0.12 + Math.random() * 0.2,
                 phase: Math.random() * Math.PI * 2,
-                alpha: 0.05 + Math.random() * 0.14, // 5 to 19 percent alpha
+                alpha: 0.05 + Math.random() * 0.14,
                 isRed: Math.random() < 0.12
             });
         }
@@ -310,7 +258,6 @@
         renderHeroCanvas();
     }
 
-    // B. Seasons Canvas: 22 Stacked Contour Lines (Every 5th line in red)
     function initSeasonsCanvas() {
         seasonsCanvas = document.getElementById('seasons-canvas');
         if (!seasonsCanvas) return;
@@ -350,7 +297,6 @@
                 const segments = 26;
                 for (let j = 0; j <= segments; j++) {
                     const x = (j / segments) * w;
-                    // Sine of x plus a slower harmonic
                     const harmonic1 = Math.sin((j * 0.28) + time + (i * 0.25)) * 22;
                     const harmonic2 = Math.sin((j * 0.12) - time * 0.6 + (i * 0.18)) * 14;
                     const y = baseY + harmonic1 + harmonic2;
@@ -370,7 +316,6 @@
         renderSeasonsCanvas();
     }
 
-    // C. Artifact Ticket Canvas: Technical Geometric Plate
     function initTicketCanvas() {
         ticketCanvas = document.getElementById('ticket-canvas');
         if (!ticketCanvas) return;
@@ -390,7 +335,6 @@
             ticketCtx.fillStyle = '#efe9dc';
             ticketCtx.fillRect(0, 0, w, h);
 
-            // Technical coordinate grid lines
             ticketCtx.strokeStyle = 'rgba(23, 23, 23, 0.08)';
             ticketCtx.lineWidth = 1;
             const step = 18;
@@ -407,7 +351,6 @@
                 ticketCtx.stroke();
             }
 
-            // Central geometric mark: concentric squares with 45-deg rotation
             const cx = w / 2;
             const cy = h / 2;
 
@@ -430,7 +373,6 @@
 
             ticketCtx.restore();
 
-            // Corner registration crosshairs
             function drawCrosshair(x, y) {
                 ticketCtx.strokeStyle = '#ef493c';
                 ticketCtx.lineWidth = 1;
@@ -452,11 +394,7 @@
         window.addEventListener('resize', drawTicketPlate, { passive: true });
     }
 
-    // =========================================================================
-    // 8. INITIALIZATION & LIFECYCLE
-    // =========================================================================
     function init() {
-        // Cache DOM stages
         stageHero = document.getElementById('stage-hero');
         stageManifesto = document.getElementById('stage-manifesto');
         stageRail = document.getElementById('stage-rail');
@@ -467,24 +405,19 @@
         railContainer = document.querySelector('.rail-track-container');
         navElement = document.getElementById('main-nav');
 
-        // 1. Per-atom motion budget
         initWordSplitting();
         initIntersectionObserver();
 
-        // 2. Exact alignment & character counts
         verifyPosterLockup();
         verifyManifestoAlignment();
 
-        // 3. Generative canvases
         initHeroCanvas();
         initSeasonsCanvas();
         initTicketCanvas();
 
-        // 4. Products table & Artifact specs
         loadEditorialProducts();
         updateArtifactStagePhase();
 
-        // 5. Horizontal rail scroll listener for progress fill
         if (railContainer) {
             railContainer.addEventListener('scroll', () => {
                 const maxScroll = railContainer.scrollWidth - railContainer.clientWidth;
@@ -495,7 +428,6 @@
             }, { passive: true });
         }
 
-        // 5. Measure overflow & register scroll
         function handleResize() {
             viewportHeight = window.innerHeight;
             viewportWidth = window.innerWidth;
@@ -509,25 +441,21 @@
         window.addEventListener('resize', handleResize, { passive: true });
         window.addEventListener('scroll', requestScrollTick, { passive: true });
 
-        // Initial measurement
         setTimeout(() => {
             handleResize();
             requestScrollTick();
         }, 120);
 
-        // Update nav cart badges if utils.js loaded
         if (typeof updateNavBadges === 'function') {
             updateNavBadges();
         }
 
-        // Clean up on unload
         window.addEventListener('beforeunload', () => {
             if (heroAnimId) cancelAnimationFrame(heroAnimId);
             if (seasonsAnimId) cancelAnimationFrame(seasonsAnimId);
         });
     }
 
-    // Run on DOM ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
     } else {
