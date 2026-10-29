@@ -1,5 +1,3 @@
-/* CAMPUSMART - Initial Data Store & LocalStorage Data Engine */
-
 const SEED_DATA = {
     users: [
         {
@@ -981,11 +979,9 @@ function initDatabase(forceReset = false) {
         localStorage.setItem('cm_donations', JSON.stringify(SEED_DATA.donations));
         localStorage.setItem('cm_initialized', 'true');
     } else {
-        // Migration: Append new seed products if not already in local storage database
         try {
             let currentProducts = JSON.parse(localStorage.getItem('cm_products')) || [];
             
-            // Migration: Remove Morphy Richards 50L Hostel Mini Refrigerator (prod_109)
             const initialLen = currentProducts.length;
             currentProducts = currentProducts.filter(p => p.id !== 'prod_109');
             let updated = (currentProducts.length !== initialLen);
@@ -998,16 +994,13 @@ function initDatabase(forceReset = false) {
                 }
             });
             
-            // Migration: Ensure all products have a varied stock value
             currentProducts.forEach(p => {
                 if (typeof p.stock === 'undefined' || p.stock === 1) {
-                    // Assign random stock between 1 and 8 if it's 1 (the old default) or undefined
                     p.stock = Math.floor(Math.random() * 8) + 1;
                     updated = true;
                 }
             });
 
-            // Migration: Seed sample price negotiation offers if none exist
             const hasExistingOffers = currentProducts.some(p => p.offers && p.offers.length > 0);
             if (!hasExistingOffers) {
                 const p101 = currentProducts.find(p => p.id === 'prod_101');
@@ -1068,7 +1061,6 @@ function initDatabase(forceReset = false) {
                 localStorage.setItem('cm_products', JSON.stringify(currentProducts));
             }
             
-            // Migration: Seed donations if empty or missing
             let currentDonations = JSON.parse(localStorage.getItem('cm_donations'));
             if (!currentDonations || currentDonations.length === 0) {
                 localStorage.setItem('cm_donations', JSON.stringify(SEED_DATA.donations));
@@ -1086,7 +1078,6 @@ function initDatabase(forceReset = false) {
                 }
             }
             
-            // Migration: Append reviews to srv_prov_1 (Karan) if not present
             let currentProviders = JSON.parse(localStorage.getItem('cm_service_providers')) || [];
             const karan = currentProviders.find(p => p.id === 'srv_prov_1');
             if (karan && !karan.reviews) {
@@ -1098,7 +1089,6 @@ function initDatabase(forceReset = false) {
                 localStorage.setItem('cm_service_providers', JSON.stringify(currentProviders));
             }
             
-            // Migration: Force update images for fallback items
             let forceUpdate = false;
             currentProducts.forEach(p => {
                 if (p.id === 'prod_128' && p.image !== 'assets/images/products/prod_balloons_new.jpg') {
@@ -1137,5 +1127,4 @@ function initDatabase(forceReset = false) {
     }
 }
 
-// Initialize Data Engine (Preserves user state once initialized)
 initDatabase(false);

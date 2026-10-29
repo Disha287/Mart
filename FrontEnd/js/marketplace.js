@@ -1,5 +1,3 @@
-/* CAMPUSMART - Marketplace Search, Filter & Sort Engine */
-
 let currentFilters = {
     search: '',
     category: 'all',
@@ -15,7 +13,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initMarketplace() {
-    // Parse URL params for pre-selected category or search
     const urlParams = new URLSearchParams(window.location.search);
     const catParam = urlParams.get('cat') || urlParams.get('category');
     const searchParam = urlParams.get('search');
@@ -96,9 +93,7 @@ function renderMarketplaceProducts() {
 
     let products = dbGet('products');
 
-    // Apply Filter Pipeline
     products = products.filter(p => {
-        // Search filter
         if (currentFilters.search) {
             const query = currentFilters.search;
             const matchName = p.name.toLowerCase().includes(query);
@@ -108,38 +103,31 @@ function renderMarketplaceProducts() {
             if (!matchName && !matchDesc && !matchSeller && !matchCat) return false;
         }
 
-        // Category filter
         if (currentFilters.category !== 'all') {
             const filterCat = currentFilters.category.toLowerCase().trim();
             const prodCat = (p.category || '').toLowerCase().trim();
             if (!prodCat.includes(filterCat) && !filterCat.includes(prodCat)) return false;
         }
 
-        // Condition filter
         if (currentFilters.condition !== 'all') {
             if (p.condition.toLowerCase() !== currentFilters.condition.toLowerCase()) return false;
         }
 
-        // Listing type filter
         if (currentFilters.type !== 'all') {
             if (p.listingType !== currentFilters.type) return false;
         }
 
-        // Price filter
         if (p.price > currentFilters.priceMax) return false;
 
-        // Stock filter
         if (p.stock !== undefined && p.stock <= 0) return false;
 
         return true;
     });
 
-    // Apply Sorting Pipeline
     products.sort((a, b) => {
         if (currentFilters.sort === 'price-low') return a.price - b.price;
         if (currentFilters.sort === 'price-high') return b.price - a.price;
         if (currentFilters.sort === 'rating') return (b.rating || 0) - (a.rating || 0);
-        // Default: Newest first
         return new Date(b.dateAdded || 0) - new Date(a.dateAdded || 0);
     });
 
