@@ -1,5 +1,7 @@
+
 const OrderModel = require('../models/orderModel');
 const ProductModel = require('../models/productModel');
+
 
 const getAllOrders = async (req, res) => {
     try {
@@ -66,6 +68,7 @@ const createOrder = async (req, res) => {
         res.status(500).json({ success: false, message: error.message });
     }
 };
+
 
 const updateOrder = async (req, res) => {
     try {

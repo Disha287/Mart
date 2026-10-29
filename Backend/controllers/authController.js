@@ -1,3 +1,4 @@
+
 const UserModel = require('../models/userModel');
 const config = require('../config/config');
 const otpService = require('../services/otpService');
@@ -31,6 +32,7 @@ const {
     validatePasswordStrength
 } = require('../utils/securityUtils');
 
+
 const register = async (req, res) => {
     try {
         const { name, email, password, phone, role, college, hostel } = req.body;
@@ -49,6 +51,7 @@ const register = async (req, res) => {
                 message: 'Please provide a valid email address.'
             });
         }
+
 
         const eduCheck = isEducationalEmail(sanitizedEmail);
         if (!eduCheck.valid) {
@@ -77,10 +80,12 @@ const register = async (req, res) => {
             });
         }
 
+  
         const hashedPassword = await hashPassword(password);
         let userRecord = null;
 
         if (existingUser && !existingUser.isVerified) {
+  
             userRecord = await UserModel.findByEmailAndUpdate(sanitizedEmail, {
                 name: name.trim(),
                 password: hashedPassword,
@@ -90,6 +95,7 @@ const register = async (req, res) => {
                 hostel: hostel ? hostel.trim() : null
             });
         } else {
+   
             userRecord = await UserModel.create({
                 name: name.trim(),
                 email: sanitizedEmail,
@@ -103,12 +109,14 @@ const register = async (req, res) => {
             });
         }
 
+
         const challenge = await otpService.createChallenge({
             email: sanitizedEmail,
             userId: userRecord.id,
             purpose: 'registration',
             metadata: { role: userRole }
         });
+
 
         try {
             await sendRegistrationOtpEmail(
@@ -185,6 +193,7 @@ const verifyRegistrationOtp = async (req, res) => {
             });
         }
 
+        
         const result = await otpService.verifyOtp({
             challengeId,
             email: sanitizedEmail,
@@ -255,6 +264,7 @@ const verifyRegistrationOtp = async (req, res) => {
         });
     }
 };
+
 
 const resendRegistrationOtp = async (req, res) => {
     try {
@@ -384,6 +394,7 @@ const login = async (req, res) => {
             });
         }
 
+        
         if (!user.isVerified) {
             return res.status(403).json({
                 success: false,
@@ -451,6 +462,7 @@ const login = async (req, res) => {
     }
 };
 
+
 const verifyLoginOtp = async (req, res) => {
     try {
         const { email, challengeId, otp, role } = req.body;
@@ -470,6 +482,7 @@ const verifyLoginOtp = async (req, res) => {
             });
         }
 
+        
         const result = await otpService.verifyOtp({
             challengeId,
             email: sanitizedEmail,
@@ -525,6 +538,7 @@ const verifyLoginOtp = async (req, res) => {
         });
     }
 };
+
 
 const resendLoginOtp = async (req, res) => {
     try {
@@ -611,6 +625,7 @@ const resendLoginOtp = async (req, res) => {
         });
     }
 };
+
 
 const getSmtpStatus = async (req, res) => {
     try {
