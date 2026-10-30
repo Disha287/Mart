@@ -10,7 +10,6 @@
 </head>
 <body>
 
-    <!-- Header / Navbar -->
     <header class="header">
         <div class="container navbar">
             <a href="../index.html" class="logo nav-brand">CAMPUS MART<span class="brand-red">.</span></a>
@@ -23,7 +22,7 @@
 
             <nav class="nav-menu" id="nav-menu">
                 <a href="../index.html" class="nav-link">Home</a>
-                
+
                 <div class="dropdown">
                     <a href="marketplace.html" class="nav-link">Marketplace ▼</a>
                     <div class="dropdown-menu">
@@ -70,8 +69,7 @@
 
     <main class="section">
         <div class="container" style="max-width: 900px;">
-            
-            <!-- Dual Mode Navigation Tabs & Role Switcher -->
+
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; background: var(--surface); padding: 1.25rem 1.5rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); border: 1px solid var(--border);">
                 <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
                     <button id="tab-buyer-btn" onclick="switchOffersTab('buyer')" class="btn btn-primary" style="display: flex; align-items: center; gap: 0.5rem; font-weight: 700;">
@@ -83,7 +81,7 @@
                         <span id="seller-offers-count-badge" style="background: rgba(0,0,0,0.08); padding: 2px 8px; border-radius: 999px; font-size: 0.75rem;">0</span>
                     </button>
                 </div>
-                
+
                 <div style="display: flex; align-items: center; gap: 0.75rem;">
                     <span style="font-size: 0.85rem; color: var(--neutral-text-muted);" id="current-user-role-label">Signed in as: Rahul Sharma (BUYER)</span>
                     <button onclick="toggleDemoRole()" class="btn btn-outline btn-sm" style="font-size: 0.8rem; border-color: var(--border);">
@@ -92,14 +90,12 @@
                 </div>
             </div>
 
-            <!-- Offers Container -->
             <div id="offers-list-container">
-                <!-- Populated dynamically by seller.js -->
+
             </div>
         </div>
     </main>
 
-                            <!-- WHY CAMPUSMART FEATURE BLOCKS -->
     <section class="section" style="background-color: #171B26; color: var(--neutral-white);">
         <div class="container">
             <div class="section-title-wrap" style="text-align: center; margin-bottom: 2.5rem;">
@@ -135,7 +131,6 @@
         </div>
     </section>
 
-    <!-- FOOTER -->
     <footer class="footer" style="background-color: #171B26; border-top: none; padding-top: 4rem; padding-bottom: 2rem;">
         <div class="container">
             <div class="footer-grid" style="grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 2rem; margin-bottom: 3rem; text-align: left;">

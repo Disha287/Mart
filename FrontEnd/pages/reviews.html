@@ -11,7 +11,6 @@
 </head>
 <body>
 
-    <!-- Header / Navbar -->
     <header class="header">
         <div class="container navbar">
             <a href="../index.html" class="logo nav-brand">CAMPUS MART<span class="brand-red">.</span></a>
@@ -24,7 +23,7 @@
 
             <nav class="nav-menu" id="nav-menu">
                 <a href="../index.html" class="nav-link">Home</a>
-                
+
                 <div class="dropdown">
                     <a href="marketplace.html" class="nav-link">Marketplace ▼</a>
                     <div class="dropdown-menu">
@@ -59,7 +58,6 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
     <div style="background: linear-gradient(135deg, #172554 0%, #1E2332 100%); color: var(--neutral-white); padding: 3.5rem 0; text-align: center;">
         <div class="container">
             <span style="background: rgba(255,155,113,0.25); color: var(--accent); padding: 5px 16px; border-radius: 999px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; display: inline-block; margin-bottom: 0.75rem;">
@@ -72,11 +70,9 @@
         </div>
     </div>
 
-    <!-- Main Content -->
     <main class="section">
         <div class="container">
-            
-            <!-- Trust Stats Grid -->
+
             <div class="grid grid-cols-4" style="gap: 1.5rem; margin-bottom: 3.5rem;">
                 <div class="card" style="padding: 1.75rem; text-align: center; border-top: 4px solid #F59E0B;">
                     <div style="font-size: 2.5rem; font-weight: 800; color: var(--primary-charcoal); margin-bottom: 0.25rem;">4.9 / 5</div>
@@ -103,9 +99,8 @@
                 </div>
             </div>
 
-            <!-- Action Bar -->
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
-                <!-- Filter Pills -->
+
                 <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;" id="review-filter-tabs">
                     <button class="btn btn-primary btn-sm review-filter-btn" onclick="filterReviews('all', this)">All Reviews</button>
                     <button class="btn btn-outline btn-sm review-filter-btn" onclick="filterReviews('marketplace', this)">🛍️ Marketplace Purchases</button>
@@ -119,15 +114,13 @@
                 </button>
             </div>
 
-            <!-- Reviews Container -->
             <div class="grid grid-cols-3" style="gap: 1.5rem; margin-bottom: 3.5rem;" id="reviews-list-container">
-                <!-- Dynamically populated by JS -->
+
             </div>
 
         </div>
     </main>
 
-    <!-- Write Review Modal -->
     <div class="modal-overlay" id="add-review-modal">
         <div class="modal-container" style="max-width: 520px;">
             <div class="modal-header">
@@ -180,7 +173,6 @@
         </div>
     </div>
 
-                    <!-- WHY CAMPUSMART FEATURE BLOCKS -->
     <section class="section" style="background-color: #171B26; color: var(--neutral-white);">
         <div class="container">
             <div class="section-title-wrap" style="text-align: center; margin-bottom: 2.5rem;">
@@ -216,7 +208,6 @@
         </div>
     </section>
 
-    <!-- FOOTER -->
     <footer class="footer" style="background-color: #171B26; border-top: none; padding-top: 4rem; padding-bottom: 2rem;">
         <div class="container">
             <div class="footer-grid" style="grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 2rem; margin-bottom: 3rem; text-align: left;">
@@ -273,7 +264,6 @@
         </div>
     </footer>
 
-    <!-- Scripts -->
     <script src="../js/data.js"></script>
     <script src="../js/utils.js"></script>
     <script src="../js/auth.js"></script>
