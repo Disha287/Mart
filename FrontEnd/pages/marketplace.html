@@ -10,7 +10,6 @@
 </head>
 <body>
 
-    <!-- Header / Navbar -->
     <header class="header">
         <div class="container navbar">
             <a href="../index.html" class="logo nav-brand">CAMPUS MART<span class="brand-red">.</span></a>
@@ -23,7 +22,7 @@
 
             <nav class="nav-menu" id="nav-menu">
                 <a href="../index.html" class="nav-link">Home</a>
-                
+
                 <div class="dropdown">
                     <a href="marketplace.html" class="nav-link active">Marketplace ▼</a>
                     <div class="dropdown-menu">
@@ -58,7 +57,6 @@
         </div>
     </header>
 
-    <!-- Page Header Banner -->
     <div style="background-color: var(--primary-charcoal); color: var(--neutral-white); padding: 2.5rem 0; text-align: center;">
         <div class="container">
             <h1 style="font-size: 2.2rem; color: var(--neutral-white); margin-bottom: 0.5rem;">Campus Student Marketplace</h1>
@@ -66,25 +64,21 @@
         </div>
     </div>
 
-    <!-- Marketplace Main Content -->
     <main class="section">
         <div class="container">
             <div style="display: grid; grid-template-columns: 280px 1fr; gap: 2rem;" class="responsive-layout">
-                
-                <!-- Filter Sidebar -->
+
                 <aside class="card" style="padding: 1.5rem; height: fit-content;">
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--neutral-border);">
                         <h3 style="font-size: 1.15rem;">Filter Products</h3>
                         <button onclick="resetFilters()" style="background: none; border: none; color: var(--secondary-blue); font-size: 0.85rem; font-weight: 600; cursor: pointer;">Reset</button>
                     </div>
 
-                    <!-- Search Input -->
                     <div class="form-group">
                         <label class="form-label">Search Keywords</label>
                         <input type="text" id="search-input" class="form-control" placeholder="Search product or seller...">
                     </div>
 
-                    <!-- Category Filter -->
                     <div class="form-group">
                         <label class="form-label">Category</label>
                         <select id="filter-category" class="form-select">
@@ -101,7 +95,6 @@
                         </select>
                     </div>
 
-                    <!-- Condition Filter -->
                     <div class="form-group">
                         <label class="form-label">Condition</label>
                         <select id="filter-condition" class="form-select">
@@ -113,7 +106,6 @@
                         </select>
                     </div>
 
-                    <!-- Listing Type Filter -->
                     <div class="form-group">
                         <label class="form-label">Listing Type</label>
                         <select id="filter-type" class="form-select">
@@ -123,7 +115,6 @@
                         </select>
                     </div>
 
-                    <!-- Price Filter -->
                     <div class="form-group">
                         <label class="form-label" style="display: flex; justify-content: space-between;">
                             <span>Max Price</span>
@@ -133,11 +124,10 @@
                     </div>
                 </aside>
 
-                <!-- Products Display Area -->
                 <div>
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; background: var(--neutral-white); padding: 1rem 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--neutral-border);">
                         <span id="product-count" style="font-weight: 600; color: var(--primary-charcoal);">0 Products Found</span>
-                        
+
                         <div style="display: flex; align-items: center; gap: 0.5rem;">
                             <label style="font-size: 0.85rem; color: var(--neutral-text-muted);">Sort By:</label>
                             <select id="sort-select" class="form-select" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; width: auto;">
@@ -150,7 +140,7 @@
                     </div>
 
                     <div class="grid grid-cols-3" id="marketplace-grid">
-                        <!-- Populated by marketplace.js -->
+
                     </div>
                 </div>
 
@@ -158,7 +148,6 @@
         </div>
     </main>
 
-                            <!-- WHY CAMPUSMART FEATURE BLOCKS -->
     <section class="section" style="background-color: #171B26; color: var(--neutral-white);">
         <div class="container">
             <div class="section-title-wrap" style="text-align: center; margin-bottom: 2.5rem;">
@@ -194,7 +183,6 @@
         </div>
     </section>
 
-    <!-- FOOTER -->
     <footer class="footer" style="background-color: #171B26; border-top: none; padding-top: 4rem; padding-bottom: 2rem;">
         <div class="container">
             <div class="footer-grid" style="grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 2rem; margin-bottom: 3rem; text-align: left;">
