@@ -7,14 +7,12 @@
     <title>Buyer Dashboard | Campus Mart</title>
     <meta name="description" content="Manage your campus orders, negotiated price offers, saved items, and dorm handoffs.">
 
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&family=Martian+Mono:wght@400;500;700&display=swap"
         rel="stylesheet">
 
-    <!-- Master Stylesheets -->
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/editorial.css">
 
@@ -347,9 +345,6 @@
 
 <body>
 
-    <!-- =======================================================================
-         NAVIGATION BAR (EDITORIAL WITH CRISP TYPOGRAPHIC LOGO)
-         ======================================================================= -->
     <header class="editorial-nav" id="main-nav" role="banner" style="position: sticky; background: rgba(36, 26, 18, 0.96);">
         <a href="../index.html" class="logo nav-brand" aria-label="Campus Mart Home">
             CAMPUS MART<span class="brand-red">.</span>
@@ -378,9 +373,6 @@
         </div>
     </header>
 
-    <!-- =======================================================================
-         COMPACT EXECUTIVE BUYER STRIP (ZERO WASTED VERTICAL SPACE)
-         ======================================================================= -->
     <section class="dashboard-header-strip">
         <div class="dashboard-header-inner">
             <div class="dashboard-user-meta">
@@ -410,12 +402,8 @@
         </div>
     </section>
 
-    <!-- =======================================================================
-         MAIN WORKSPACE: SYSTEMATIC KPI ROW + TABBED CONTROL CONSOLE
-         ======================================================================= -->
     <main class="dashboard-content-container">
 
-        <!-- 4-COLUMN BALANCED METRICS GRID -->
         <div class="kpi-metrics-grid">
             <a href="#tab-orders" class="kpi-metric-card" onclick="switchTab('orders'); return false;">
                 <div class="kpi-label">
@@ -454,7 +442,6 @@
             </a>
         </div>
 
-        <!-- SYSTEMATIC TABBED MANAGEMENT CONSOLE (ELIMINATES ENDLESS SCROLLING) -->
         <div class="dashboard-console">
             <div class="console-tab-bar" role="tablist">
                 <button class="console-tab-btn active" id="tab-btn-offers" role="tab" onclick="switchTab('offers')">
@@ -471,7 +458,6 @@
                 </button>
             </div>
 
-            <!-- TAB 1: OFFERS & NEGOTIATIONS -->
             <div class="console-tab-pane active" id="tab-pane-offers" role="tabpanel">
                 <div class="console-panel-head">
                     <div>
@@ -484,14 +470,13 @@
                 </div>
 
                 <div id="buyer-recent-offers-list">
-                    <!-- Populated dynamically via JS -->
+
                     <div style="padding: 2.5rem; text-align: center;" class="font-mono">
                         LOADING YOUR ACTIVE PROPOSALS...
                     </div>
                 </div>
             </div>
 
-            <!-- TAB 2: RECENT ORDERS -->
             <div class="console-tab-pane" id="tab-pane-orders" role="tabpanel">
                 <div class="console-panel-head">
                     <div>
@@ -504,14 +489,13 @@
                 </div>
 
                 <div id="buyer-recent-orders-list">
-                    <!-- Populated dynamically via JS -->
+
                     <div style="padding: 2.5rem; text-align: center;" class="font-mono">
                         LOADING RECENT ORDER RECORDS...
                     </div>
                 </div>
             </div>
 
-            <!-- TAB 3: SAVED WISHLIST -->
             <div class="console-tab-pane" id="tab-pane-wishlist" role="tabpanel">
                 <div class="console-panel-head">
                     <div>
@@ -524,11 +508,10 @@
                 </div>
 
                 <div id="buyer-wishlist-preview">
-                    <!-- Populated dynamically via JS -->
+
                 </div>
             </div>
 
-            <!-- TAB 4: QUICK ACTIONS -->
             <div class="console-tab-pane" id="tab-pane-actions" role="tabpanel">
                 <div class="console-panel-head">
                     <div>
@@ -567,9 +550,6 @@
 
     </main>
 
-    <!-- =======================================================================
-         MINIMAL EDITORIAL FOOTER (COMPACT & UNCLUTTERED)
-         ======================================================================= -->
     <footer style="background-color: var(--dark-loam, #241a12); color: var(--paper-white, #fffdf8); padding: 2rem 3.5rem; border-top: 1.5px solid var(--accent-red, #ef493c); margin-top: auto;">
         <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; font-family: var(--font-mono, monospace); font-size: 10.5px; letter-spacing: 0.18em; color: var(--paper-muted, rgba(255, 253, 248, 0.6));">
             <div>
@@ -587,7 +567,6 @@
         </div>
     </footer>
 
-    <!-- SCRIPTS -->
     <script src="../js/data.js"></script>
     <script src="../js/utils.js"></script>
     <script src="../js/auth.js"></script>
@@ -618,7 +597,7 @@
             if (user) {
                 const firstName = (user.name || 'Student').split(' ')[0].toUpperCase();
                 document.getElementById('buyer-welcome-title').innerHTML = `WELCOME BACK, ${firstName}<span>!</span>`;
-                
+
                 const collegeText = (user.college || 'CHITKARA UNIVERSITY').toUpperCase();
                 document.getElementById('buyer-college-desc').textContent = collegeText;
 
@@ -692,8 +671,8 @@
                         if (of.status === 'Accepted') statusClass = 'status-accepted';
                         else if (of.status === 'Rejected') statusClass = 'status-rejected';
 
-                        const thumb = (typeof resolveImagePath === 'function' && of.productImage) 
-                            ? resolveImagePath(of.productImage) 
+                        const thumb = (typeof resolveImagePath === 'function' && of.productImage)
+                            ? resolveImagePath(of.productImage)
                             : (of.productImage || '../assets/images/products/unsplash_calculator.jpg');
 
                         const offered = Number(of.amount) || 0;
