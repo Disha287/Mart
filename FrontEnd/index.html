@@ -8,22 +8,17 @@
     <meta name="description"
         content="A curated university marketplace where students discover, buy, sell, and circulate essentials for campus life.">
 
-    <!-- Google Fonts Preconnect & Font Families -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&family=Martian+Mono:wght@400;500;700&display=swap"
         rel="stylesheet">
 
-    <!-- Master Editorial Stylesheet -->
     <link rel="stylesheet" href="css/editorial.css">
 </head>
 
 <body>
 
-    <!-- =======================================================================
-         EDITORIAL NAVIGATION (STICKY & MINIMAL)
-         ======================================================================= -->
     <header class="editorial-nav" id="main-nav" role="banner">
         <a href="index.html" class="nav-brand" aria-label="Campus Mart Home" data-rev style="--d: 30ms;">
             CAMPUS MART<span class="brand-red">.</span>
@@ -47,23 +42,19 @@
                 LIST ITEM // +
             </a>
             <div id="nav-user-btn" data-rev style="--d: 270ms;">
-                <!-- Managed by auth.js -->
+
                 <a href="pages/login.html" class="btn-editorial btn-editorial-outline">LOGIN</a>
             </div>
         </div>
     </header>
 
-    <!-- =======================================================================
-         STAGE 1 — POSTER HERO (Height ~280svh, Dark Loam #241A12)
-         Driven by: --hero-type-y (0 to -90px), --hero-type-scale (1 to 0.74), --hero-type-alpha (1 to 0)
-         ======================================================================= -->
     <section class="scroll-stage stage-hero" id="stage-hero" aria-label="Campus Mart Hero Stage">
         <div class="sticky-viewport hero-viewport">
-            <!-- Full bleed canvas drawing drifting tilled bed strokes (5-19% alpha) -->
+
             <canvas id="hero-canvas" aria-hidden="true"></canvas>
 
             <div class="hero-center-box">
-                <!-- Two-line poster lockup sized from character counts -->
+
                 <div class="poster-lockup" id="poster-lockup">
                     <span class="poster-line poster-line-sub font-display split-words" data-chars="23" style="--chars: 23;">
                         THE STUDENT MARKETPLACE
@@ -96,10 +87,6 @@
         </div>
     </section>
 
-    <!-- =======================================================================
-         STAGE 2 — CLIP-WIPE MANIFESTO (Height ~260svh, Cream #E7E2D8)
-         Driven by: --manifesto-wipe (0% to 100%), --manifesto-scale (1 to 1.05)
-         ======================================================================= -->
     <section class="scroll-stage stage-manifesto" id="stage-manifesto" aria-label="Campus Mart Manifesto">
         <div class="sticky-viewport manifesto-viewport">
             <div class="manifesto-container">
@@ -144,10 +131,6 @@
         </div>
     </section>
 
-    <!-- =======================================================================
-         STAGE 3 — HORIZONTAL PRODUCT RAIL (Height ~340svh, Cream #E7E2D8)
-         Driven by: --rail-x (progress * overflowWidth), --rail-progress (0% to 100%)
-         ======================================================================= -->
     <section class="scroll-stage stage-rail" id="stage-rail" aria-label="The Campus Edit Horizontal Catalogue">
         <div class="sticky-viewport rail-viewport">
             <header class="rail-header">
@@ -165,7 +148,7 @@
 
             <div class="rail-track-container">
                 <div class="rail-track" id="rail-track">
-                    <!-- Card 1: Casio FX-991EX Scientific Calculator -->
+
                     <article class="catalog-card" data-id="prod_101" data-rev style="--d: 60ms;">
                         <div class="card-top-meta">
                             <span class="card-cat-badge font-mono">01 // ACADEMIC TOOLS</span>
@@ -189,7 +172,6 @@
                         </div>
                     </article>
 
-                    <!-- Card 2: Engineering Graphics Drafter & Tool Kit -->
                     <article class="catalog-card" data-id="prod_102" data-rev style="--d: 110ms;">
                         <div class="card-top-meta">
                             <span class="card-cat-badge font-mono">02 // ACADEMIC TOOLS</span>
@@ -213,7 +195,6 @@
                         </div>
                     </article>
 
-                    <!-- Card 3: Dell Latitude Core i5 Laptop -->
                     <article class="catalog-card" data-id="prod_103" data-rev style="--d: 160ms;">
                         <div class="card-top-meta">
                             <span class="card-cat-badge font-mono">03 // ELECTRONICS</span>
@@ -237,7 +218,6 @@
                         </div>
                     </article>
 
-                    <!-- Card 4: Boat Rockerz 450 Over-Ear Wireless Headphones -->
                     <article class="catalog-card" data-id="prod_104" data-rev style="--d: 210ms;">
                         <div class="card-top-meta">
                             <span class="card-cat-badge font-mono">04 // AUDIO & SOUND</span>
@@ -261,7 +241,6 @@
                         </div>
                     </article>
 
-                    <!-- Card 5: Campus Fleece Oversized Winter Hoodie -->
                     <article class="catalog-card" data-id="prod_105" data-rev style="--d: 260ms;">
                         <div class="card-top-meta">
                             <span class="card-cat-badge font-mono">05 // CAMPUS APPAREL</span>
@@ -285,7 +264,6 @@
                         </div>
                     </article>
 
-                    <!-- Card 6: Introduction to Algorithms (CLRS 3rd Edition) -->
                     <article class="catalog-card" data-id="prod_106" data-rev style="--d: 310ms;">
                         <div class="card-top-meta">
                             <span class="card-cat-badge font-mono">06 // TEXTBOOKS</span>
@@ -321,14 +299,10 @@
         </div>
     </section>
 
-    <!-- =======================================================================
-         STAGE 4 — THE PRINTED ARTIFACT (Height ~420svh, Dark Loam #241A12)
-         Driven by: --packet-alpha, --packet-enter, --packet-scale, --packet-cut, --packet-meter, --packet-copy-x
-         ======================================================================= -->
     <section class="scroll-stage stage-artifact" id="stage-artifact" aria-label="Marketplace Listing Artifact">
         <div class="sticky-viewport artifact-viewport">
             <div class="artifact-grid">
-                <!-- Left Column (Copy sliding slightly opposite) -->
+
                 <div class="artifact-left">
                     <span class="tag-label tag-label-dark font-mono" data-rev style="--d: 40ms;">
                         FROM STUDENT TO STUDENT
@@ -348,7 +322,6 @@
                     </div>
                 </div>
 
-                <!-- Right Column (The Physical Paper Listing Ticket) -->
                 <div class="artifact-right">
                     <div class="listing-ticket" id="listing-ticket">
                         <header class="ticket-header">
@@ -360,12 +333,11 @@
                         </header>
 
                         <div class="ticket-body">
-                            <!-- Geometric plate canvas -->
+
                             <div class="ticket-plate">
                                 <canvas id="ticket-canvas"></canvas>
                             </div>
 
-                            <!-- 4 Cumulative Progress Cues -->
                             <div class="ticket-cues-list">
                                 <div class="cue-item" id="cue-1">
                                     <span class="cue-dot"></span>
@@ -385,15 +357,12 @@
                                 </div>
                             </div>
 
-                            <!-- Progress Meter Bar -->
                             <div class="ticket-meter-track">
                                 <div class="ticket-meter-fill"></div>
                             </div>
 
-                            <!-- Dashed 2px Perforation Opening -->
                             <div class="ticket-perforation"></div>
 
-                            <!-- Three Mono Rows at Foot -->
                             <div class="ticket-foot-rows">
                                 <div class="ticket-foot-row">
                                     <label>LOT NUMBER</label>
@@ -420,13 +389,9 @@
         </div>
     </section>
 
-    <!-- =======================================================================
-         STAGE 5 — PARALLAX SEASON BAND (Height ~300svh, Cream #E7E2D8)
-         Driven by: --season-y (-4% to 4%), --season-scale (1.10 to 1.055)
-         ======================================================================= -->
     <section class="scroll-stage stage-seasons" id="stage-seasons" aria-label="Campus Seasons Cycle">
         <div class="sticky-viewport seasons-viewport">
-            <!-- 22 stacked contour lines (every 5th red) -->
+
             <canvas id="seasons-canvas" aria-hidden="true"></canvas>
 
             <div class="seasons-content">
@@ -473,11 +438,6 @@
         </div>
     </section>
 
-    <!-- =======================================================================
-         BELOW-THE-FOLD CONTENT (NORMAL DOCUMENT FLOW)
-         ======================================================================= -->
-
-    <!-- A. CATEGORY DIRECTORY -->
     <section class="normal-flow-section category-directory-section" id="category-directory">
         <div class="section-head">
             <div>
@@ -546,7 +506,6 @@
         </div>
     </section>
 
-    <!-- B. RULED PRICE TABLE: FRESH ON CAMPUS -->
     <section class="normal-flow-section recent-listings-section" id="fresh-on-campus">
         <div class="section-head">
             <div>
@@ -570,7 +529,7 @@
                     </tr>
                 </thead>
                 <tbody id="fresh-campus-table-body">
-                    <!-- Loaded dynamically from database or product catalogue -->
+
                     <tr>
                         <td colspan="5" style="text-align:center; padding: 2.5rem;" class="font-mono">
                             LOADING RECENT CAMPUS INVENTORY...
@@ -581,7 +540,6 @@
         </div>
     </section>
 
-    <!-- C. FAQ (NATIVE DETAILS & SUMMARY) -->
     <section class="normal-flow-section faq-section" id="faq">
         <div class="section-head">
             <div>
@@ -631,9 +589,6 @@
         </div>
     </section>
 
-    <!-- =======================================================================
-         D. EDITORIAL FOOTER (DARK LOAM #241A12)
-         ======================================================================= -->
     <footer class="editorial-footer" role="contentinfo">
         <div class="footer-top">
             <div>
@@ -680,9 +635,6 @@
         </div>
     </footer>
 
-    <!-- =======================================================================
-         APPLICATION & EDITORIAL SCRIPTS
-         ======================================================================= -->
     <script src="js/data.js"></script>
     <script src="js/utils.js"></script>
     <script src="js/auth.js"></script>

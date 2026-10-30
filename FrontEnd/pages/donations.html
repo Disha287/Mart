@@ -10,7 +10,6 @@
 </head>
 <body>
 
-    <!-- Header / Navbar -->
     <header class="header">
         <div class="container navbar">
             <a href="../index.html" class="logo nav-brand">CAMPUS MART<span class="brand-red">.</span></a>
@@ -23,7 +22,7 @@
 
             <nav class="nav-menu" id="nav-menu">
                 <a href="../index.html" class="nav-link">Home</a>
-                
+
                 <div class="dropdown">
                     <a href="marketplace.html" class="nav-link">Marketplace ▼</a>
                     <div class="dropdown-menu">
@@ -58,7 +57,6 @@
         </div>
     </header>
 
-    <!-- Page Header Banner -->
     <div style="background-color: var(--primary-charcoal); color: var(--neutral-white); padding: 2.5rem 0; text-align: center;">
         <div class="container">
             <h1 style="font-size: 2.2rem; color: var(--neutral-white); margin-bottom: 0.5rem;">Campus Free Donations</h1>
@@ -66,24 +64,22 @@
         </div>
     </div>
 
-    <!-- Main Content -->
     <main class="section">
         <div class="container">
-            
+
             <div style="display: grid; grid-template-columns: 350px 1fr; gap: 2.5rem;" class="responsive-layout">
-                
-                <!-- Donation Form Sidebar -->
+
                 <aside>
                     <div class="card" style="padding: 1.75rem; position: sticky; top: 100px;">
                         <h3 style="font-size: 1.25rem; margin-bottom: 1.25rem; color: var(--primary-charcoal); border-bottom: 2px solid var(--neutral-border); padding-bottom: 0.5rem;">Donate an Item</h3>
                         <p style="font-size: 0.85rem; color: var(--neutral-text-muted); margin-bottom: 1.5rem;">Fill out this form to list an item you want to give away for free.</p>
-                        
+
                         <form id="donation-form">
                             <div class="form-group">
                                 <label class="form-label">Item Name</label>
                                 <input type="text" id="don-itemName" class="form-control" placeholder="e.g. Physics Textbook" required>
                             </div>
-                            
+
                             <div class="form-group">
                                 <label class="form-label">Category</label>
                                 <select id="don-category" class="form-select" required>
@@ -100,7 +96,7 @@
                                 <label class="form-label">Description (Condition, etc.)</label>
                                 <textarea id="don-description" class="form-control" rows="3" placeholder="Describe the item condition..." required></textarea>
                             </div>
-                            
+
                             <div class="form-group">
                                 <label class="form-label">Item Picture (Browse File)</label>
                                 <input type="file" id="don-image" class="form-control" accept="image/*">
@@ -121,14 +117,13 @@
                     </div>
                 </aside>
 
-                <!-- Donations Grid -->
                 <div>
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem;">
                         <h2 style="font-size: 1.5rem; color: var(--primary-charcoal);">Available Items</h2>
                     </div>
 
                     <div class="grid grid-cols-2" id="donations-grid" style="gap: 1.5rem;">
-                        <!-- Populated by donations.js -->
+
                     </div>
                 </div>
 
@@ -136,7 +131,6 @@
         </div>
     </main>
 
-                            <!-- WHY CAMPUSMART FEATURE BLOCKS -->
     <section class="section" style="background-color: #171B26; color: var(--neutral-white);">
         <div class="container">
             <div class="section-title-wrap" style="text-align: center; margin-bottom: 2.5rem;">
@@ -172,7 +166,6 @@
         </div>
     </section>
 
-    <!-- FOOTER -->
     <footer class="footer" style="background-color: #171B26; border-top: none; padding-top: 4rem; padding-bottom: 2rem;">
         <div class="container">
             <div class="footer-grid" style="grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 2rem; margin-bottom: 3rem; text-align: left;">
@@ -229,7 +222,6 @@
         </div>
     </footer>
 
-    <!-- Scripts -->
     <script src="../js/data.js"></script>
     <script src="../js/utils.js"></script>
     <script src="../js/auth.js"></script>
