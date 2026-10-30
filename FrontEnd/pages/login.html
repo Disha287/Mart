@@ -40,7 +40,7 @@
             gap: 0.3rem;
             text-transform: uppercase;
         }
-        
+
         .login-navbar .logo span {
             color: var(--accent-red);
         }
@@ -398,21 +398,18 @@
 </head>
 <body>
 
-    <!-- Simple Navbar -->
     <header class="login-navbar">
         <a href="../index.html" class="logo nav-brand">CAMPUS MART<span class="brand-red">.</span></a>
         <a href="../index.html" class="back-btn">← Back to Home</a>
     </header>
 
-    <!-- Main Content Area -->
     <main class="login-container">
         <div class="login-content">
-            
-            <!-- Left Information Column -->
+
             <div class="login-info">
                 <h1>Join Campus<span>Mart</span></h1>
                 <p class="subtitle">Create your account and become a part of your campus marketplace.</p>
-                
+
                 <div class="feature-list">
                     <div class="feature-card">
                         <div class="feature-icon">👥</div>
@@ -438,13 +435,12 @@
                 </div>
             </div>
 
-            <!-- Right Form Column -->
             <div class="login-form-card">
-                <!-- 1. Password Credentials Form -->
+
                 <div id="login-form-section">
                     <h2>Sign in to CampusMart</h2>
                     <p class="subtitle">Welcome back! Let's get you started.</p>
-                    
+
                     <form id="login-form">
                         <div class="input-group">
                             <label for="login-role">Select Role</label>
@@ -488,11 +484,10 @@
                     </div>
                 </div>
 
-                <!-- 2. Login 2FA OTP Verification Form (Hidden Initially) -->
                 <div id="login-otp-section" style="display: none;">
                     <h2>Two-Factor Sign In</h2>
                     <p class="subtitle">Security Check: Enter the 6-digit verification code.</p>
-                    
+
                     <div class="otp-target-info font-mono">
                         DISPATCHED TO: <span id="login-otp-target-email">student@college.edu</span>
                     </div>
@@ -502,15 +497,15 @@
                     <form id="login-otp-form">
                         <div class="input-group">
                             <label for="login-otp-input">Enter 6-Digit Code</label>
-                            <input 
-                                type="text" 
-                                id="login-otp-input" 
-                                class="otp-input-field" 
-                                placeholder="••••••" 
-                                maxlength="6" 
-                                pattern="[0-9]{6}" 
-                                inputmode="numeric" 
-                                autocomplete="one-time-code" 
+                            <input
+                                type="text"
+                                id="login-otp-input"
+                                class="otp-input-field"
+                                placeholder="••••••"
+                                maxlength="6"
+                                pattern="[0-9]{6}"
+                                inputmode="numeric"
+                                autocomplete="one-time-code"
                                 required
                             >
                         </div>
@@ -534,7 +529,7 @@
                     </form>
                 </div>
             </div>
-            
+
         </div>
     </main>
 
